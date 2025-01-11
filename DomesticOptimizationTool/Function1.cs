@@ -5,7 +5,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
 
-namespace DomesticOptimizationTool
+namespace Dot
 {
     public class Function1
     {

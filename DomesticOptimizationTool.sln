@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomesticOptimizationTool", 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{7D6A6C8D-53AD-4603-BF06-51BB48F6F8B6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot.Modules.Speech", "Module.Speech\Dot.Modules.Speech.csproj", "{6EB32852-5473-40F0-9467-0099EACA232E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,9 +19,16 @@ Global
 		{0B341CFE-D626-4518-8AD4-0A2FB5BDF5DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B341CFE-D626-4518-8AD4-0A2FB5BDF5DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B341CFE-D626-4518-8AD4-0A2FB5BDF5DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EB32852-5473-40F0-9467-0099EACA232E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB32852-5473-40F0-9467-0099EACA232E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB32852-5473-40F0-9467-0099EACA232E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB32852-5473-40F0-9467-0099EACA232E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6EB32852-5473-40F0-9467-0099EACA232E} = {7D6A6C8D-53AD-4603-BF06-51BB48F6F8B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE857866-09F3-488B-9C05-5A72997A0153}

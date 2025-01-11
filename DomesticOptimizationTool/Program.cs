@@ -1,7 +1,7 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Hosting;
 
-namespace DomesticOptimizationTool
+namespace Dot
 {
     internal class Program
     {
