@@ -1,24 +1,16 @@
 using System;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Host;
 using Microsoft.Extensions.Logging;
-using RabbitMQ.Client;
 
-namespace Dot
+namespace DomesticOptimizationTool
 {
     public class Function1
     {
-        private readonly ILogger _logger;
-
-        public Function1(ILoggerFactory loggerFactory)
+        [FunctionName("Function1")]
+        public void Run([RabbitMQTrigger("testqueue", ConnectionStringSetting = "MessageBusConnection")]string myQueueItem, ILogger log)
         {
-            _logger = loggerFactory.CreateLogger<Function1>();
-        }
-
-        [Function("Function1")]
-        public async Task Run([RabbitMQTrigger("testqueue", ConnectionStringSetting = "MessageBusConnection")] string myQueueItem)
-        {
+            log.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
         }
     }
 }
