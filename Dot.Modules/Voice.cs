@@ -7,6 +7,7 @@ namespace Dot.Modules
     public interface IVoice 
     {
         void Speak(string text);
+        Task Speak2(string text);
     }
 
     public class Voice : IVoice
@@ -42,6 +43,12 @@ namespace Dot.Modules
 
             }
         }
+
+        public Task Speak2(string text)
+        {
+            throw new NotImplementedException();
+        }
+
         private void Play(MemoryStream audioStream)
         {
             audioStream.Position = 0; // Reset the stream position
