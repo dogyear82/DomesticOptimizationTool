@@ -6,7 +6,7 @@ namespace AI.Gateway.API.Models
     public class AiRecord
     {
         [JsonProperty("uuid")]
-        public string Uuid { get; set; }
+        public string UuId { get; set; }
 
         [JsonProperty("userId")]
         public string UserId { get; set; }
