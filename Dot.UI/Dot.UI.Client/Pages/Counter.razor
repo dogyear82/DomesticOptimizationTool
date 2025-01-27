@@ -1,6 +1,8 @@
 ﻿@page "/chat"
 @rendermode InteractiveWebAssembly
+@using AI.Gateway.LocalAPI.Models
 @using Microsoft.AspNetCore.SignalR.Client
+@using Newtonsoft.Json
 @inject NavigationManager Navigation
 @implements IAsyncDisposable
 
@@ -25,7 +27,7 @@
 <ul id="messagesList">
     @foreach (var message in messages)
     {
-        <li>@message</li>
+        @((MarkupString)message)
     }
 </ul>
 
@@ -34,6 +36,10 @@
     private List<string> messages = [];
     private string? userInput;
     private string? messageInput;
+
+    public bool isThinking = false;
+    public string thought = string.Empty;
+    public bool isResponseFinished = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -45,8 +51,9 @@
 
             hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
             {
-                var encodedMsg = $"{user}: {message}";
-                messages.Add(encodedMsg);
+                //var encodedMsg = $"{user}: {message}";
+                var chunk = JsonConvert.DeserializeObject<LocalChatResponseChunk>(message);
+                ProcessChunk(chunk);
                 InvokeAsync(StateHasChanged);
             });
 
@@ -55,6 +62,45 @@
         catch (Exception ex)
         {
             Console.WriteLine(ex.Message);
+        }
+    }
+
+    private void ProcessChunk(LocalChatResponseChunk chunk)
+    {
+        var content = chunk.Message.Content;
+        if (content.Contains("<think>"))
+        {
+            isThinking = true;
+        }
+        else if (content.Contains("</think>"))
+        {
+            isThinking = false;
+        }
+        else if (isThinking)
+        {
+            thought += content;
+        }
+        else if (content.Contains("\n"))
+        {
+            var lineBreak = content.Replace("\n", "<br />");
+            if (isThinking)
+            {
+                thought += lineBreak;
+            }
+            else
+            {
+                messages.Add(lineBreak);            
+            }
+        }
+        else if (chunk.Done)
+        {
+            messages.Add($"<p class=\"thought\">{thought}</p>");
+            thought = string.Empty;
+        }
+        else
+        {
+            messages.Add(chunk.Message.Content);
+            isResponseFinished = chunk.Done;            
         }
     }
 
