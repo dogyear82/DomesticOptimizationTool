@@ -15,4 +15,8 @@
     <ProjectReference Include="..\HttpUtilities\HttpUtilities.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="LocalAPI\" />
+  </ItemGroup>
+
 </Project>
