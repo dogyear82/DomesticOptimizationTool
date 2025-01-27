@@ -13,6 +13,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HttpUtilities\HttpUtilities.csproj" />
+    <ProjectReference Include="..\Dot.Models\Dot.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="LocalAPI\" />
   </ItemGroup>
 
 </Project>

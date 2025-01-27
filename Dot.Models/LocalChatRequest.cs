@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace AI.Gateway.LocalAPI.Models
+namespace Dot.Models.LocalAPI
 {
     public class LocalChatRequest
     {

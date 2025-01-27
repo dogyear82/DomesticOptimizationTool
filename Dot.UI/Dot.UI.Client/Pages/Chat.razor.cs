@@ -1,4 +1,5 @@
-﻿using AI.Gateway.LocalAPI.Models;
+﻿using Dot.Models.LocalAPI;
+using Dot.Utilities.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
@@ -44,22 +45,21 @@ namespace Dot.UI.Client.Pages
 
         private void ProcessChunk(LocalChatResponseChunk chunk)
         {
-            var content = chunk.Message.Content;
-            if (content.Contains("<think>"))
+            if (chunk.IsBeginningOfThought())
             {
                 isThinking = true;
             }
-            else if (content.Contains("</think>"))
+            else if (chunk.IsEndOfThought())
             {
                 isThinking = false;
             }
             else if (isThinking)
             {
-                thought += content;
+                thought += chunk.GetMessageContent();
             }
-            else if (content.Contains("\n"))
+            else if (chunk.IsLineBreak())
             {
-                var lineBreak = content.Replace("\n", "<br />");
+                var lineBreak = chunk.GetMessageContent().Replace("\n", "<br />");
                 if (isThinking)
                 {
                     thought += lineBreak;
@@ -76,7 +76,7 @@ namespace Dot.UI.Client.Pages
             }
             else
             {
-                messages.Add(chunk.Message.Content);
+                messages.Add(chunk.GetMessageContent());
                 isResponseFinished = chunk.Done;
             }
         }
