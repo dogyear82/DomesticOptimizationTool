@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 
-namespace Dot.UI.Client.Pages
+namespace Dot.Client.Pages
 {
-    public partial class Chat : IAsyncDisposable
+    public partial class Chat : ComponentBase
     {
         [Inject]
         private NavigationManager Navigation { get; set; } = default!;
