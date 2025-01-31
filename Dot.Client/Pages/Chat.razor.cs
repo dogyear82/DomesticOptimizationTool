@@ -1,4 +1,5 @@
-﻿using Dot.Models.LocalAPI;
+﻿using Dot.Models;
+using Dot.Models.LocalAPI;
 using Dot.Utilities.Extensions;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -12,6 +13,7 @@ namespace Dot.Client.Pages
         private NavigationManager Navigation { get; set; } = default!;
 
         private HubConnection? hubConnection;
+        public List<DeepseekChatEntry> ChatEntries { get; set; } = new();
         public List<string> messages = new();
         private string? userInput;
         private string? messageInput;
@@ -59,6 +61,12 @@ namespace Dot.Client.Pages
             }
             else if (chunk.IsLineBreak())
             {
+                var isLineBreakOnFirstLine = !messages.Any();
+                if (isLineBreakOnFirstLine)
+                {
+                    return;
+                }
+
                 var lineBreak = chunk.GetMessageContent().Replace("\n", "<br />");
                 if (isThinking)
                 {
@@ -71,7 +79,19 @@ namespace Dot.Client.Pages
             }
             else if (chunk.Done)
             {
-                messages.Add($"<p class=\"thought\">{thought}</p>");
+                var aiResponse = "";
+                foreach (var message in messages)
+                {
+                    aiResponse += message;
+                }
+                messages.Clear();
+                var chatEntry = new DeepseekChatEntry
+                {
+                    IsUser = false,
+                    Content = aiResponse,
+                    Thought = thought
+                };
+                ChatEntries.Add(chatEntry);
                 thought = string.Empty;
             }
             else
@@ -86,6 +106,13 @@ namespace Dot.Client.Pages
             if (hubConnection is not null)
             {
                 await hubConnection.SendAsync("SendMessage", "Tan", messageInput);
+                var chatEntry = new DeepseekChatEntry
+                {
+                    IsUser = true,
+                    Content = messageInput
+                };
+                ChatEntries.Add(chatEntry);
+                messageInput = string.Empty;
             }
         }
 

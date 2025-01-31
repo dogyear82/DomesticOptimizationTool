@@ -6,12 +6,28 @@
     <PageTitle>Chat</PageTitle>
 
     <div class="chat-history">
-        <ul id="messagesList">
-            @foreach (var message in messages)
-            {
-                @((MarkupString)message)
-            }
-        </ul>
+        @foreach(var entry in ChatEntries)
+        {
+            <div class="chat-bubble @(entry.IsUser ? "user" : "assistant")">
+                @((MarkupString)entry.Content)
+                @if(!string.IsNullOrWhiteSpace(entry.Thought))
+                {
+                    <div class="thought callapsed">
+                        @((MarkupString)entry.Thought)
+                    </div>
+                }
+            </div>
+        }
+        
+        @if (messages.Any())
+        {
+            <div id="chat-latest-ai-response" class="chat-bubble assistant">
+                @foreach (var message in messages)
+                {
+                    @((MarkupString)message)
+                }
+            </div>
+        }
     </div><!-- .chat-history -->
 
     <div class="chat-input">

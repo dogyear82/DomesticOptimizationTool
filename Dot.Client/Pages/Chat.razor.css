@@ -1,5 +1,6 @@
 ﻿.chat-window {
     height: 100%;
+    overflow-y: scroll;
     position: relative;
 }
 
@@ -16,4 +17,24 @@
     bottom: 100px;
     position: absolute;
     width: 100%;
+}
+
+.chat-bubble {
+    clear: both;
+    margin: 15px 0;
+    padding: 15px;
+    max-width: 80%;
+}
+
+.chat-bubble.assistant {
+    background-color: #eaa777;
+    border-radius: 0 20px 20px;
+    float: left;
+}
+
+.chat-bubble.user {
+    background-color: #98dfff;
+    border-radius: 20px 0 20px 20px;
+    float: right;
+    text-align: right;
 }
