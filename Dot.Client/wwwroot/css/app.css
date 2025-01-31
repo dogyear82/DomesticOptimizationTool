@@ -21,6 +21,7 @@ a, .btn-link {
 }
 
 .content {
+    height: 100%;
     padding-top: 1.1rem;
 }
 
@@ -100,4 +101,8 @@ a, .btn-link {
 
 code {
     color: #c02d76;
+}
+
+.page.chat {
+    height: 100%;
 }

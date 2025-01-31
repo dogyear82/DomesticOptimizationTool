@@ -85,7 +85,7 @@ namespace Dot.Client.Pages
         {
             if (hubConnection is not null)
             {
-                await hubConnection.SendAsync("SendMessage", userInput, messageInput);
+                await hubConnection.SendAsync("SendMessage", "Tan", messageInput);
             }
         }
 
