@@ -1,4 +1,4 @@
-﻿using Dot.Models;
+﻿using Dot.Client.Models;
 using Dot.Models.LocalAPI;
 using Dot.Utilities.Extensions;
 using Microsoft.AspNetCore.Components;
@@ -13,9 +13,8 @@ namespace Dot.Client.Pages
         private NavigationManager Navigation { get; set; } = default!;
 
         private HubConnection? hubConnection;
-        public List<DeepseekChatEntry> ChatEntries { get; set; } = new();
+        public List<DeepseekChatEntryVm> ChatEntries { get; set; } = new();
         public List<string> messages = new();
-        private string? userInput;
         private string? messageInput;
 
         public bool isThinking = false;
@@ -85,8 +84,9 @@ namespace Dot.Client.Pages
                     aiResponse += message;
                 }
                 messages.Clear();
-                var chatEntry = new DeepseekChatEntry
+                var chatEntry = new DeepseekChatEntryVm
                 {
+                    Index = GetChatEntryIndex(),
                     IsUser = false,
                     Content = aiResponse,
                     Thought = thought
@@ -103,17 +103,29 @@ namespace Dot.Client.Pages
 
         private async Task Send()
         {
-            if (hubConnection is not null)
+            if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput))
             {
                 await hubConnection.SendAsync("SendMessage", "Tan", messageInput);
-                var chatEntry = new DeepseekChatEntry
+                var chatEntry = new DeepseekChatEntryVm
                 {
+                    Index = GetChatEntryIndex(),
                     IsUser = true,
                     Content = messageInput
                 };
                 ChatEntries.Add(chatEntry);
                 messageInput = string.Empty;
             }
+        }
+
+        private int GetChatEntryIndex()
+        {
+            return ChatEntries.Any() ? ChatEntries.Max(x => x.Index) + 1 : 0;
+        }
+
+        private void ToggleThoughtVisibility(int index)
+        {
+            var entry = ChatEntries.SingleOrDefault(x => x.Index == index);
+            entry.IsShowThought = !entry.IsShowThought;
         }
 
         public bool IsConnected =>

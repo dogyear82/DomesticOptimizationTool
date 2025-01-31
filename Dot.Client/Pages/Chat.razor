@@ -12,11 +12,12 @@
                 @((MarkupString)entry.Content)
                 @if(!string.IsNullOrWhiteSpace(entry.Thought))
                 {
-                    <div class="thought callapsed">
+                    <button @onclick="() => ToggleThoughtVisibility(entry.Index)">@(entry.IsShowThought ? "Hide Thought" : "Show Thought")</button>
+                    <div class="thought @(entry.IsShowThought ? "show" : "hidden")">
                         @((MarkupString)entry.Thought)
                     </div>
                 }
-            </div>
+            </div><!-- .chat-bubble -->
         }
         
         @if (messages.Any())
@@ -26,12 +27,12 @@
                 {
                     @((MarkupString)message)
                 }
-            </div>
+            </div><!-- .chat-latest-ai-response -->
         }
     </div><!-- .chat-history -->
 
     <div class="chat-input">
-        <input @bind="messageInput" size="50" />
+        <textarea @bind="messageInput" size="50" />
         <button @onclick="Send" disabled="@(!IsConnected)">Send</button>
     </div><!-- .chat-input -->
 </div><!-- .chat-window -->

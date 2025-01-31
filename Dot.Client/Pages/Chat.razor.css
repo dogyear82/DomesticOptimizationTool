@@ -1,29 +1,69 @@
 ﻿.chat-window {
-    height: 100%;
-    overflow-y: scroll;
+    height: 100vh;
+    overflow: hidden;
+    padding-bottom: 140px;
     position: relative;
 }
 
 .chat-input {
-    bottom: 0;
+    bottom: 20px;
     height: 100px;
     left: 0;
-    padding: 25px;
     position: absolute;
     width: 100%;
+    z-index: 2;
+}
+
+.chat-input textarea {
+    float: left;
+    height: 100px;
+    width: 90%;
+}
+
+.chat-input button {
+    float: right;
+    line-height: 50px;
+    height: 50px;
+    margin: 25px 0;
+    width: 50px;
 }
 
 .chat-history {
-    bottom: 100px;
-    position: absolute;
+    bottom: 0;
+    height: 100%;
+    overflow-y: auto;
     width: 100%;
+    z-index: 1;
 }
 
 .chat-bubble {
     clear: both;
     margin: 15px 0;
     padding: 15px;
+    position: relative;
     max-width: 80%;
+}
+
+.chat-bubble button {
+    background-color: #f78a4b;
+    border: none;
+    border-radius: 30px;
+    display: block;
+    margin-top: 10px;
+}
+
+.chat-bubble .thought {
+    background-color: #414141;
+    border-radius: 15px;
+    color: #fff;
+    display: none;
+    font-size: 85%;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.chat-bubble .thought.show {
+    display: block;
 }
 
 .chat-bubble.assistant {
