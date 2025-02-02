@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8D4DC78F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot.Client.Tests", "Dot.Client.Tests\Dot.Client.Tests.csproj", "{F8EEF38C-D16D-4C35-876A-899B3D9A0146}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot.DataAccess", "Dot.DataAccess\Dot.DataAccess.csproj", "{E7AD3947-CEA9-4478-BFDB-B2771461A4D5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,10 @@ Global
 		{F8EEF38C-D16D-4C35-876A-899B3D9A0146}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8EEF38C-D16D-4C35-876A-899B3D9A0146}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8EEF38C-D16D-4C35-876A-899B3D9A0146}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7AD3947-CEA9-4478-BFDB-B2771461A4D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7AD3947-CEA9-4478-BFDB-B2771461A4D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7AD3947-CEA9-4478-BFDB-B2771461A4D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7AD3947-CEA9-4478-BFDB-B2771461A4D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -81,6 +87,7 @@ Global
 		{3ECFE17E-EF8F-4B48-BD70-AE83F97517C0} = {7D6A6C8D-53AD-4603-BF06-51BB48F6F8B6}
 		{14C0CF05-24EB-4914-AAC5-6D9EA5B88735} = {DEADA5EA-C443-4619-A817-D956666F9484}
 		{F8EEF38C-D16D-4C35-876A-899B3D9A0146} = {8D4DC78F-600B-4C3D-8E65-8B1B713FE26E}
+		{E7AD3947-CEA9-4478-BFDB-B2771461A4D5} = {7D6A6C8D-53AD-4603-BF06-51BB48F6F8B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE857866-09F3-488B-9C05-5A72997A0153}

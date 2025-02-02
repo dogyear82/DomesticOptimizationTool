@@ -1,0 +1,30 @@
+﻿using Dot.DataAccess.Options;
+using Dot.DataAccess.Repositories;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
+
+namespace Dot.DataAccess.Extensions
+{
+    public static class ServiceCollectionExtensions
+    {
+        public static void SetupDataAccess(this IServiceCollection services, IConfiguration configuration)
+        {
+
+            // Bind MongoDB settings from appsettings.json
+            services.Configure<MongoDbSettings>(configuration.GetSection("MongoDbSettings"));
+
+            // Register MongoClient as a singleton
+            services.AddSingleton<IMongoClient>(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;
+                return new MongoClient(settings.ConnectionString);
+            });
+
+            services.AddSingleton<IDatabase, MongoDatabase>();
+            services.AddSingleton<IRepository, Repository>();
+            services.AddSingleton<IConversationRepository, ConversationRepository>();
+        }
+    }
+}

@@ -1,5 +1,6 @@
 ﻿using Dot.Client.Models;
 using Dot.Client.Services;
+using Dot.Models;
 using Dot.Models.LocalAPI;
 using Dot.Utilities.Extensions;
 using Markdig;
@@ -16,6 +17,7 @@ namespace Dot.Client.Pages
 
         private HubConnection? hubConnection;
         public List<ChatEntryVm> ChatEntries { get; set; } = new();
+        public List<LocalChatMessage> ChatHistory { get; set; } = new();
         public List<string> messages = new();
         private string? messageInput;
 
@@ -68,6 +70,13 @@ namespace Dot.Client.Pages
                 }
 
                 messages.Clear();
+
+                ChatHistory.Add(new LocalChatMessage
+                {
+                    Role = Role.Assistant,
+                    Content = aiResponse
+                });
+
                 var chatEntry = new ChatEntryVm
                 {
                     Index = GetChatEntryIndex(),
@@ -89,13 +98,18 @@ namespace Dot.Client.Pages
         {
             if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput))
             {
-                await hubConnection.SendAsync("SendMessage", "Tan", messageInput);
+                await hubConnection.SendAsync("SendMessage", ChatHistory, messageInput);
                 var chatEntry = new ChatEntryVm
                 {
                     Index = GetChatEntryIndex(),
                     IsUser = true,
                     Content = messageInput
                 };
+                ChatHistory.Add(new LocalChatMessage
+                {
+                    Role = Role.User,
+                    Content = messageInput
+                });
                 ChatEntries.Add(chatEntry);
                 messageInput = string.Empty;
             }

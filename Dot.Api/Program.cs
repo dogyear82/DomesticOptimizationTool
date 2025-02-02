@@ -1,5 +1,8 @@
 using Dot.Api.Hubs;
+using Dot.DataAccess.Extensions;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +16,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add services to the container.
+// Bind MongoDB settings from appsettings.json
+builder.Services.SetupDataAccess(builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
