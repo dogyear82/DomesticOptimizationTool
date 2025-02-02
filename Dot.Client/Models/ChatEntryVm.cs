@@ -2,7 +2,7 @@
 
 namespace Dot.Client.Models
 {
-    public class DeepseekChatEntryVm : DeepseekChatEntry
+    public class ChatEntryVm : ChatEntry
     {
         public bool IsShowThought { get; set; }
     }

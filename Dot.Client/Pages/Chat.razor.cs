@@ -1,4 +1,5 @@
 ﻿using Dot.Client.Models;
+using Dot.Client.Services;
 using Dot.Models.LocalAPI;
 using Dot.Utilities.Extensions;
 using Microsoft.AspNetCore.Components;
@@ -10,10 +11,10 @@ namespace Dot.Client.Pages
     public partial class Chat : ComponentBase
     {
         [Inject]
-        private NavigationManager Navigation { get; set; } = default!;
+        private IHubAccessor hubAccessor { get; set; }
 
         private HubConnection? hubConnection;
-        public List<DeepseekChatEntryVm> ChatEntries { get; set; } = new();
+        public List<ChatEntryVm> ChatEntries { get; set; } = new();
         public List<string> messages = new();
         private string? messageInput;
 
@@ -21,13 +22,13 @@ namespace Dot.Client.Pages
         public string thought = string.Empty;
         public bool isResponseFinished = true;
 
+        private bool isWritingCode = false;
+
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                hubConnection = new HubConnectionBuilder()
-                            .WithUrl(new Uri("https://localhost:7042/chathub"))
-                            .Build();
+                hubConnection = hubAccessor.GetHubConnection();
 
                 hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
                 {
@@ -84,7 +85,7 @@ namespace Dot.Client.Pages
                     aiResponse += message;
                 }
                 messages.Clear();
-                var chatEntry = new DeepseekChatEntryVm
+                var chatEntry = new ChatEntryVm
                 {
                     Index = GetChatEntryIndex(),
                     IsUser = false,
@@ -106,7 +107,7 @@ namespace Dot.Client.Pages
             if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput))
             {
                 await hubConnection.SendAsync("SendMessage", "Tan", messageInput);
-                var chatEntry = new DeepseekChatEntryVm
+                var chatEntry = new ChatEntryVm
                 {
                     Index = GetChatEntryIndex(),
                     IsUser = true,
