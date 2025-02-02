@@ -2,6 +2,7 @@
 using Dot.Client.Services;
 using Dot.Models.LocalAPI;
 using Dot.Utilities.Extensions;
+using Markdig;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
@@ -22,7 +23,6 @@ namespace Dot.Client.Pages
         public string thought = string.Empty;
         public bool isResponseFinished = true;
 
-        private bool isWritingCode = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -57,25 +57,7 @@ namespace Dot.Client.Pages
             }
             else if (isThinking)
             {
-                thought += chunk.GetMessageContent();
-            }
-            else if (chunk.IsLineBreak())
-            {
-                var isLineBreakOnFirstLine = !messages.Any();
-                if (isLineBreakOnFirstLine)
-                {
-                    return;
-                }
-
-                var lineBreak = chunk.GetMessageContent().Replace("\n", "<br />");
-                if (isThinking)
-                {
-                    thought += lineBreak;
-                }
-                else
-                {
-                    messages.Add(lineBreak);
-                }
+                thought += chunk.Message.Content;
             }
             else if (chunk.Done)
             {
@@ -84,20 +66,21 @@ namespace Dot.Client.Pages
                 {
                     aiResponse += message;
                 }
+
                 messages.Clear();
                 var chatEntry = new ChatEntryVm
                 {
                     Index = GetChatEntryIndex(),
                     IsUser = false,
-                    Content = aiResponse,
-                    Thought = thought
+                    Content = Markdown.ToHtml(aiResponse),
+                    Thought = Markdown.ToHtml(thought)
                 };
                 ChatEntries.Add(chatEntry);
                 thought = string.Empty;
             }
             else
             {
-                messages.Add(chunk.GetMessageContent());
+                messages.Add(chunk.Message.Content);
                 isResponseFinished = chunk.Done;
             }
         }

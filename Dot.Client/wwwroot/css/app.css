@@ -100,9 +100,24 @@ a, .btn-link {
     }
 
 code {
-    color: #c02d76;
+    background-color: #303030;
+    color: #fff;
+    font-size: 75%;
+    padding: 0 5px;
+}
+
+[class^="language-"] {
+    color: #fff;
 }
 
 .page.chat {
     height: 100%;
+}
+
+
+.chat-bubble pre {
+    background-color: #303030;
+    border-radius: 5px;
+    display: inline-block;
+    padding: 10px 10px 0;
 }

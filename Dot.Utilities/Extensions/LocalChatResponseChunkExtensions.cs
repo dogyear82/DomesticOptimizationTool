@@ -14,14 +14,9 @@ namespace Dot.Utilities.Extensions
             return chunk.Message.Content.Contains("</think>");
         }
 
-        public static bool IsLineBreak(this LocalChatResponseChunk chunk)
+        public static bool IsStartOrEndCoding(this LocalChatResponseChunk chunk)
         {
-            return chunk.Message.Content.Contains("\n");
-        }
-
-        public static string GetMessageContent(this LocalChatResponseChunk chunk)
-        {
-            return chunk.Message.Content;
+            return chunk.Message.Content.Contains("```");
         }
     }
 }
