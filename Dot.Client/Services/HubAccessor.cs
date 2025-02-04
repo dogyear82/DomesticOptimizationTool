@@ -1,3 +1,4 @@
+using Dot.Models.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Dot.Client.Services

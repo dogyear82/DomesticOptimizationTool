@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dot.Api.Controllers
 {
-    [Route("api/sidebar")]
+    [Route("api/navmenu")]
     [ApiController]
-    public class SideBar : Controller
+    public class NavMenu : Controller
     {
         private readonly IRepository _repo;
 
-        public SideBar(IRepository repo)
+        public NavMenu(IRepository repo)
         {
             _repo = repo;
         }

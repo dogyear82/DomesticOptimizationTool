@@ -1,10 +1,7 @@
-﻿namespace Dot.Client.Services
-{
-    public interface IAppSettings
-    {
-        string ApiUrl { get; }
-    }
+﻿using Dot.Models.Interfaces;
 
+namespace Dot.Client.Services
+{
     public class AppSettings : IAppSettings
     {
         private readonly IConfiguration _config;

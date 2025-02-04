@@ -30,6 +30,7 @@ namespace Dot.Client.Pages
         {
             try
             {
+                //LoadConversation();
                 hubConnection = hubAccessor.GetHubConnection();
 
                 hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
@@ -46,6 +47,21 @@ namespace Dot.Client.Pages
                 Console.WriteLine(ex.Message);
             }
         }
+
+        //private async Task LoadConversation()
+        //{
+        //    var conversation = await httpClientFactory.CreateClient().GetAsync("api/"GetFromJsonAsync<List<ChatMessage>>("api/chat");
+        //
+        //    ChatEntries = new List<ChatEntry>
+        //    {
+        //        new ChatEntry
+        //        {
+        //            Index = 0,
+        //            IsUser = false,
+        //            Content = "Hello! I'm Dot, your personal assistant. How can I help you today?"
+        //        }
+        //    };
+        //}
 
         private void ProcessChunk(LlmResponseChunk chunk)
         {
