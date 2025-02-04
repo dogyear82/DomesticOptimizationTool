@@ -1,4 +1,5 @@
 using Dot.Models.LocalAPI;
+using Dot.UI.Models;
 using Dot.Utilities.Extensions;
 
 namespace Dot.Client.Tests

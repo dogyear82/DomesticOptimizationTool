@@ -26,7 +26,7 @@ if (configResponse.IsSuccessStatusCode)
 }
 
 // Register API base URL in DI
-builder.Services.AddSingleton(sp => builder.Configuration["ApiUrl"]);
+builder.Services.AddSingleton<IHttpClientFactory, HttpClientFactory>();
 builder.Services.AddSingleton<IHubAccessor, HubAccessor>();
 builder.Services.AddSingleton<IAppSettings, AppSettings>();
 

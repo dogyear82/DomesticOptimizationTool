@@ -1,0 +1,32 @@
+﻿using Dot.DataAccess.Repositories;
+using Dot.UI.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Dot.Api.Controllers
+{
+    [Route("api/sidebar")]
+    [ApiController]
+    public class SideBar : Controller
+    {
+        private readonly IRepository _repo;
+
+        public SideBar(IRepository repo)
+        {
+            _repo = repo;
+        }
+
+        [HttpGet("conversations")]
+        public async Task<ActionResult<List<ConversationMenuItem>>> GetConversationMenuItems()
+        {
+            var allConversations = await _repo.Conversation.GetAllConversationsAsync();
+            var conversations = allConversations is null || !allConversations.Any() ? 
+                new List<ConversationMenuItem>() :
+                allConversations.Select(x => new ConversationMenuItem
+                {
+                    ConversationId = x.Id,
+                    Text = x.Title
+                });
+            return Ok(conversations);
+        }
+    }
+}
