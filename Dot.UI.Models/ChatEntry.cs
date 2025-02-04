@@ -1,4 +1,4 @@
-﻿namespace Dot.Models
+﻿namespace Dot.UI.Models
 {
     public class ChatEntry
     {
@@ -6,5 +6,6 @@
         public bool IsUser { get; set; }
         public string Content { get; set; }
         public string Thought { get; set; }
+        public bool IsShowThought { get; set; }
     }
 }

@@ -1,6 +1,6 @@
-﻿using Dot.Client.Models;
-using Dot.Client.Services;
+﻿using Dot.Client.Services;
 using Dot.Models;
+using Dot.UI.Models;
 using Dot.Models.LocalAPI;
 using Dot.Utilities.Extensions;
 using Markdig;
@@ -16,8 +16,8 @@ namespace Dot.Client.Pages
         private IHubAccessor hubAccessor { get; set; }
 
         private HubConnection? hubConnection;
-        public List<ChatEntryVm> ChatEntries { get; set; } = new();
-        public List<LocalChatMessage> ChatHistory { get; set; } = new();
+        public List<ChatEntry> ChatEntries { get; set; } = new();
+        public List<ChatMessage> ChatHistory { get; set; } = new();
         public List<string> messages = new();
         private string? messageInput;
 
@@ -34,7 +34,7 @@ namespace Dot.Client.Pages
 
                 hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
                 {
-                    var chunk = JsonConvert.DeserializeObject<LocalChatResponseChunk>(message);
+                    var chunk = JsonConvert.DeserializeObject<LlmResponseChunk>(message);
                     ProcessChunk(chunk);
                     InvokeAsync(StateHasChanged);
                 });
@@ -47,7 +47,7 @@ namespace Dot.Client.Pages
             }
         }
 
-        private void ProcessChunk(LocalChatResponseChunk chunk)
+        private void ProcessChunk(LlmResponseChunk chunk)
         {
             if (chunk.IsBeginningOfThought())
             {
@@ -71,13 +71,13 @@ namespace Dot.Client.Pages
 
                 messages.Clear();
 
-                ChatHistory.Add(new LocalChatMessage
+                ChatHistory.Add(new ChatMessage
                 {
                     Role = Role.Assistant,
                     Content = aiResponse
                 });
 
-                var chatEntry = new ChatEntryVm
+                var chatEntry = new ChatEntry
                 {
                     Index = GetChatEntryIndex(),
                     IsUser = false,
@@ -99,13 +99,13 @@ namespace Dot.Client.Pages
             if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput))
             {
                 await hubConnection.SendAsync("SendMessage", ChatHistory, messageInput);
-                var chatEntry = new ChatEntryVm
+                var chatEntry = new ChatEntry
                 {
                     Index = GetChatEntryIndex(),
                     IsUser = true,
                     Content = messageInput
                 };
-                ChatHistory.Add(new LocalChatMessage
+                ChatHistory.Add(new ChatMessage
                 {
                     Role = Role.User,
                     Content = messageInput

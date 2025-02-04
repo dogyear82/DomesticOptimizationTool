@@ -1,4 +1,3 @@
-using Dot.Client.Models;
 using Dot.Models.LocalAPI;
 using Dot.Utilities.Extensions;
 
@@ -6,7 +5,7 @@ namespace Dot.Client.Tests
 {
     public class ChatComponentTests
     {
-        public List<ChatEntryVm> ChatEntries;
+        public List<ChatEntry> ChatEntries;
         public List<string> messages = new();
 
         public bool isThinking = false;
@@ -20,7 +19,7 @@ namespace Dot.Client.Tests
             var stringPayload = "";
         }
 
-        private void ProcessChunk(LocalChatResponseChunk chunk)
+        private void ProcessChunk(LlmResponseChunk chunk)
         {
             if (chunk.IsBeginningOfThought())
             {
@@ -42,7 +41,7 @@ namespace Dot.Client.Tests
                     aiResponse += message;
                 }
                 messages.Clear();
-                var chatEntry = new ChatEntryVm
+                var chatEntry = new ChatEntry
                 {
                     Index = 1,
                     IsUser = false,

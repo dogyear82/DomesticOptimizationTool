@@ -5,9 +5,9 @@ namespace Dot.DataAccess.Repositories
 {
     public interface IConversationRepository
     {
-        Task<LocalChatMessage> GetAsync(string conversationId);
-        Task<bool> AddAsync(List<LocalChatMessage> messages);
-        Task<bool> AddAsync(List<LocalChatMessage> messages, string conversationId);
+        Task<List<ChatMessage>> GetMessagesForConversationAsync(string conversationId);
+        Task<bool> AddAsync(List<ChatMessage> messages);
+        Task<bool> AddAsync(List<ChatMessage> messages, string conversationId);
     }
 
     public class ConversationRepository : IConversationRepository
@@ -19,12 +19,28 @@ namespace Dot.DataAccess.Repositories
             _db = db;
         }
 
-        public async Task<LocalChatMessage> GetAsync(string conversationId)
+        //public async Task<LocalChatMessage> GetAllConversationsAsync()
+        //{
+        //    var conversations = await _db.ReadAsync<Conversation>();
+        //    return conversations.Select(conversation => new LocalChatMessage
+        //    {
+        //        Id = conversation.Id,
+        //        Role = conversation.Messages.Last().CreateBy,
+        //        Content = conversation.Messages.Last().Content
+        //    });
+        //}
+
+        public async Task<List<ChatMessage>> GetMessagesForConversationAsync(string conversationId)
         {
-            throw new NotImplementedException();
+            var conversation = await _db.ReadAsync<Conversation>(conversationId);
+            return conversation.Messages.OrderBy(x => x.CreatedAt).Select(message => new ChatMessage
+            {
+                Role = message.CreateBy,
+                Content = message.Content
+            }).ToList();
         }
 
-        public async Task<bool> AddAsync(List<LocalChatMessage> messages)
+        public async Task<bool> AddAsync(List<ChatMessage> messages)
         {
             var messagesToAdd = messages.Select(m => new Message()
             {
@@ -41,7 +57,7 @@ namespace Dot.DataAccess.Repositories
             return await _db.CreateAsync(conversation);
         }
 
-        public async Task<bool> AddAsync(List<LocalChatMessage> messages, string conversationId)
+        public async Task<bool> AddAsync(List<ChatMessage> messages, string conversationId)
         {
             var messagesToAdd = messages.Select(m => new Message()
             {

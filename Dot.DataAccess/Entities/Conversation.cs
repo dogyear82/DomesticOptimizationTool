@@ -9,6 +9,7 @@ namespace Dot.DataAccess.Entities
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
 
+        public string Title { get; set; }
         public string Summary { get; set; }
         public List<Message> Messages { get; set; }
 

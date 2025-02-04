@@ -29,6 +29,11 @@ namespace Dot.DataAccess
             return true;
         }
 
+        public async Task<List<T>> ReadAsync<T>()
+        {
+            return await GetCollection<T>().Find(_ => true).ToListAsync();
+        }
+
         public async Task<T> ReadAsync<T>(string id)
         {
             var filter = Builders<T>.Filter.Eq("_id", new ObjectId(id));

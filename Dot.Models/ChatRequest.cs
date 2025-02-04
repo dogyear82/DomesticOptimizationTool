@@ -2,17 +2,20 @@
 
 namespace Dot.Models.LocalAPI
 {
-    public class LocalChatRequest
+    public class ChatRequest
     {
         [JsonProperty("model")]
         public string Model { get; set; }
 
         [JsonProperty("messages")]
-        public List<LocalChatMessage> Messages { get; set; }
+        public List<ChatMessage> Messages { get; set; }
     }
 
-    public class LocalChatMessage
+    public class ChatMessage
     {
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
         [JsonProperty("role")]
         public string Role { get; set; }
 
@@ -20,7 +23,7 @@ namespace Dot.Models.LocalAPI
         public string Content { get; set; }
     }
 
-    public class LocalChatResponseChunk
+    public class LlmResponseChunk
     {
         [JsonProperty("model")]
         public string Model { get; set; }
@@ -29,7 +32,7 @@ namespace Dot.Models.LocalAPI
         public string CreatedAt { get; set; }
 
         [JsonProperty("message")]
-        public LocalChatMessage Message { get; set; }
+        public ChatMessage Message { get; set; }
 
         [JsonProperty("done")]
         public bool Done { get; set; }

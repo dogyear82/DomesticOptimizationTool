@@ -21,26 +21,26 @@ namespace Dot.Api.Hubs
             _repo = repo;
         }
 
-        public async Task SendMessage(List<LocalChatMessage> chatHistory, string content)
+        public async Task SendMessage(List<ChatMessage> chatHistory, string content)
         {
             var httpClient = _httpClientFactory.CreateClient(); 
             var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:11434/api/chat");
-            var messages = new List<LocalChatMessage>
+            var messages = new List<ChatMessage>
             {
-                new LocalChatMessage
+                new ChatMessage
                 {
                     Role = "system",
                     Content = "Your name is Dot, which stands for Domestic Optimization Tool. You were created by Tan Nguyen, based on the phi4 large language model. You are a helpful AI companion. Your speech style is casual and you answer queries directly.  Your personality style can be overridden by the Personality Override section of a prompt."
                 }                
             };
             messages.AddRange(chatHistory);
-            messages.Add(new LocalChatMessage
+            messages.Add(new ChatMessage
             {
                 Role = Role.User,
                 Content = content
             });
 
-            var message = new LocalChatRequest
+            var message = new ChatRequest
             {
                 Model = "phi4",
                 Messages = messages
@@ -62,7 +62,7 @@ namespace Dot.Api.Hubs
                 }
             }
 
-            messages.Add(new LocalChatMessage
+            messages.Add(new ChatMessage
             {
                 Role = Role.Assistant,
                 Content = responseContent

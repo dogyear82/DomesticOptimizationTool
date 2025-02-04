@@ -2,19 +2,19 @@
 
 namespace Dot.Utilities.Extensions
 {
-    public static class LocalChatResponseChunkExtensions
+    public static class LlmResponseChunkExtensions
     {
-        public static bool IsBeginningOfThought(this LocalChatResponseChunk chunk)
+        public static bool IsBeginningOfThought(this LlmResponseChunk chunk)
         {
             return chunk.Message.Content.Contains("<think>");
         }
 
-        public static bool IsEndOfThought(this LocalChatResponseChunk chunk)
+        public static bool IsEndOfThought(this LlmResponseChunk chunk)
         {
             return chunk.Message.Content.Contains("</think>");
         }
 
-        public static bool IsStartOrEndCoding(this LocalChatResponseChunk chunk)
+        public static bool IsStartOrEndCoding(this LlmResponseChunk chunk)
         {
             return chunk.Message.Content.Contains("```");
         }
