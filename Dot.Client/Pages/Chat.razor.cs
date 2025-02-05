@@ -23,8 +23,7 @@ namespace Dot.Client.Pages
 
         private HubConnection? hubConnection;
         public List<ChatEntry> ChatEntries { get; set; } = new();
-        public List<ChatMessage> ChatHistory { get; set; } = new();
-        public List<string> messages = new();
+        public List<string> messageStream = new();
         private string? messageInput;
 
         public bool isThinking = false;
@@ -62,7 +61,7 @@ namespace Dot.Client.Pages
             {
                 Index = i,
                 IsUser = x.Role == Role.User,
-                Content = x.Content
+                Content = Markdown.ToHtml(x.Content)
             }).ToList();
         }
 
@@ -83,18 +82,12 @@ namespace Dot.Client.Pages
             else if (chunk.Done)
             {
                 var aiResponse = "";
-                foreach (var message in messages)
+                foreach (var message in messageStream)
                 {
                     aiResponse += message;
                 }
 
-                messages.Clear();
-
-                ChatHistory.Add(new ChatMessage
-                {
-                    Role = Role.Assistant,
-                    Content = aiResponse
-                });
+                messageStream.Clear();
 
                 var chatEntry = new ChatEntry
                 {
@@ -108,7 +101,7 @@ namespace Dot.Client.Pages
             }
             else
             {
-                messages.Add(chunk.Message.Content);
+                messageStream.Add(chunk.Message.Content);
                 isResponseFinished = chunk.Done;
             }
         }
@@ -117,18 +110,13 @@ namespace Dot.Client.Pages
         {
             if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput))
             {
-                await hubConnection.SendAsync("SendMessage", ChatHistory, messageInput);
+                await hubConnection.SendAsync("SendMessage", messageInput, conversationId);
                 var chatEntry = new ChatEntry
                 {
                     Index = GetChatEntryIndex(),
                     IsUser = true,
                     Content = messageInput
                 };
-                ChatHistory.Add(new ChatMessage
-                {
-                    Role = Role.User,
-                    Content = messageInput
-                });
                 ChatEntries.Add(chatEntry);
                 messageInput = string.Empty;
             }

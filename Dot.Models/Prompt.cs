@@ -2,7 +2,7 @@
 
 namespace Dot.Models.LocalAPI
 {
-    public class ChatRequest
+    public class Prompt
     {
         [JsonProperty("model")]
         public string Model { get; set; }

@@ -21,61 +21,102 @@ namespace Dot.Api.Hubs
             _repo = repo;
         }
 
-        public async Task SendMessage(List<ChatMessage> chatHistory, string content)
+        public async Task SendMessage(string content, string conversationId = null)
         {
             var httpClient = _httpClientFactory.CreateClient(); 
             var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:11434/api/chat");
             var messages = new List<ChatMessage>
             {
-                new ChatMessage
-                {
-                    Role = Role.System,
-                    Content = "Your name is Dot, which stands for Domestic Optimization Tool. You were created by Tan Nguyen, based on the phi4 large language model. You are a helpful AI companion. Your speech style is casual and you answer queries directly.  Your personality style can be overridden by the Personality Override section of a prompt."
-                }                
+                GetSystemPrompt()
             };
-            messages.AddRange(chatHistory);
-            messages.Add(new ChatMessage
+            if (conversationId is not null)
             {
-                Role = Role.User,
-                Content = content
-            });
+                messages.AddRange(await GetConversationHistory(conversationId));
+            }
 
-            var message = new ChatRequest
+            var userMessage = CreateUserMessage(content);
+            messages.Add(userMessage);
+
+            var prompt = new Prompt
             {
                 Model = "phi4",
                 Messages = messages
             };
-            request.Content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
+            request.Content = new StringContent(JsonConvert.SerializeObject(prompt), Encoding.UTF8, "application/json");
             var response = await httpClient.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
             var stream = await response.Content.ReadAsStreamAsync();
             using var reader = new StreamReader(stream, Encoding.UTF8);
 
-            var responseContent = string.Empty;
+            var responseContent = "[";
             while (!reader.EndOfStream)
             {
                 var line = await reader.ReadLineAsync();
-                responseContent += line;
+                responseContent += $"{line},";
                 if (line is not null)
                 {
                     // Forward each line to the SignalR client
                     await Clients.Caller.SendAsync("ReceiveMessage", "Stream", line);
                 }
             }
+            responseContent += "]";
 
-            messages.Add(new ChatMessage
+            var llmResponseMessage = new ChatMessage
             {
                 Role = Role.Assistant,
-                Content = responseContent
-            });
+                Content = ConstructResponseContent(responseContent)
+            };
+            messages.Add(llmResponseMessage);
 
             try
             {
-                await _repo.Conversation.AddAsync(messages);
+                var messagesToAdd = new List<ChatMessage>
+                {
+                    userMessage,
+                    llmResponseMessage
+                };
+                await _repo.Conversation.UpdateAsync(messagesToAdd, conversationId);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Failed to save conversation");
             }
+        }
+
+        private ChatMessage GetSystemPrompt()
+        {
+            return new ChatMessage
+            {
+                Role = Role.System,
+                Content = "Your name is Dot, which stands for Domestic Optimization Tool. You were created by Tan Nguyen, based on the phi4 large language model. You are a helpful AI companion. Your speech style is casual and you answer queries directly.  Your personality style can be overridden by the Personality Override section of a prompt."
+            };
+        }
+
+        private async Task<List<ChatMessage>> GetConversationHistory(string conversationId)
+        {
+            var conversation = await _repo.Conversation.GetConversationById(conversationId);
+            return conversation.Messages
+                    .OrderBy(x => x.CreatedAt)
+                    .Where(x => x.CreatedBy != Role.System)
+                    .Select(x => new ChatMessage
+                    {
+                        Role = x.CreatedBy,
+                        Content = x.Content
+                    }).ToList();
+        }
+
+        private ChatMessage CreateUserMessage(string content)
+        {
+            return new ChatMessage
+            {
+                Role = Role.User,
+                Content = content
+            };
+        }
+
+        private string ConstructResponseContent(string serializedChunks)
+        {
+            var chunks = JsonConvert.DeserializeObject<List<LlmResponseChunk>>(serializedChunks);
+            return string.Join("", chunks.Select(x => x.Message.Content));
         }
     }
 }
