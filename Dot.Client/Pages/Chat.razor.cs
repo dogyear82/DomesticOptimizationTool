@@ -7,6 +7,7 @@ using Markdig;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
+using Dot.API.Gateway;
 
 namespace Dot.Client.Pages
 {
@@ -14,6 +15,11 @@ namespace Dot.Client.Pages
     {
         [Inject]
         private IHubAccessor hubAccessor { get; set; }
+        [Inject]
+        private IGateway gateway { get; set; }
+
+        [Parameter]
+        public string conversationId { get; set; }
 
         private HubConnection? hubConnection;
         public List<ChatEntry> ChatEntries { get; set; } = new();
@@ -30,7 +36,7 @@ namespace Dot.Client.Pages
         {
             try
             {
-                //LoadConversation();
+                await LoadConversation();
                 hubConnection = hubAccessor.GetHubConnection();
 
                 hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
@@ -48,20 +54,17 @@ namespace Dot.Client.Pages
             }
         }
 
-        //private async Task LoadConversation()
-        //{
-        //    var conversation = await httpClientFactory.CreateClient().GetAsync("api/"GetFromJsonAsync<List<ChatMessage>>("api/chat");
-        //
-        //    ChatEntries = new List<ChatEntry>
-        //    {
-        //        new ChatEntry
-        //        {
-        //            Index = 0,
-        //            IsUser = false,
-        //            Content = "Hello! I'm Dot, your personal assistant. How can I help you today?"
-        //        }
-        //    };
-        //}
+        private async Task LoadConversation()
+        {
+            var conversation = await gateway.Conversations.Get(conversationId);
+
+            ChatEntries = conversation.Messages.Select((x, i) => new ChatEntry
+            {
+                Index = i,
+                IsUser = x.Role == Role.User,
+                Content = x.Content
+            }).ToList();
+        }
 
         private void ProcessChunk(LlmResponseChunk chunk)
         {

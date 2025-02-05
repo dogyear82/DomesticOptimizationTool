@@ -18,15 +18,23 @@ namespace Dot.Api.Controllers
         [HttpGet("conversations")]
         public async Task<ActionResult<List<ConversationMenuItem>>> GetConversationMenuItems()
         {
-            var allConversations = await _repo.Conversation.GetAllConversationsAsync();
-            var conversations = allConversations is null || !allConversations.Any() ? 
-                new List<ConversationMenuItem>() :
-                allConversations.Select(x => new ConversationMenuItem
-                {
-                    ConversationId = x.Id,
-                    Text = x.Title
-                });
-            return Ok(conversations);
+            try
+            {
+                var allConversations = await _repo.Conversation.GetAllConversationsAsync();
+                var conversations = allConversations is null || !allConversations.Any() ? 
+                    new List<ConversationMenuItem>() :
+                    allConversations.Select(x => new ConversationMenuItem
+                    {
+                        ConversationId = x.Id,
+                        Text = x.Title
+                    });
+                return Ok(conversations);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, ex.Message);
+            }
         }
     }
 }

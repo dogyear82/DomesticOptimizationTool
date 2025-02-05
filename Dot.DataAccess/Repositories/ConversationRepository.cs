@@ -6,7 +6,7 @@ namespace Dot.DataAccess.Repositories
     public interface IConversationRepository
     {
         Task<List<Conversation>> GetAllConversationsAsync();
-        Task<List<ChatMessage>> GetMessagesForConversationAsync(string conversationId);
+        Task<Conversation> GetConversationById(string conversationId);
         Task<bool> AddAsync(List<ChatMessage> messages);
         Task<bool> AddAsync(List<ChatMessage> messages, string conversationId);
     }
@@ -26,21 +26,16 @@ namespace Dot.DataAccess.Repositories
             return conversations;
         }
 
-        public async Task<List<ChatMessage>> GetMessagesForConversationAsync(string conversationId)
+        public async Task<Conversation> GetConversationById(string conversationId)
         {
-            var conversation = await _db.ReadAsync<Conversation>(conversationId);
-            return conversation.Messages.OrderBy(x => x.CreatedAt).Select(message => new ChatMessage
-            {
-                Role = message.CreateBy,
-                Content = message.Content
-            }).ToList();
+            return await _db.ReadAsync<Conversation>(conversationId);
         }
 
         public async Task<bool> AddAsync(List<ChatMessage> messages)
         {
             var messagesToAdd = messages.Select(m => new Message()
             {
-                CreateBy = m.Role,
+                CreatedBy = m.Role,
                 Content = m.Content
             }).ToList();
 
@@ -57,7 +52,7 @@ namespace Dot.DataAccess.Repositories
         {
             var messagesToAdd = messages.Select(m => new Message()
             {
-                CreateBy = m.Role,
+                CreatedBy = m.Role,
                 Content = m.Content
             }).ToList();
 

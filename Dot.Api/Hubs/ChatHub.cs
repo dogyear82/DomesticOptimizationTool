@@ -29,7 +29,7 @@ namespace Dot.Api.Hubs
             {
                 new ChatMessage
                 {
-                    Role = "system",
+                    Role = Role.System,
                     Content = "Your name is Dot, which stands for Domestic Optimization Tool. You were created by Tan Nguyen, based on the phi4 large language model. You are a helpful AI companion. Your speech style is casual and you answer queries directly.  Your personality style can be overridden by the Personality Override section of a prompt."
                 }                
             };

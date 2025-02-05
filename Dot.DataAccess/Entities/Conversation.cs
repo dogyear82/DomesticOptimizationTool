@@ -18,7 +18,7 @@ namespace Dot.DataAccess.Entities
 
     public class Message
     {
-        public string CreateBy { get; set; }
+        public string CreatedBy { get; set; }
         public string Content { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
