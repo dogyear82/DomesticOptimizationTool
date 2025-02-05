@@ -1,10 +1,5 @@
 ﻿using Dot.API.Gateway.Services;
 using Dot.UI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dot.API.Gateway.Endpoints
 {
