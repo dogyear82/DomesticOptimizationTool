@@ -36,9 +36,18 @@ namespace Dot.DataAccess
 
         public async Task<T> ReadAsync<T>(string id)
         {
-            var filter = Builders<T>.Filter.Eq("_id", new ObjectId(id));
-            return await GetCollection<T>().Find(filter).FirstOrDefaultAsync();
+            return await Find<T>("_id", new ObjectId(id)).FirstOrDefaultAsync();
+        }
 
+        public async Task<List<T>> ReadAsync<T>(string filterName, string filterValue)
+        {
+            return Find<T>(filterName, filterValue).ToList();
+        }
+
+        private IFindFluent<T, T> Find<T>(string filterName, object filterValue)
+        {
+            var filter = Builders<T>.Filter.Eq(filterName, filterValue);
+            return GetCollection<T>().Find(filter);
         }
 
         public async Task<bool> UpdateAsync<T>(string id, T record)
