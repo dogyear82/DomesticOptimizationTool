@@ -5,7 +5,7 @@ namespace Dot.Client.Extensions
 {
     internal static class HostBuilderExtensions
     {
-        internal static async Task LoadApplciationSettings(this WebAssemblyHostBuilder builder)
+        internal static async Task LoadRemoteConfigAsync(this WebAssemblyHostBuilder builder)
         {
             var httpClient = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
             var configResponse = await httpClient.GetAsync("appsettings.json");

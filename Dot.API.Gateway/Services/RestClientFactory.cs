@@ -2,16 +2,16 @@
 
 namespace Dot.API.Gateway.Services
 {
-    internal interface IApiClientFactory
+    internal interface IRestClientFactory
     {
         HttpClient CreateHttpClient();
     }
 
-    internal class ApiClientFactory : IApiClientFactory
+    internal class RestClientFactory : IRestClientFactory
     {
         private readonly IAppSettings _appSettings;
 
-        public ApiClientFactory(IAppSettings appSettings)
+        public RestClientFactory(IAppSettings appSettings)
         {
             _appSettings = appSettings;
         }

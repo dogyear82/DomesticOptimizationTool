@@ -36,7 +36,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.AsyncProcessor", "Dot.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.UI.Models", "Dot.UI.Models\Dot.UI.Models.csproj", "{E3AAEDA3-9A33-45F2-80B6-B78A31AB5172}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot.API.Gateway", "Dot.API.Gateway\Dot.API.Gateway.csproj", "{4B68DB2D-1EBE-4894-8390-186DB3260D9F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.API.Gateway", "Dot.API.Gateway\Dot.API.Gateway.csproj", "{4B68DB2D-1EBE-4894-8390-186DB3260D9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot.Services", "Dot.Services\Dot.Services.csproj", "{C9ECDF1E-E993-4F94-9F1F-CC7E728CBB27}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,6 +94,10 @@ Global
 		{4B68DB2D-1EBE-4894-8390-186DB3260D9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B68DB2D-1EBE-4894-8390-186DB3260D9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B68DB2D-1EBE-4894-8390-186DB3260D9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9ECDF1E-E993-4F94-9F1F-CC7E728CBB27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9ECDF1E-E993-4F94-9F1F-CC7E728CBB27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9ECDF1E-E993-4F94-9F1F-CC7E728CBB27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9ECDF1E-E993-4F94-9F1F-CC7E728CBB27}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -109,6 +115,7 @@ Global
 		{EA2FFDDA-9A42-4126-8436-4BB6C1FA9F54} = {DEADA5EA-C443-4619-A817-D956666F9484}
 		{E3AAEDA3-9A33-45F2-80B6-B78A31AB5172} = {7D6A6C8D-53AD-4603-BF06-51BB48F6F8B6}
 		{4B68DB2D-1EBE-4894-8390-186DB3260D9F} = {7D6A6C8D-53AD-4603-BF06-51BB48F6F8B6}
+		{C9ECDF1E-E993-4F94-9F1F-CC7E728CBB27} = {7D6A6C8D-53AD-4603-BF06-51BB48F6F8B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE857866-09F3-488B-9C05-5A72997A0153}
