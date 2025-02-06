@@ -18,7 +18,7 @@ namespace Dot.DataAccess
 
         private IMongoCollection<T> GetCollection<T>()
         {
-            var collectionName = $"{typeof(T).Name.ToLower()}s";
+            var collectionName = $"{typeof(T).Name.ToLower().Split('`')[0]}s";
             return _client.GetDatabase(_dbSettings.DatabaseName).GetCollection<T>(collectionName);
         }
 

@@ -5,7 +5,7 @@ namespace Dot.Services
 {
     public interface IAppSettings<T>
     {
-        Task<T> Get();
+        Task<T> GetAsync();
     }
 
     public class AppSettings<T> : IAppSettings<T>
@@ -20,14 +20,14 @@ namespace Dot.Services
             _db = db;
         }
 
-        public async Task<T> Get()
+        public async Task<T> GetAsync()
         {
             if (_cache is not null && (DateTime.UtcNow - _lastCacheUpdate) < _cacheDuration)
             {
                 return _cache;
             }
 
-            var settings = (await _db.ReadAsync<Settings<T>>("Type", typeof(T).Name.ToLower())).FirstOrDefault();
+            var settings = (await _db.ReadAsync<Setting<T>>("Type", typeof(T).Name.ToLower())).FirstOrDefault();
             if (settings is null)
             {
                 throw new NullReferenceException($"Settings for system '{typeof(T).Name.ToLower()}' not found.");

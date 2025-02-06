@@ -1,6 +1,8 @@
+using Dot.API.Models;
 using Dot.DataAccess.Repositories;
 using Dot.Models;
 using Dot.Models.LocalAPI;
+using Dot.Services;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System.Text;
@@ -11,23 +13,25 @@ namespace Dot.API.Hubs
     {
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IRepository _repo;
+        private readonly IAppSettings<ApiSettings> _appSettings;
 
         private readonly ILogger<ChatHub> _logger;
 
-        public ChatHub(ILogger<ChatHub> logger, IHttpClientFactory httpClientFactory, IRepository repo)
+        public ChatHub(ILogger<ChatHub> logger, IHttpClientFactory httpClientFactory,IServiceProvider sp)
         {
             _logger = logger;
             _httpClientFactory = httpClientFactory;
-            _repo = repo;
+            _repo = sp.GetRequiredService<IRepository>();
+            _appSettings = sp.GetRequiredService<IAppSettings<ApiSettings>>();
         }
 
         public async Task SendMessage(string content, string conversationId = null)
         {
             var httpClient = _httpClientFactory.CreateClient(); 
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:11434/api/chat");
+            var request = new HttpRequestMessage(HttpMethod.Post, (await _appSettings.GetAsync()).InferenceApiUrl);
             var messages = new List<ChatMessage>
             {
-                GetSystemPrompt()
+                await GetSystemPrompt()
             };
             if (conversationId is not null)
             {
@@ -82,12 +86,12 @@ namespace Dot.API.Hubs
             }
         }
 
-        private ChatMessage GetSystemPrompt()
+        private async Task<ChatMessage> GetSystemPrompt()
         {
             return new ChatMessage
             {
                 Role = Role.System,
-                Content = "Your name is Dot, which stands for Domestic Optimization Tool. You were created by Tan Nguyen, based on the phi4 large language model. You are a helpful AI companion. Your speech style is casual and you answer queries directly.  Your personality style can be overridden by the Personality Override section of a prompt."
+                Content = string.Join(" ", (await _appSettings.GetAsync()).SystemPrompts)
             };
         }
 

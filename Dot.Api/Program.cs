@@ -1,5 +1,7 @@
 using Dot.API.Hubs;
+using Dot.API.Models;
 using Dot.DataAccess.Extensions;
+using Dot.Services;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,6 +27,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 
 builder.Services.AddHttpClient();
+
+builder.Services.AddSingleton<IAppSettings<ApiSettings>, AppSettings<ApiSettings>>();
 
 builder.Services.AddResponseCompression(opts =>
 {
