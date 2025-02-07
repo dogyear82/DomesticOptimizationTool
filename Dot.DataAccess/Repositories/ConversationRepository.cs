@@ -1,5 +1,5 @@
 ﻿using Dot.DataAccess.Entities;
-using Dot.Models.LocalAPI;
+using Dot.Models;
 
 namespace Dot.DataAccess.Repositories
 {

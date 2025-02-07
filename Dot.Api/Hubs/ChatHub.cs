@@ -1,7 +1,7 @@
 using Dot.API.Models;
 using Dot.DataAccess.Repositories;
 using Dot.Models;
-using Dot.Models.LocalAPI;
+using Dot.Models.Messaging;
 using Dot.Services;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
@@ -14,7 +14,7 @@ namespace Dot.API.Hubs
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly IRepository _repo;
         private readonly IAppSettings<ApiSettings> _appSettings;
-
+        private readonly IMessageSender _messageSender;
         private readonly ILogger<ChatHub> _logger;
 
         public ChatHub(ILogger<ChatHub> logger, IHttpClientFactory httpClientFactory,IServiceProvider sp)
@@ -22,6 +22,7 @@ namespace Dot.API.Hubs
             _logger = logger;
             _httpClientFactory = httpClientFactory;
             _repo = sp.GetRequiredService<IRepository>();
+            _messageSender = sp.GetRequiredService<IMessageSender>();
             _appSettings = sp.GetRequiredService<IAppSettings<ApiSettings>>();
         }
 
@@ -73,12 +74,8 @@ namespace Dot.API.Hubs
 
             try
             {
-                var messagesToAdd = new List<ChatMessage>
-                {
-                    userMessage,
-                    llmResponseMessage
-                };
-                await _repo.Conversation.UpdateAsync(messagesToAdd, conversationId);
+                await SendMessage(userMessage);
+                await SendMessage(llmResponseMessage);
             }
             catch (Exception ex)
             {
@@ -121,6 +118,12 @@ namespace Dot.API.Hubs
         {
             var chunks = JsonConvert.DeserializeObject<List<LlmResponseChunk>>(serializedChunks);
             return string.Join("", chunks.Select(x => x.Message.Content));
+        }
+
+        private async Task SendMessage(ChatMessage message)
+        {
+            var chatMessage = new InboundChatMessage(message);
+            await _messageSender.Send(chatMessage);
         }
     }
 }

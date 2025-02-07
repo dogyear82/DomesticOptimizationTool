@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace Dot.Models.LocalAPI
+namespace Dot.Models
 {
     public class Prompt
     {
