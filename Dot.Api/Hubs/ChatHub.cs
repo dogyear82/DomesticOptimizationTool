@@ -28,6 +28,7 @@ namespace Dot.API.Hubs
 
         public async Task SendMessage(string content, string conversationId = null)
         {
+            _logger.LogDebug("Received message: {content}", content);
             var httpClient = _httpClientFactory.CreateClient(); 
             var request = new HttpRequestMessage(HttpMethod.Post, (await _appSettings.GetAsync()).InferenceApiUrl);
             var messages = new List<ChatMessage>

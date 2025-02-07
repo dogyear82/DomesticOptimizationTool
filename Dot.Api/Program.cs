@@ -6,7 +6,6 @@ using Dot.Services.Extensions;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -17,7 +16,8 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Bind MongoDB settings from appsettings.json
+builder.Host.ConfigureLogging(builder.Configuration);
+
 builder.Services.SetupDataAccess(builder.Configuration);
 
 builder.Services.AddControllers();
