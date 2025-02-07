@@ -14,7 +14,7 @@ namespace Dot.Services.Extensions
 
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
-                .WriteTo.MongoDB($"{mongoDbSettings.ConnectionString}/{mongoDbSettings.DatabaseName}", collectionName: "logs")
+                .WriteTo.MongoDB(mongoDbSettings.ConnectionString, collectionName: "logs")
                 .Enrich.WithProperty("Application", Assembly.GetEntryAssembly()?.GetName().Name ?? "UnknownApp")
                 .Enrich.FromLogContext()
                 .CreateLogger();
