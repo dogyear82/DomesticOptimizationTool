@@ -11,11 +11,8 @@ namespace Dot.DataAccess.Extensions
     {
         public static void SetupDataAccess(this IServiceCollection services, IConfiguration configuration)
         {
-
-            // Bind MongoDB settings from appsettings.json
             services.Configure<MongoDbSettings>(configuration.GetSection("MongoDbSettings"));
 
-            // Register MongoClient as a singleton
             services.AddSingleton<IMongoClient>(sp =>
             {
                 var settings = sp.GetRequiredService<IOptions<MongoDbSettings>>().Value;

@@ -1,4 +1,4 @@
-using Dot.Models.LocalAPI;
+using Dot.Models;
 using Dot.UI.Models;
 using Dot.Utilities.Extensions;
 

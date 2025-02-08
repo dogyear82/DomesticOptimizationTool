@@ -13,6 +13,7 @@
 	<PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
 	<PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
 	<PackageReference Include="Serilog.Sinks.MongoDB" Version="7.0.0" />
+	<PackageReference Include="VaultSharp" Version="1.17.5.1" />
     <ProjectReference Include="..\Dot.DataAccess\Dot.DataAccess.csproj" />
   </ItemGroup>
 

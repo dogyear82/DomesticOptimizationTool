@@ -38,7 +38,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.UI.Models", "Dot.UI.Mod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.API.Gateway", "Dot.API.Gateway\Dot.API.Gateway.csproj", "{4B68DB2D-1EBE-4894-8390-186DB3260D9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot.Services", "Dot.Services\Dot.Services.csproj", "{C9ECDF1E-E993-4F94-9F1F-CC7E728CBB27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.Services", "Dot.Services\Dot.Services.csproj", "{C9ECDF1E-E993-4F94-9F1F-CC7E728CBB27}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{47165696-16FD-4D3B-B7AF-219C7E0691CE}"
+	ProjectSection(SolutionItems) = preProject
+		dot-vault-policy.hcl = dot-vault-policy.hcl
+		vault-setup.bat = vault-setup.bat
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
