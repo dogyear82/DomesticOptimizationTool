@@ -56,12 +56,31 @@ namespace Dot.Client.Pages
         {
             var conversation = await gateway.Conversations.Get(conversationId);
 
-            ChatEntries = conversation.Messages.Select((x, i) => new ChatEntry
+            var index = 0;
+            foreach (var message in conversation.Messages)
             {
-                Index = i,
-                IsUser = x.Role == Role.User,
-                Content = Markdown.ToHtml(x.Content)
-            }).ToList();
+                var chatEntry = new ChatEntry
+                {
+                    Index = index,
+                    IsUser = message.Role == Role.User,
+                };
+
+                var hasThought = message.Content.Contains("<think>") && !chatEntry.IsUser;
+                if (hasThought)
+                {
+                    var splitMessage = message.Content.Split("</think>");
+                    var thought = splitMessage[0].Split("<think>");
+                    chatEntry.Content = Markdown.ToHtml(splitMessage[1]);
+                    chatEntry.Thought = Markdown.ToHtml(thought[1]);
+                }
+                else
+                {
+                    chatEntry.Content = Markdown.ToHtml(message.Content);
+                }
+
+                ChatEntries.Add(chatEntry);
+                index++;
+            }
         }
 
         private void ProcessChunk(LlmResponseChunk chunk)
@@ -114,7 +133,7 @@ namespace Dot.Client.Pages
                 {
                     Index = GetChatEntryIndex(),
                     IsUser = true,
-                    Content = messageInput
+                    Content = Markdown.ToHtml(messageInput)
                 };
                 ChatEntries.Add(chatEntry);
                 messageInput = string.Empty;
