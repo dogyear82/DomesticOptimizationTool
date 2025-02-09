@@ -3,7 +3,7 @@ using Dot.API.Models;
 using Dot.DataAccess.Extensions;
 using Dot.Services;
 using Dot.Services.Extensions;
-using Dot.Services.Secrets;
+using Dot.Services.Configurations.Extensions;
 using Microsoft.AspNetCore.ResponseCompression;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,17 +19,7 @@ builder.Services.AddCors(options =>
 
 builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddEnvironmentVariables(prefix: "VAULT_")
-    .AddVault(options =>
-    {
-        var vaultOptions = builder.Configuration.GetSection("Vault").Get<VaultOptions>();
-        options.Address = builder.Configuration.GetSection("VAULT_ADDR").Value;
-        options.RoleId = builder.Configuration.GetSection("VAULT_ROLE_ID").Value;
-        options.MountPath = vaultOptions.MountPath;
-        options.SecretType = vaultOptions.SecretType;
-        options.SecretId = builder.Configuration.GetSection("VAULT_SECRET_ID").Value;
-        options.Secrets = vaultOptions.Secrets;
-    });
+    .AddApplicationSecrets();
 
 builder.Host.ConfigureLogging(builder.Configuration);
 

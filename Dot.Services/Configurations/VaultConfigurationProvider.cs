@@ -3,7 +3,7 @@ using VaultSharp;
 using Microsoft.Extensions.Configuration;
 using VaultSharp.V1.Commons;
 
-namespace Dot.Services.Secrets
+namespace Dot.Services.Configurations
 {
     public class VaultConfigurationProvider : ConfigurationProvider
     {
