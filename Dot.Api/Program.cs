@@ -5,6 +5,7 @@ using Dot.Services;
 using Dot.Services.Extensions;
 using Dot.Services.Configurations.Extensions;
 using Microsoft.AspNetCore.ResponseCompression;
+using Dot.Services.Messaging.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>

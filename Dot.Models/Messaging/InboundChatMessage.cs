@@ -5,7 +5,7 @@
     {
         public InboundChatMessage(ChatMessage content) : base(content)
         {
-            Content = content;
+            Payload = content;
             QueueName = "inboundchat";
             RoutingKey = "chat";
         }

@@ -5,6 +5,6 @@
         string MessageType { get; }
         string QueueName { get; }
         string RoutingKey { get; }
-        T Content { get; set; }
+        T Payload { get; set; }
     }
 }

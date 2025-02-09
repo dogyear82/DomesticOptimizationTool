@@ -1,24 +1,21 @@
-namespace Dot.AsyncProcessor
+using Dot.Services.Messaging.Interfaces;
+
+namespace Dot.ChatProcessor
 {
     public class Worker : BackgroundService
     {
         private readonly ILogger<Worker> _logger;
+        private readonly IMessageProcessor _messageProcessor;
 
-        public Worker(ILogger<Worker> logger)
+        public Worker(ILogger<Worker> logger, IServiceProvider sp)
         {
             _logger = logger;
+            _messageProcessor = sp.GetRequiredService<IMessageProcessor>();
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                if (_logger.IsEnabled(LogLevel.Information))
-                {
-                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                }
-                await Task.Delay(1000, stoppingToken);
-            }
+            await _messageProcessor.Start(stoppingToken);
         }
     }
 }

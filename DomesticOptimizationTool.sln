@@ -32,7 +32,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.Client.Tests", "Dot.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.DataAccess", "Dot.DataAccess\Dot.DataAccess.csproj", "{E7AD3947-CEA9-4478-BFDB-B2771461A4D5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.AsyncProcessor", "Dot.AsyncProcessor\Dot.AsyncProcessor.csproj", "{EA2FFDDA-9A42-4126-8436-4BB6C1FA9F54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.ChatProcessor", "Dot.AsyncProcessor\Dot.ChatProcessor.csproj", "{EA2FFDDA-9A42-4126-8436-4BB6C1FA9F54}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.UI.Models", "Dot.UI.Models\Dot.UI.Models.csproj", "{E3AAEDA3-9A33-45F2-80B6-B78A31AB5172}"
 EndProject

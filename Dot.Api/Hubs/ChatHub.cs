@@ -3,6 +3,7 @@ using Dot.DataAccess.Repositories;
 using Dot.Models;
 using Dot.Models.Messaging;
 using Dot.Services;
+using Dot.Services.Messaging.Interfaces;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using System.Text;
@@ -40,7 +41,7 @@ namespace Dot.API.Hubs
                 messages.AddRange(await GetConversationHistory(conversationId));
             }
 
-            var userMessage = CreateUserMessage(content);
+            var userMessage = CreateUserMessage(content, conversationId);
             messages.Add(userMessage);
 
             var prompt = new Prompt
@@ -68,6 +69,7 @@ namespace Dot.API.Hubs
 
             var llmResponseMessage = new ChatMessage
             {
+                ConversationId = conversationId,
                 Role = Role.Assistant,
                 Content = ConstructResponseContent(responseContent)
             };
@@ -106,10 +108,11 @@ namespace Dot.API.Hubs
                     }).ToList();
         }
 
-        private ChatMessage CreateUserMessage(string content)
+        private ChatMessage CreateUserMessage(string content, string conversationId)
         {
             return new ChatMessage
             {
+                ConversationId = conversationId,
                 Role = Role.User,
                 Content = content
             };

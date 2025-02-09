@@ -1,17 +1,13 @@
 ﻿using Dot.Models.Interfaces;
+using Dot.Services.Messaging.Interfaces;
 using Dot.Services.Options;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using System.Text;
 
-namespace Dot.Services
+namespace Dot.Services.Messaging
 {
-    public interface IMessageSender
-    {
-        Task Send<T>(IMessage<T> message);
-    }
-
     public class MessageSender : IMessageSender
     {
         private readonly IConnectionFactory _connectionFactory;
@@ -35,7 +31,7 @@ namespace Dot.Services
             using var channel = await connection.CreateChannelAsync();
 
             await channel.ExchangeDeclareAsync(_options.Exchange, ExchangeType.Topic, true);
-            await channel.QueueDeclareAsync(message.QueueName, true, false, false); 
+            await channel.QueueDeclareAsync(message.QueueName, true, false, false);
             await channel.QueueBindAsync(message.QueueName, _options.Exchange, message.RoutingKey);
 
             var messageString = JsonConvert.SerializeObject(message);

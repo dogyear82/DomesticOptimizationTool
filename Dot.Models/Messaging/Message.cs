@@ -6,12 +6,12 @@ namespace Dot.Models.Messaging
     {
         public Message(T content)
         {
-            Content = content;
+            Payload = content;
         }
 
         public string MessageType => GetType().FullName;
         public string QueueName { get; set; }
         public string RoutingKey { get; set; }
-        public T Content { get; set; }
+        public T Payload { get; set; }
     }
 }

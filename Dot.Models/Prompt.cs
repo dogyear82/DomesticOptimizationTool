@@ -13,8 +13,8 @@ namespace Dot.Models
 
     public class ChatMessage
     {
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        [JsonProperty("conversation_id")]
+        public string ConversationId { get; set; }
 
         [JsonProperty("role")]
         public string Role { get; set; }
