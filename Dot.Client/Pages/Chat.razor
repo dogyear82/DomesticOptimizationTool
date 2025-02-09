@@ -1,11 +1,10 @@
 ﻿@using Dot.Client.Layout
 @page "/chat/{conversationId}"
-@layout ChatLayout
 
 <div class="chat-window">
     <PageTitle>Chat</PageTitle>
 
-    <div class="chat-history">
+    <div class="chat-history clearfix">
         @foreach(var entry in ChatEntries)
         {
             <div class="chat-bubble @(entry.IsUser ? "user" : "assistant")">
@@ -32,7 +31,9 @@
     </div><!-- .chat-history -->
 
     <div class="chat-input">
-        <textarea @bind="messageInput" size="50" />
-        <button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+        <div class="chat-input-box">
+            <textarea @bind="messageInput" label="user-input" />
+            <button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+        </div><!-- .chat-input-box -->
     </div><!-- .chat-input -->
 </div><!-- .chat-window -->

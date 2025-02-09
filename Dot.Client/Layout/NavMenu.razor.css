@@ -56,8 +56,8 @@
     }
 
 .nav-item ::deep a.active {
-    background-color: rgba(255,255,255,0.37);
-    color: white;
+    color: #d2ee95;
+    font-weight: 700;
 }
 
 .nav-item ::deep a:hover {

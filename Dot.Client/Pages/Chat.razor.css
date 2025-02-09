@@ -1,23 +1,39 @@
 ﻿.chat-window {
-    height: 100vh;
-    overflow: hidden;
-    padding-bottom: 140px;
+    padding-bottom: 200px;
     position: relative;
 }
 
 .chat-input {
-    bottom: 20px;
-    height: 100px;
+    background-color: #2c2c2c;
+    border-color: #9f9f9f;
+    border-style: solid;
+    border-width: 1px 0 0;
+    bottom: 0;
     left: 0;
-    position: absolute;
+    padding: 20px 20px 20px 250px;
+    position: fixed;
     width: 100%;
     z-index: 2;
 }
 
+.chat-input-box {
+    background-color: #393939;
+    border-radius: 15px;
+    height: 135px;
+    margin: 0 auto;
+    width: 85%;
+}
+
 .chat-input textarea {
+    background-color: #393939;
+    border: none;
+    border-radius: 15px;
     float: left;
-    height: 100px;
     width: 90%;
+}
+
+.chat-input textarea:focus {
+    border: none;
 }
 
 .chat-input button {
@@ -29,32 +45,31 @@
 }
 
 .chat-history {
-    bottom: 0;
-    height: 100%;
-    overflow-y: auto;
     width: 100%;
-    z-index: 1;
 }
 
 .chat-bubble {
     clear: both;
+    color: #fff;
     margin: 15px 0;
-    padding: 15px;
+    padding: 30px;
     position: relative;
     max-width: 80%;
 }
 
 .chat-bubble button {
-    background-color: #f78a4b;
+    background: none;
     border: none;
-    border-radius: 30px;
+    color: #d2ee95;
     display: block;
+    font-weight: 700;
     margin-top: 10px;
 }
 
 .chat-bubble .thought {
-    background-color: #414141;
-    border-radius: 15px;
+    background-color: #2c2c2c;
+    border: 1px solid #d2ee95;
+    border-radius: 13px;
     color: #fff;
     display: none;
     font-size: 85%;
@@ -67,13 +82,15 @@
 }
 
 .chat-bubble.assistant {
-    background-color: #eaa777;
+    background-color: #393939;
+    border: 1px solid #868686;
     border-radius: 0 20px 20px;
     float: left;
 }
 
 .chat-bubble.user {
-    background-color: #98dfff;
+    background-color: #27343d;
+    border: 1px solid #6074ac;
     border-radius: 20px 0 20px 20px;
     float: right;
     text-align: right;

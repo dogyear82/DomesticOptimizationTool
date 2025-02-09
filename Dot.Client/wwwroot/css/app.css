@@ -110,16 +110,16 @@ code {
     color: #fff;
 }
 
-.page.chat {
-    height: 100%;
+.page {
+    background: #303030;
 }
-
 
 .chat-bubble pre {
     background-color: #303030;
+    border: 1px solid #767676;
     border-radius: 5px;
     color: #fff;
-    display: inline-block;
+    display: block;
     padding: 10px 10px 0;
     text-align: left;
 }
