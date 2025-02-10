@@ -2,14 +2,12 @@
 @page "/chat/{conversationId}"
 
 <div class="chat-window">
-    <PageTitle>Chat</PageTitle>
-
     <div class="chat-history clearfix">
-        @foreach(var entry in ChatEntries)
+        @foreach (var entry in ChatEntries)
         {
             <div class="chat-bubble @(entry.IsUser ? "user" : "assistant")">
                 @((MarkupString)entry.Content)
-                @if(!string.IsNullOrWhiteSpace(entry.Thought))
+                @if (!string.IsNullOrWhiteSpace(entry.Thought))
                 {
                     <button @onclick="() => ToggleThoughtVisibility(entry.Index)">@(entry.IsShowThought ? "Hide Thought" : "Show Thought")</button>
                     <div class="thought @(entry.IsShowThought ? "show" : "hidden")">
@@ -18,7 +16,7 @@
                 }
             </div><!-- .chat-bubble -->
         }
-        
+
         @if (messageStream.Any())
         {
             <div id="chat-latest-ai-response" class="chat-bubble assistant">
@@ -33,7 +31,7 @@
     <div class="chat-input">
         <div class="chat-input-box">
             <textarea @bind="messageInput" label="user-input" />
-            <button @onclick="Send" disabled="@(!IsConnected)"><MatIcon Icon="send"></MatIcon></button>
+            <button @onclick="Send" disabled="@(!IsConnected || isThinking)"><MatIcon Icon="send"></MatIcon></button>
         </div><!-- .chat-input-box -->
     </div><!-- .chat-input -->
 </div><!-- .chat-window -->

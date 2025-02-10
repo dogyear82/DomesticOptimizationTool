@@ -25,6 +25,7 @@ namespace Dot.Client.Pages
         public List<string> messageStream = new();
         private string? messageInput;
 
+        public bool isBusy = false;
         public bool isThinking = false;
         public string thought = string.Empty;
         public bool isResponseFinished = true;
@@ -99,6 +100,7 @@ namespace Dot.Client.Pages
             }
             else if (chunk.Done)
             {
+                isBusy = false;
                 var aiResponse = "";
                 foreach (var message in messageStream)
                 {
@@ -137,6 +139,7 @@ namespace Dot.Client.Pages
                 };
                 ChatEntries.Add(chatEntry);
                 messageInput = string.Empty;
+                isBusy = true;
             }
         }
 

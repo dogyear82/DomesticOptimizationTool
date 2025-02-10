@@ -23,7 +23,15 @@ a, .btn-link {
 
 .content {
     height: 100%;
-    padding-top: 1.1rem;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+@media (min-width: 641px) {
+    .top-row[b-k3dpm2og7b], article[b-k3dpm2og7b] {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
 }
 
 .valid.modified:not([type=checkbox]) {
