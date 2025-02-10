@@ -28,7 +28,9 @@
     background-color: #393939;
     border: none;
     border-radius: 15px;
+    color: #fff;
     float: left;
+    padding: 15px;
     width: 90%;
 }
 

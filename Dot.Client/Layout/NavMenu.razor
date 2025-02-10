@@ -15,12 +15,18 @@
             </NavLink>
         </div>
 
-        <h2 class="nav-header">Conversations</h2>
+        <hr />
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="@($"chat")">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> New
+            </NavLink>
+        </div>
+
         @foreach (var item in conversationMenuItems)
         {
         <div class="nav-item px-3">
             <NavLink class="nav-link" href="@($"chat/{item.ConversationId}")">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> @item.Text
+                @item.Text
             </NavLink>
         </div>
         }

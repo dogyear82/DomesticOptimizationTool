@@ -33,7 +33,7 @@
     <div class="chat-input">
         <div class="chat-input-box">
             <textarea @bind="messageInput" label="user-input" />
-            <button @onclick="Send" disabled="@(!IsConnected)">Send</button>
+            <button @onclick="Send" disabled="@(!IsConnected)"><MatIcon Icon="send"></MatIcon></button>
         </div><!-- .chat-input-box -->
     </div><!-- .chat-input -->
 </div><!-- .chat-window -->

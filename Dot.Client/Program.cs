@@ -3,6 +3,7 @@ using Dot.Client;
 using Dot.Client.Extensions;
 using Dot.Client.Services;
 using Dot.Models.Interfaces;
+using MatBlazor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -16,6 +17,7 @@ await builder.LoadRemoteConfigAsync();
 builder.Services.AddSingleton<IHubAccessor, HubAccessor>();
 builder.Services.AddSingleton<IAppSettings, AppSettings>();
 builder.Services.AddAPIGateway();
+builder.Services.AddMatBlazor();
 
 
 await builder.Build().RunAsync();
