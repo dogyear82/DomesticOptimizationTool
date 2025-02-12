@@ -110,3 +110,9 @@
     padding: 20px;
     width: 85%;
 }
+
+#scroll-target {
+    clear: both;
+    height: 0;
+    width: 0;
+}

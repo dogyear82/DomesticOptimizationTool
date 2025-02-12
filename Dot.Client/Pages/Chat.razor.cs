@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
 using Newtonsoft.Json;
 using Dot.API.Gateway;
+using Microsoft.JSInterop;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace Dot.Client.Pages
 {
@@ -16,6 +18,8 @@ namespace Dot.Client.Pages
         private IHubAccessor hubAccessor { get; set; }
         [Inject]
         private IGateway gateway { get; set; }
+        [Inject]
+        private IJSRuntime js { get; set; }
 
         [Parameter]
         public string conversationId { get; set; }
@@ -82,6 +86,8 @@ namespace Dot.Client.Pages
                 ChatEntries.Add(chatEntry);
                 index++;
             }
+
+            await ScrollToBottom();
         }
 
         private void ProcessChunk(LlmResponseChunk chunk)
@@ -118,11 +124,20 @@ namespace Dot.Client.Pages
                 };
                 ChatEntries.Add(chatEntry);
                 thought = string.Empty;
+                ScrollToBottom().Wait();
             }
             else
             {
                 messageStream.Add(chunk.Message.Content);
                 isResponseFinished = chunk.Done;
+            }
+        }
+
+        private async Task SendOnEnter(KeyboardEventArgs e)
+        {
+            if (e.Key == "Enter")
+            {
+                await Send();
             }
         }
 
@@ -140,6 +155,7 @@ namespace Dot.Client.Pages
                 ChatEntries.Add(chatEntry);
                 messageInput = string.Empty;
                 isBusy = true;
+                await ScrollToBottom();
             }
         }
 
@@ -163,6 +179,11 @@ namespace Dot.Client.Pages
             {
                 await hubConnection.DisposeAsync();
             }
+        }
+
+        private async Task ScrollToBottom()
+        {
+            await js.InvokeVoidAsync("scrollToLastChatBubble");
         }
     }
 }

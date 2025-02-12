@@ -26,11 +26,12 @@
                 }
             </div><!-- .chat-latest-ai-response -->
         }
+        <div id="scroll-target"></div>
     </div><!-- .chat-history -->
 
     <div class="chat-input">
         <div class="chat-input-box">
-            <textarea @bind="messageInput" label="user-input" />
+            <textarea @bind="messageInput" @onkeydown="SendOnEnter" label=" user-input" />
             <button @onclick="Send" disabled="@(!IsConnected || isThinking)"><MatIcon Icon="send"></MatIcon></button>
         </div><!-- .chat-input-box -->
     </div><!-- .chat-input -->
