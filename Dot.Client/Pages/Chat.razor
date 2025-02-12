@@ -17,6 +17,13 @@
             </div><!-- .chat-bubble -->
         }
 
+        @if (!IsConnected) 
+        {
+            <div class="chat-bubble assistant">
+                <p>Connecting...</p>
+            </div>
+        }
+
         @if (messageStream.Any())
         {
             <div id="chat-latest-ai-response" class="chat-bubble assistant">

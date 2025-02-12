@@ -5,10 +5,10 @@ using Dot.Utilities.Extensions;
 using Markdig;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
-using Newtonsoft.Json;
 using Dot.API.Gateway;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components.Web;
+using OllamaSharp.Models.Chat;
 
 namespace Dot.Client.Pages
 {
@@ -42,9 +42,8 @@ namespace Dot.Client.Pages
                 await LoadConversation();
                 hubConnection = hubAccessor.GetHubConnection();
 
-                hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+                hubConnection.On<string, ChatResponseStream>("ReceiveMessage", (user, chunk) =>
                 {
-                    var chunk = JsonConvert.DeserializeObject<LlmResponseChunk>(message);
                     ProcessChunk(chunk);
                     InvokeAsync(StateHasChanged);
                 });
@@ -86,11 +85,10 @@ namespace Dot.Client.Pages
                 ChatEntries.Add(chatEntry);
                 index++;
             }
-
             await ScrollToBottom();
         }
 
-        private void ProcessChunk(LlmResponseChunk chunk)
+        private void ProcessChunk(ChatResponseStream chunk)
         {
             if (chunk.IsBeginningOfThought())
             {
@@ -124,7 +122,6 @@ namespace Dot.Client.Pages
                 };
                 ChatEntries.Add(chatEntry);
                 thought = string.Empty;
-                ScrollToBottom().Wait();
             }
             else
             {

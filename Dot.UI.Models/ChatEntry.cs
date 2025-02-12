@@ -2,6 +2,7 @@
 {
     public class ChatEntry
     {
+        public Guid Id { get; set; }
         public int Index { get; set; }
         public bool IsUser { get; set; }
         public string Content { get; set; }

@@ -6,6 +6,7 @@ using Dot.Services.Extensions;
 using Dot.Services.Configurations.Extensions;
 using Microsoft.AspNetCore.ResponseCompression;
 using Dot.Services.Messaging.Extensions;
+using Dot.Services.Ollama.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -33,9 +34,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR();
 
-builder.Services.AddHttpClient();
 
 builder.Services.AddMessageSender(builder.Configuration);
+builder.Services.AddOllamaClient(builder.Configuration);
 builder.Services.AddSingleton<IAppSettings<ApiSettings>, AppSettings<ApiSettings>>();
 
 builder.Services.AddResponseCompression(opts =>

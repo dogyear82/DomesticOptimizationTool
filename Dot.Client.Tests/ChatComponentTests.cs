@@ -1,6 +1,8 @@
 using Dot.Models;
 using Dot.UI.Models;
 using Dot.Utilities.Extensions;
+using OllamaSharp;
+using OllamaSharp.Models.Chat;
 
 namespace Dot.Client.Tests
 {
@@ -20,42 +22,36 @@ namespace Dot.Client.Tests
             var stringPayload = "";
         }
 
-        private void ProcessChunk(LlmResponseChunk chunk)
+        [Fact]
+        public async Task ProcessChunk()
         {
-            if (chunk.IsBeginningOfThought())
+            IOllamaApiClient client = new OllamaApiClient("http://localhost:11434", "deepseek-r1");
+            var systemPrompt = "Your name is Dot, which stands for Domestic Optimization Tool. You were created by Tan Nguyen. You are a helpful AI companion. Your speech style is casual and you answer queries directly.  You will not answer not provide more answers than is requested of you.  If you have suggestions, then ask the user if they would like to hear your suggestions.";
+
+
+            var message = string.Empty;
+
+            var request = new ChatRequest
             {
-                isThinking = true;
-            }
-            else if (chunk.IsEndOfThought())
-            {
-                isThinking = false;
-            }
-            else if (isThinking)
-            {
-                thought += chunk.Message.Content;
-            }
-            else if (chunk.Done)
-            {
-                var aiResponse = "";
-                foreach (var message in messages)
+                Model = "deepseek-r1",
+                Messages = new List<Message>
                 {
-                    aiResponse += message;
+                    new Message
+                    {
+                        Role = ChatRole.System,
+                        Content = systemPrompt,
+                    },
+                    new Message
+                    {
+                        Role = ChatRole.User,
+                        Content = "hey!  tell me about yourself",
+                    }
                 }
-                messages.Clear();
-                var chatEntry = new ChatEntry
-                {
-                    Index = 1,
-                    IsUser = false,
-                    Content = aiResponse,
-                    Thought = thought
-                };
-                ChatEntries.Add(chatEntry);
-                thought = string.Empty;
-            }
-            else
+            };
+            //await foreach (var chunk in client.ChatAsync(ChatRole.User, "hello"))
+            await foreach (var chunk in client.ChatAsync(request))
             {
-                messages.Add(chunk.Message.Content);
-                isResponseFinished = chunk.Done;
+                message += chunk.Message.Content;
             }
         }
     }
