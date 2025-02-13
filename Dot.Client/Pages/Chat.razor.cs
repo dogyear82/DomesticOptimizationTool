@@ -39,9 +39,7 @@ namespace Dot.Client.Pages
         {
             try
             {
-                await LoadConversation();
                 hubConnection = hubAccessor.GetHubConnection();
-
                 hubConnection.On<string, ChatResponseStream>("ReceiveMessage", (user, chunk) =>
                 {
                     ProcessChunk(chunk);
@@ -56,8 +54,19 @@ namespace Dot.Client.Pages
             }
         }
 
+        protected override async Task OnParametersSetAsync()
+        {
+            await LoadConversation();
+        }
+
         private async Task LoadConversation()
         {
+            ChatEntries.Clear();
+            if (conversationId == "0")
+            {
+                return;
+            }
+
             var conversation = await gateway.Conversations.Get(conversationId);
 
             var index = 0;
@@ -72,10 +81,17 @@ namespace Dot.Client.Pages
                 var hasThought = message.Content.Contains("<think>") && !chatEntry.IsUser;
                 if (hasThought)
                 {
-                    var splitMessage = message.Content.Split("</think>");
-                    var thought = splitMessage[0].Split("<think>");
-                    chatEntry.Content = Markdown.ToHtml(splitMessage[1]);
-                    chatEntry.Thought = Markdown.ToHtml(thought[1]);
+                    try
+                    {
+                        var splitMessage = message.Content.Split("</think>");
+                        var thought = splitMessage[0].Split("<think>");
+                        chatEntry.Content = Markdown.ToHtml(splitMessage[1]);
+                        chatEntry.Thought = Markdown.ToHtml(thought[1]);
+                    }
+                    catch
+                    {
+                        chatEntry.Content = Markdown.ToHtml("<p>There was an error separating thought from speech.</p>");
+                    }
                 }
                 else
                 {
@@ -90,7 +106,11 @@ namespace Dot.Client.Pages
 
         private void ProcessChunk(ChatResponseStream chunk)
         {
-            if (chunk.IsBeginningOfThought())
+            if (chunk.Message.Role == ChatRole.System)
+            {
+                conversationId = chunk.Message.Content;
+            }
+            else if (chunk.IsBeginningOfThought())
             {
                 isThinking = true;
             }
@@ -142,7 +162,8 @@ namespace Dot.Client.Pages
         {
             if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput))
             {
-                await hubConnection.SendAsync("SendMessage", messageInput, conversationId);
+                var convoId = conversationId == "0" ? null : conversationId;
+                await hubConnection.SendAsync("SendMessage", messageInput, convoId);
                 var chatEntry = new ChatEntry
                 {
                     Index = GetChatEntryIndex(),

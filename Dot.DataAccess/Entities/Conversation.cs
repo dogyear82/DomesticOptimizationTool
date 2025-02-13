@@ -18,6 +18,8 @@ namespace Dot.DataAccess.Entities
 
     public class Message
     {
+        [BsonRepresentation(BsonType.String)]
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string CreatedBy { get; set; }
         public string Content { get; set; }
 

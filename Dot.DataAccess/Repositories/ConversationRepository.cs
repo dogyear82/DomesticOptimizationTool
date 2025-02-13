@@ -7,7 +7,7 @@ namespace Dot.DataAccess.Repositories
     {
         Task<List<Conversation>> GetAllConversationsAsync();
         Task<Conversation> GetConversationById(string conversationId);
-        Task<bool> AddAsync(List<ChatMessage> messages);
+        Task<Conversation> AddAsync(List<ChatMessage> messages);
         Task<bool> UpdateAsync(List<ChatMessage> messages, string conversationId);
     }
 
@@ -31,7 +31,7 @@ namespace Dot.DataAccess.Repositories
             return await _db.ReadAsync<Conversation>(conversationId);
         }
 
-        public async Task<bool> AddAsync(List<ChatMessage> messages)
+        public async Task<Conversation> AddAsync(List<ChatMessage> messages)
         {
             var messagesToAdd = messages.Select(m => new Message()
             {

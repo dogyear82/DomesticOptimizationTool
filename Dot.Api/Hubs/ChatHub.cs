@@ -1,12 +1,12 @@
 using Dot.API.Models;
 using Dot.DataAccess.Repositories;
 using Dot.Models;
-using Dot.Models.Messaging;
 using Dot.Services;
 using Dot.Services.Messaging.Interfaces;
 using Dot.Services.Ollama;
 using Microsoft.AspNetCore.SignalR;
 using OllamaSharp.Models.Chat;
+using System.IO;
 
 namespace Dot.API.Hubs
 {
@@ -31,34 +31,30 @@ namespace Dot.API.Hubs
         {
             _logger.LogDebug("Received message: {content}", content);
 
-            var messages = new List<ChatMessage> { await GetSystemPrompt() };
-            if (conversationId is not null)
-            {
-                messages.AddRange(await GetConversationHistory(conversationId));
-            }
-
-            var userMessage = CreateUserMessage(content, conversationId);
-            messages.Add(userMessage);
-
-            var responseStreams = new List<ChatResponseStream>();
-            await foreach (var stream in _accessor.ChatAsync(messages))
-            {
-                responseStreams.Add(stream);
-                await Clients.Caller.SendAsync("ReceiveMessage", "Stream", stream);
-            }
-
-            var llmResponse = new ChatMessage
-            {
-                ConversationId = conversationId,
-                Role = Role.Assistant,
-                Content = string.Join("", responseStreams.Select(x => x.Message.Content))
-            };
-            messages.Add(llmResponse);
-
             try
             {
-                await SendMessage(userMessage);
-                await SendMessage(llmResponse);
+                var messages = new List<ChatMessage> { await GetSystemPrompt() };
+                if (conversationId is not null)
+                {
+                    messages.AddRange(await GetConversationHistory(conversationId));
+                }
+
+                var userMessage = CreateUserMessage(content, conversationId);
+                messages.Add(userMessage);
+
+                var responseStreams = new List<ChatResponseStream>();
+                await foreach (var stream in _accessor.ChatAsync(messages))
+                {
+                    responseStreams.Add(stream);
+                    await Clients.Caller.SendAsync("ReceiveMessage", "Stream", stream);
+                }
+
+                var llmResponse = new ChatMessage
+                {
+                    Role = Role.Assistant,
+                    Content = string.Join("", responseStreams.Select(x => x.Message.Content))
+                };
+                await SaveMessages(userMessage, llmResponse, conversationId);
             }
             catch (Exception ex)
             {
@@ -99,10 +95,31 @@ namespace Dot.API.Hubs
             };
         }
 
-        private async Task SendMessage(ChatMessage message)
+        private async Task SaveMessages(ChatMessage userMessage, ChatMessage llmResponse, string conversationId)
         {
-            var chatMessage = new InboundChatMessage(message);
-            await _messageSender.Send(chatMessage);
+
+            var messagesToAdd = new List<ChatMessage>
+            {
+                userMessage, llmResponse
+            };
+            if (string.IsNullOrWhiteSpace(conversationId))
+            {
+                var conversation = await _repo.Conversation.AddAsync(messagesToAdd);
+
+                var response = new ChatResponseStream
+                {
+                    Message = new Message
+                    {
+                        Role = ChatRole.System,
+                        Content = conversation.Id
+                    }
+                };
+                await Clients.Caller.SendAsync("ReceiveMessage", "Stream", response);
+            }
+            else
+            {
+                await _repo.Conversation.UpdateAsync(messagesToAdd, conversationId);
+            }
         }
     }
 }

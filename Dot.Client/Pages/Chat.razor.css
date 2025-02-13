@@ -5,6 +5,7 @@
 }
 
 .chat-history {
+    height: 85vh;
     padding: 30px;
     overflow-y: auto;
 }

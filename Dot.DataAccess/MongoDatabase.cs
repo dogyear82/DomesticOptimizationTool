@@ -22,11 +22,11 @@ namespace Dot.DataAccess
             return _client.GetDatabase(_dbSettings.DatabaseName).GetCollection<T>(collectionName);
         }
 
-        public async Task<bool> CreateAsync<T>(T record)
+        public async Task<T> CreateAsync<T>(T record)
         {
             var collection = GetCollection<T>();
             await collection.InsertOneAsync(record);
-            return true;
+            return record;
         }
 
         public async Task<List<T>> ReadAsync<T>()
