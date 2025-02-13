@@ -6,7 +6,6 @@ using Dot.Services.Messaging.Interfaces;
 using Dot.Services.Ollama;
 using Microsoft.AspNetCore.SignalR;
 using OllamaSharp.Models.Chat;
-using System.IO;
 
 namespace Dot.API.Hubs
 {

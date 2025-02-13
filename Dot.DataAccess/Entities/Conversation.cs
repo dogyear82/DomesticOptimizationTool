@@ -8,11 +8,9 @@ namespace Dot.DataAccess.Entities
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
-
         public string Title { get; set; }
         public string Summary { get; set; }
         public List<Message> Messages { get; set; }
-
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 
@@ -22,7 +20,6 @@ namespace Dot.DataAccess.Entities
         public Guid Id { get; set; } = Guid.NewGuid();
         public string CreatedBy { get; set; }
         public string Content { get; set; }
-
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
