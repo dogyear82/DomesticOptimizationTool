@@ -1,7 +1,7 @@
 ﻿using Dot.DataAccess.Repositories;
-using Dot.Models;
 using Dot.UI.Models;
 using Microsoft.AspNetCore.Mvc;
+using OllamaSharp.Models.Chat;
 
 namespace Dot.API.Controllers
 {
@@ -29,10 +29,10 @@ namespace Dot.API.Controllers
                     Description = conversation.Summary,
                     Messages = conversation.Messages
                     .OrderBy(x => x.CreatedAt)
-                    .Where(x => x.CreatedBy != Role.System)
+                    .Where(x => x.Role != ChatRole.System)
                     .Select(x => new ConversationMessageVm
                     {
-                        Role = x.CreatedBy,
+                        Role = x.Role.ToString(),
                         Content = x.Content
                     }).ToList()
                 };

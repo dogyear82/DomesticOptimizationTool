@@ -35,7 +35,7 @@ namespace Dot.DataAccess.Repositories
         {
             var messagesToAdd = messages.Select(m => new Message()
             {
-                CreatedBy = m.Role,
+                Role = m.Role.ToString(),
                 Content = m.Content
             }).ToList();
 
@@ -52,7 +52,7 @@ namespace Dot.DataAccess.Repositories
         {
             var messagesToAdd = messages.Select(m => new Message()
             {
-                CreatedBy = m.Role,
+                Role = m.Role.ToString(),
                 Content = m.Content
             }).ToList();
 

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OllamaSharp.Models.Chat;
 
 namespace Dot.Models
 {
@@ -17,7 +18,7 @@ namespace Dot.Models
         public string ConversationId { get; set; }
 
         [JsonProperty("role")]
-        public string Role { get; set; }
+        public ChatRole Role { get; set; }
 
         [JsonProperty("content")]
         public string Content { get; set; }

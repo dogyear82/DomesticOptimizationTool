@@ -75,7 +75,7 @@ namespace Dot.Client.Pages
                 var chatEntry = new ChatEntry
                 {
                     Index = index,
-                    IsUser = message.Role == Role.User,
+                    IsUser = message.Role == ChatRole.User,
                 };
 
                 var hasThought = message.Content.Contains("<think>") && !chatEntry.IsUser;
@@ -163,7 +163,7 @@ namespace Dot.Client.Pages
             if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput))
             {
                 var convoId = conversationId == "0" ? null : conversationId;
-                await hubConnection.SendAsync("SendMessage", messageInput, convoId);
+                await hubConnection.SendAsync("SendMessage", messageInput, "phi4", convoId);
                 var chatEntry = new ChatEntry
                 {
                     Index = GetChatEntryIndex(),

@@ -1,5 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using OllamaSharp.Models.Chat;
 
 namespace Dot.DataAccess.Entities
 {
@@ -18,7 +19,8 @@ namespace Dot.DataAccess.Entities
     {
         [BsonRepresentation(BsonType.String)]
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string CreatedBy { get; set; }
+
+        public string Role { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }

@@ -26,7 +26,7 @@ namespace Dot.API.Hubs
             _appSettings = sp.GetRequiredService<IAppSettings<ApiSettings>>();
         }
 
-        public async Task SendMessage(string content, string conversationId = null)
+        public async Task SendMessage(string content, string model, string conversationId = null)
         {
             _logger.LogDebug("Received message: {content}", content);
 
@@ -42,7 +42,7 @@ namespace Dot.API.Hubs
                 messages.Add(userMessage);
 
                 var responseStreams = new List<ChatResponseStream>();
-                await foreach (var stream in _accessor.ChatAsync(messages))
+                await foreach (var stream in _accessor.ChatAsync(messages, model))
                 {
                     responseStreams.Add(stream);
                     await Clients.Caller.SendAsync("ReceiveMessage", "Stream", stream);
@@ -50,7 +50,7 @@ namespace Dot.API.Hubs
 
                 var llmResponse = new ChatMessage
                 {
-                    Role = Role.Assistant,
+                    Role = ChatRole.Assistant,
                     Content = string.Join("", responseStreams.Select(x => x.Message.Content))
                 };
                 await SaveMessages(userMessage, llmResponse, conversationId);
@@ -75,11 +75,11 @@ namespace Dot.API.Hubs
             var conversation = await _repo.Conversation.GetConversationById(conversationId);
             return conversation.Messages
                     .OrderBy(x => x.CreatedAt)
-                    .Where(x => x.CreatedBy != "system")
+                    .Where(x => x.Role != ChatRole.System)
                     .Select(x => new ChatMessage
                     {
                         ConversationId = conversationId,
-                        Role = x.CreatedBy,
+                        Role = x.Role,
                         Content = x.Content
                     }).ToList();
         }
@@ -89,7 +89,7 @@ namespace Dot.API.Hubs
             return new ChatMessage
             {
                 ConversationId = conversationId,
-                Role = Role.User,
+                Role = ChatRole.User,
                 Content = content
             };
         }
