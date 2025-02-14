@@ -1,9 +1,9 @@
 using Dot.API.Models;
-using Dot.DataAccess.Repositories;
 using Dot.Models;
 using Dot.Services;
 using Dot.Services.Messaging.Interfaces;
 using Dot.Services.Ollama;
+using Dot.Services.Repositories;
 using Microsoft.AspNetCore.SignalR;
 using OllamaSharp.Models.Chat;
 

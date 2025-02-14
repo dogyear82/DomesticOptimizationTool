@@ -1,4 +1,4 @@
-﻿using Dot.DataAccess.Repositories;
+﻿using Dot.Services.Repositories;
 using Dot.Models;
 using Dot.Models.Messaging;
 using Dot.Services.Messaging.Interfaces;

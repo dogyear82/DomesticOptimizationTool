@@ -1,5 +1,4 @@
 ﻿using Dot.DataAccess.Options;
-using Dot.DataAccess.Repositories;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -20,8 +19,6 @@ namespace Dot.DataAccess.Extensions
             });
 
             services.AddSingleton<IDatabase, MongoDatabase>();
-            services.AddSingleton<IRepository, Repository>();
-            services.AddSingleton<IConversationRepository, ConversationRepository>();
         }
     }
 }

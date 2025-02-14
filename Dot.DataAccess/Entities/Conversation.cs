@@ -1,6 +1,5 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using OllamaSharp.Models.Chat;
 
 namespace Dot.DataAccess.Entities
 {
@@ -22,6 +21,7 @@ namespace Dot.DataAccess.Entities
 
         public string Role { get; set; }
         public string Content { get; set; }
+        public bool IsUsedInSummary { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

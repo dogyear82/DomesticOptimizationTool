@@ -1,7 +1,9 @@
-﻿using Dot.DataAccess.Entities;
+﻿using Dot.DataAccess;
+using Dot.DataAccess.Entities;
 using Dot.Models;
+using Dot.Services.Chat;
 
-namespace Dot.DataAccess.Repositories
+namespace Dot.Services.Repositories
 {
     public interface IConversationRepository
     {
@@ -14,10 +16,12 @@ namespace Dot.DataAccess.Repositories
     public class ConversationRepository : IConversationRepository
     {
         private readonly IDatabase _db;
+        private readonly IChatSummarizer _summarizer;
 
-        public ConversationRepository(IDatabase db)
+        public ConversationRepository(IDatabase db, IChatSummarizer summarizer)
         {
             _db = db;
+            _summarizer = summarizer;
         }
 
         public async Task<List<Conversation>> GetAllConversationsAsync()
@@ -41,6 +45,7 @@ namespace Dot.DataAccess.Repositories
 
             var conversation = new Conversation()
             {
+                Title = await _summarizer.GenerateTitleAsync(messages),
                 Summary = "test summary",
                 Messages = messagesToAdd
 

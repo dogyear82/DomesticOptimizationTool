@@ -1,4 +1,4 @@
-﻿using Dot.DataAccess.Repositories;
+﻿using Dot.Services.Repositories;
 using Dot.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 using OllamaSharp.Models.Chat;

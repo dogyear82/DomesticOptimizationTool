@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Dot.DataAccess.Repositories
+namespace Dot.Services.Repositories
 {
     public interface IRepository
     {
