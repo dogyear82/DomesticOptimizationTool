@@ -26,17 +26,29 @@ echo "✅ MongoDB is up and running!"
 docker exec -it "$MONGO_CONTAINER" mongosh -u root -p "$ADMIN_PASS" --authenticationDatabase admin --eval "
   db = db.getSiblingDB('$MONGO_DB');
   
-  // Check if the user already exists
+  print('⏳ Ensuring Dot can accdess database')
   if (db.getUser('$MONGO_USER') === null) {
       db.createUser({
           user: '$MONGO_USER',
           pwd: '$DOT_PASS',
           roles: [{ role: 'readWrite', db: '$MONGO_DB' }]
       });
-      print('✅ MongoDB user \'$MONGO_USER\' created successfully.');
+      print('✅ Dot database user created');
   } else {
-      print('ℹ️ MongoDB user \'$MONGO_USER\' already exists. Skipping creation.');
+      print('ℹ️ Dot database user \'$MONGO_USER\' already exists. Skipping creation.');
   }
+
+  print('⏳ Setting up default Dot personality')
+  db.settings.insertOne({
+    Type: 'apisettings',
+	Value: {
+      SystemPrompts: [
+	  'Your name is DOT, which stands for Domestic Optimization Tool. You were built by Tan Nguyen.  You will answer questions directly and not provide additional information unless it was asked for.'
+	  ]
+    },
+    CreatedAt: new Date() 
+  });
+print('✅ Dot\'s perosnality set successfully!');
 "
 
 echo "✅ Database and user setup completed!"
