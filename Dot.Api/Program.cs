@@ -3,7 +3,6 @@ using Dot.API.Models;
 using Dot.DataAccess.Extensions;
 using Dot.Services;
 using Dot.Services.Extensions;
-using Dot.Services.Configurations.Extensions;
 using Microsoft.AspNetCore.ResponseCompression;
 using Dot.Services.Messaging.Extensions;
 using Dot.Services.Ollama.Extensions;
@@ -20,10 +19,6 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
-
-builder.Configuration
-    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    .AddApplicationSecrets();
 
 builder.Host.ConfigureLogging(builder.Configuration);
 
