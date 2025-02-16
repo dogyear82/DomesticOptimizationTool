@@ -21,7 +21,7 @@ services:
       OllamaOptions__Url: "http://ollama:11434"
       OllamaOptions__DefaultModel: "mistral"
     ports:
-      - "5000:8080"
+      - "8080:8080"
 
   ollama:
     image: ollama/ollama
