@@ -17,6 +17,4 @@ export MONGO_ADMIN_PASS="$ADMIN_PASS"
 docker compose up -d
 
 # Call setup-mongo.sh and pass the passwords as arguments
-echo "⏳ Initializing Dot database"
 bash mongo-setup.sh "$ADMIN_USER_NAME" "$ADMIN_PASS" "$DOT_PASS"
-echo "✅ Database setup complete!"
