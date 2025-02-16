@@ -5,14 +5,12 @@
 # Read passwords from arguments
 ADMIN_USER="$1"
 ADMIN_PASS="$2"
-DOT_PASS="$3"
+DOT_USER_NAME="$3"
+DOT_PASS="$4"
+MONGO_DB="$5"
+MONGO_CONTAINER="$6"
 
-# Define connection parameters
-MONGO_CONTAINER="dot-mongo-db"
-MONGO_DB="dot"
-MONGO_USER="dot-app"
-
-echo "⏳ Chekcing MongoDB..."
+echo "⏳ Waiting for MongoDB to start..."
 
 # Wait for MongoDB to start accepting connections
 until docker exec -it "$MONGO_CONTAINER" mongosh --quiet --eval "db.adminCommand('ping')" > /dev/null 2>&1; do
@@ -26,18 +24,19 @@ echo "✅ MongoDB is up and running!"
 docker exec -it "$MONGO_CONTAINER" mongosh -u root -p "$ADMIN_PASS" --authenticationDatabase admin --eval "
   db = db.getSiblingDB('$MONGO_DB');
   
-  print('⏳ Checking Dot database credentials...');
-  if (db.getUser('$MONGO_USER') === null) {
+  print('⏳ Checking Dot MongoDB credentials...');
+  if (db.getUser('$DOT_USER_NAME') === null) {
+      print('👤 Creating MongoDB user \'$DOT_USER_NAME\'...')
       db.createUser({
-          user: '$MONGO_USER',
+          user: '$DOT_USER_NAME',
           pwd: '$DOT_PASS',
           roles: [{ role: 'readWrite', db: '$MONGO_DB' }]
       });
-      print('✅ Dot database credentials created');
+      print('✅ Dot MongoDB credentials created');
   } else {
-      print('ℹ️ Dot database credentials \'$MONGO_USER\' already exists.');
+      print('ℹ️ Dot MongoDB credentials \'$DOT_USER_NAME\' already exists.');
   }
-    print('✅ Dot DB credentials are ready!')
+    print('✅ Dot MongoDB credentials are ready!')
 
   print('⏳ Checking Dot\'s system settings...');
   if (db.settings.countDocuments({}) === 0) {

@@ -43,6 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{4716
 		Dot\docker-compose.yml = Dot\docker-compose.yml
 		Dot\dot-setup.sh = Dot\dot-setup.sh
 		Dot\mongo-setup.sh = Dot\mongo-setup.sh
+		Dot\rabbitmq-setup.sh = Dot\rabbitmq-setup.sh
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.ChatProcessor", "Dot.ChatProcessor\Dot.ChatProcessor.csproj", "{7A689A82-3E5D-4BD6-A938-0A95835B8058}"

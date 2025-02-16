@@ -7,14 +7,17 @@ read -s -p "Enter an administrator password: " ADMIN_PASS
 echo ""
 
 # Define user variables
-ADMIN_USER_NAME="root"
-
-echo "🔒 Passwords are temporarily stored in environment variables."
-
-# Run Docker Compose with the necessary environment variables
-export MONGO_ADMIN_USER="$ADMIN_USER_NAME" 
-export MONGO_ADMIN_PASS="$ADMIN_PASS" 
+export ADMIN_USER_NAME="root"
+export ADMIN_PASS
+export DOT_USER_NAME="dot-app"
+export DOT_PASS
+export MONGO_DB_NAME="dot"
+export MONGO_CONTAINER_NAME="dot-mongo-db"
+export RABBIT_CONTAINER_NAME="dot-rabbitmq"
 docker compose up -d
 
-# Call setup-mongo.sh and pass the passwords as arguments
-bash mongo-setup.sh "$ADMIN_USER_NAME" "$ADMIN_PASS" "$DOT_PASS"
+# Setup MongoDB
+bash mongo-setup.sh "$ADMIN_USER_NAME" "$ADMIN_PASS" "$DOT_USER_NAME" "$DOT_PASS" "$MONGO_DB_NAME" "$MONGO_CONTAINER_NAME"
+
+# Setup RabbitMQ
+bash rabbitmq-setup.sh "$ADMIN_USER_NAME" "$ADMIN_PASS" "$DOT_USER_NAME" "$DOT_PASS" "$RABBIT_CONTAINER_NAME"
