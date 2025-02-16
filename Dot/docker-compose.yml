@@ -2,6 +2,36 @@ version: '3.1'
 
 services:
 
+  dot-api:
+    image: dot-api
+    container_name: dot-api
+    restart: always
+    depends_on:
+      - ollama
+      - mongo
+      - rabbitmq
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      MongoDbSettings__ConnectionString: "mongodb://${DOT_USER_NAME}:${DOT_PASS}@mongo:27017/dot?authSource=dot"
+      MongoDbSettings__DatabaseName: "dot"
+      RabbitMQSettings__Exchange: "dot_topic"
+      RabbitMQSettings__HostName: "rabbitmq"
+      RabbitMQSettings__UserName: ${DOT_USER_NAME}
+      RabbitMQSettings__Password: ${DOT_PASS}
+      OllamaOptions__Url: "http://ollama:11434"
+      OllamaOptions__DefaultModel: "mistral"
+    ports:
+      - "5000:8080"
+
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    restart: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+
   mongo:
     image: mongo
     container_name: ${MONGO_CONTAINER_NAME}
@@ -44,6 +74,7 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq 
       
 volumes:
+  ollama_models:
   mongo_data:
   mongo_config:
   mongo_express_data:
