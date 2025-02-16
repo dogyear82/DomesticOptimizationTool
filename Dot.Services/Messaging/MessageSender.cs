@@ -13,19 +13,13 @@ namespace Dot.Services.Messaging
         private readonly IConnectionFactory _connectionFactory;
         private readonly RabbitMQSettings _options;
 
-        public MessageSender(IOptionsMonitor<RabbitMQSettings> options)
+        public MessageSender(IOptions<RabbitMQSettings> options, IConnectionFactory connectionFactory)
         {
-            _options = options.CurrentValue;
-            _connectionFactory = new ConnectionFactory
-            {
-                HostName = _options.HostName,
-                UserName = _options.UserName,
-                Password = _options.Password,
-                VirtualHost = "/"
-            };
+            _options = options.Value;
+            _connectionFactory = connectionFactory;
         }
 
-        public async Task Send<T>(IMessage<T> message)
+        public async Task SendAsync<T>(IMessage<T> message)
         {
             using var connection = await _connectionFactory.CreateConnectionAsync();
             using var channel = await connection.CreateChannelAsync();

@@ -5,7 +5,7 @@ namespace Dot.Services.Messaging.Interfaces
 {
     public interface IMessageSender
     {
-        Task Send<T>(IMessage<T> message);
+        Task SendAsync<T>(IMessage<T> message);
     }
 
     public interface IMessageProcessor
