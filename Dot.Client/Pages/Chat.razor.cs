@@ -163,7 +163,7 @@ namespace Dot.Client.Pages
             if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput))
             {
                 var convoId = conversationId == "0" ? null : conversationId;
-                await hubConnection.SendAsync("SendMessage", messageInput, "phi4", convoId);
+                await hubConnection.SendAsync("SendMessage", messageInput, "mistral", convoId);
                 var chatEntry = new ChatEntry
                 {
                     Index = GetChatEntryIndex(),
