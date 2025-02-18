@@ -1,11 +1,28 @@
 version: '3.1'
 
-services:
+services:  
+
+  dot-client:
+    image: dot-client
+    container_name: dot-client
+    restart: always
+    build:
+      context: .
+      dockerfile: Dot.Client/Dockerfile
+    depends_on:
+      - dot-api
+    ports:
+      - "7070:80"
+    volumes:
+      - dot-client-nginx:/etc/nginx 
 
   dot-api:
     image: dot-api
     container_name: dot-api
     restart: always
+    build:
+      context: .
+      dockerfile: Dot.Api/Dockerfile
     depends_on:
       - ollama
       - mongo
@@ -74,6 +91,7 @@ services:
       - rabbitmq_data:/var/lib/rabbitmq 
       
 volumes:
+  dot-client-nginx:
   ollama_models:
   mongo_data:
   mongo_config:

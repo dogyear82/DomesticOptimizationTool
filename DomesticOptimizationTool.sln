@@ -40,10 +40,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.Services", "Dot.Service
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{47165696-16FD-4D3B-B7AF-219C7E0691CE}"
 	ProjectSection(SolutionItems) = preProject
-		Dot\docker-compose.yml = Dot\docker-compose.yml
-		Dot\dot-setup.sh = Dot\dot-setup.sh
-		Dot\mongo-setup.sh = Dot\mongo-setup.sh
-		Dot\rabbitmq-setup.sh = Dot\rabbitmq-setup.sh
+		docker-compose.yml = docker-compose.yml
+		dot-start.sh = dot-start.sh
+		mongo-setup.sh = mongo-setup.sh
+		rabbitmq-setup.sh = rabbitmq-setup.sh
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.ChatProcessor", "Dot.ChatProcessor\Dot.ChatProcessor.csproj", "{7A689A82-3E5D-4BD6-A938-0A95835B8058}"
