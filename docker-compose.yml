@@ -9,6 +9,7 @@ services:
     build:
       context: .
       dockerfile: Dot.Client/Dockerfile
+      no_cache: true
     depends_on:
       - dot-api
     ports:
@@ -23,6 +24,7 @@ services:
     build:
       context: .
       dockerfile: Dot.Api/Dockerfile
+      no_cache: true
     depends_on:
       - ollama
       - mongo

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Prompt the user for MongoDB credentials
-read -s -p "Enter a password for Dot to dependent resources: " DOT_PASS
+read -p "Enter a password for Dot to access dependent resources: " DOT_PASS
 echo ""
-read -s -p "Enter an administrator password: " ADMIN_PASS
+read -p "Enter an administrator password: " ADMIN_PASS
 echo ""
 
 # Define user variables
