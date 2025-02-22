@@ -1,7 +1,4 @@
 using Dot.API.Hubs;
-using Dot.API.Models;
-using Dot.DataAccess.Extensions;
-using Dot.Services;
 using Dot.Services.Extensions;
 using Microsoft.AspNetCore.ResponseCompression;
 using Dot.Services.Messaging.Extensions;
@@ -23,8 +20,6 @@ builder.Services.AddCors(options =>
 
 builder.Host.ConfigureLogging(builder.Configuration);
 
-builder.Services.SetupDataAccess(builder.Configuration);
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -32,12 +27,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSignalR();
 
-
 builder.Services.AddMessageSender(builder.Configuration);
+builder.Services.AddRepositories(builder.Configuration);
 builder.Services.AddOllamaClient(builder.Configuration);
-builder.Services.AddSingleton<IAppSettings<ApiSettings>, AppSettings<ApiSettings>>();
-builder.Services.AddSingleton<IRepository, Repository>();
-builder.Services.AddSingleton<IConversationRepository, ConversationRepository>();
 builder.Services.AddSingleton<IChatSummarizer, ChatSummarizer>();
 
 builder.Services.AddResponseCompression(opts =>
