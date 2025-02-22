@@ -28,7 +28,7 @@ namespace Dot.API.Hubs
 
         public async Task SendMessage(string content, string model, string conversationId = null)
         {
-            _logger.LogDebug("Received message: {content}", content);
+            _logger.LogInformation("Received message: {content}", content);
 
             try
             {
@@ -36,6 +36,7 @@ namespace Dot.API.Hubs
                 if (conversationId is not null)
                 {
                     messages.AddRange(await GetConversationHistory(conversationId));
+                    _logger.LogInformation($"Conversation history pulled for conversation ID{conversationId}");
                 }
 
                 var userMessage = CreateUserMessage(content, conversationId);
