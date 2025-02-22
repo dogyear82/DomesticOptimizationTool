@@ -19,7 +19,7 @@ namespace Dot.API.Gateway.Endpoints
 
         public async Task<List<ConversationMenuItem>> GetConversationsAsync()
         {
-            return await _httpClientAccessor.GetAsync<List<ConversationMenuItem>>(Url.NavMenuConversations);
+            return await _httpClientAccessor.GetAsync<List<ConversationMenuItem>>(ApiEndpoints.NavMenuConversations);
         }
     }
 }

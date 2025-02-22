@@ -19,7 +19,7 @@ namespace Dot.API.Gateway.Endpoints
 
         public async Task<ConversationVm> Get(string id)
         {
-            return await _httpClientAccessor.GetAsync<ConversationVm>($"{Url.Conversations}/{id}");
+            return await _httpClientAccessor.GetAsync<ConversationVm>($"{ApiEndpoints.Conversations}/{id}");
         }
     }
 }

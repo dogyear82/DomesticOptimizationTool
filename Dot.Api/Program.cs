@@ -5,6 +5,8 @@ using Dot.Services.Messaging.Extensions;
 using Dot.Services.Ollama.Extensions;
 using Dot.Services.Repositories;
 using Dot.Services.Chat;
+using Dot.API.Models;
+using Dot.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -30,6 +32,7 @@ builder.Services.AddSignalR();
 builder.Services.AddMessageSender(builder.Configuration);
 builder.Services.AddRepositories(builder.Configuration);
 builder.Services.AddOllamaClient(builder.Configuration);
+builder.Services.AddSingleton<IAppSettings<ApiSettings>, AppSettings<ApiSettings>>();
 builder.Services.AddSingleton<IChatSummarizer, ChatSummarizer>();
 
 builder.Services.AddResponseCompression(opts =>

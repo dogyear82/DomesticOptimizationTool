@@ -4,14 +4,14 @@ using OllamaSharp.Models;
 
 namespace Dot.API.Controllers
 {
-    [Route("api/models")]
+    [Route("api/llms")]
     [ApiController]
-    public class Models : Controller
+    public class Llms : Controller
     {
-        private readonly ILogger<Models> _logger;
+        private readonly ILogger<Llms> _logger;
         private readonly IRepository _repo;
 
-        public Models(ILogger<Models> logger, IRepository repo)
+        public Llms(ILogger<Llms> logger, IRepository repo)
         {
             _logger = logger;
             _repo = repo;

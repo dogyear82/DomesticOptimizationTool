@@ -3,17 +3,17 @@ using OllamaSharp.Models;
 
 namespace Dot.Services.Repositories
 {
-    public interface IModelsRepository
+    public interface ILlmRepository
     {
         Task<IEnumerable<string>> GetDownloadedModelNamesAsync();
         Task<IEnumerable<Model>> GetDownloadedModelsAsync();
     }
 
-    public class ModelsRepository : IModelsRepository
+    public class LlmRepository : ILlmRepository
     {
         private readonly IOllamaApiClient _client;
 
-        public ModelsRepository(IOllamaApiClient client)
+        public LlmRepository(IOllamaApiClient client)
         {
             _client = client;
         }

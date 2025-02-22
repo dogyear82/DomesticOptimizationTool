@@ -5,18 +5,18 @@ namespace Dot.Services.Repositories
     public interface IRepository
     {
         public IConversationRepository Conversation { get; }
-        public IModelsRepository Model { get; }
+        public ILlmRepository Model { get; }
     }
 
     public class Repository : IRepository
     {
         public IConversationRepository Conversation { get; }
-        public IModelsRepository Model { get; }
+        public ILlmRepository Model { get; }
 
         public Repository(IServiceProvider sp)
         {
             Conversation = sp.GetRequiredService<IConversationRepository>();
-            Model = sp.GetRequiredService<IModelsRepository>();
+            Model = sp.GetRequiredService<ILlmRepository>();
         }
     }
 }

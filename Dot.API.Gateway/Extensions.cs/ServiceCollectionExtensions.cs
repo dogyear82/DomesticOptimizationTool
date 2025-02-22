@@ -10,6 +10,7 @@ namespace Dot.API.Gateway.Extensions
         {
             services.AddSingleton<IHttpClientAccessor, HttpClientAccessor>();
             services.AddSingleton<INavMenu, NavMenu>();
+            services.AddSingleton<ILlms, Llms>();
             services.AddSingleton<IConversations, Conversations>();
             services.AddSingleton<IGateway, Gateway>();
             services.AddSingleton<IRestClientFactory, RestClientFactory>();
