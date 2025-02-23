@@ -1,5 +1,4 @@
 ﻿using Dot.Client.Services;
-using Dot.Models;
 using Dot.UI.Models;
 using Dot.Utilities.Extensions;
 using Markdig;
@@ -9,6 +8,7 @@ using Dot.API.Gateway;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components.Web;
 using OllamaSharp.Models.Chat;
+using Newtonsoft.Json;
 
 namespace Dot.Client.Pages
 {
@@ -40,9 +40,9 @@ namespace Dot.Client.Pages
             try
             {
                 hubConnection = hubAccessor.GetHubConnection();
-                hubConnection.On<string, ChatResponseStream>("ReceiveMessage", (user, chunk) =>
+                hubConnection.On<string>("ReceiveMessage", (chunk) =>
                 {
-                    ProcessChunk(chunk);
+                    ProcessChunk(JsonConvert.DeserializeObject<ChatResponseStream>(chunk));
                     InvokeAsync(StateHasChanged);
                 });
 

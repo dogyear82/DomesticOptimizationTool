@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OllamaSharp;
+using OllamaSharp.Models.Chat;
 
 namespace Dot.Services.Ollama.Extensions
 {
@@ -12,7 +13,9 @@ namespace Dot.Services.Ollama.Extensions
             var options = config.GetSection("OllamaOptions").Get<OllamaOptions>();
             services.AddSingleton<IOllamaApiClient>(sp =>
             {
-                return new OllamaApiClient(options.Url, options.DefaultModel);
+                var client = new OllamaApiClient(options.Url, options.DefaultModel);
+                client.ChatAsync(new ChatRequest { Messages = new List<Message> { new Message { Content = "Wake up", Role = ChatRole.System } }, KeepAlive = "24h" });
+                return client;
             });
             services.AddSingleton<IOllamaAccessor, OllamaAccessor>();
         }

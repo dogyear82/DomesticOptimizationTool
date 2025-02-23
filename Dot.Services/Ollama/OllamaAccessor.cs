@@ -22,7 +22,8 @@ namespace Dot.Services.Ollama
         {
             var request = new ChatRequest
             {
-                Messages = chatHistory.Select(x => new Message { Role = x.Role, Content = x.Content })
+                Messages = chatHistory.Select(x => new Message { Role = x.Role, Content = x.Content }),
+                KeepAlive = "24h"
             };
             if (!string.IsNullOrWhiteSpace(model))
             {

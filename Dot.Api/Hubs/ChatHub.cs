@@ -5,6 +5,7 @@ using Dot.Services.Messaging.Interfaces;
 using Dot.Services.Ollama;
 using Dot.Services.Repositories;
 using Microsoft.AspNetCore.SignalR;
+using Newtonsoft.Json;
 using OllamaSharp.Models.Chat;
 
 namespace Dot.API.Hubs
@@ -38,17 +39,17 @@ namespace Dot.API.Hubs
                     messages.AddRange(await GetConversationHistory(conversationId));
                     _logger.LogInformation($"Conversation history pulled for conversation ID{conversationId}");
                 }
-
+                
                 var userMessage = CreateUserMessage(content, conversationId);
                 messages.Add(userMessage);
-
+                
                 var responseStreams = new List<ChatResponseStream>();
                 await foreach (var stream in _accessor.ChatAsync(messages, model))
                 {
                     responseStreams.Add(stream);
-                    await Clients.Caller.SendAsync("ReceiveMessage", "Stream", stream);
+                    await Clients.Caller.SendAsync("ReceiveMessage", JsonConvert.SerializeObject(stream));
                 }
-
+                
                 var llmResponse = new ChatMessage
                 {
                     Role = ChatRole.Assistant,
