@@ -37,7 +37,7 @@ namespace Dot.API.Hubs
                 if (conversationId is not null)
                 {
                     messages.AddRange(await GetConversationHistory(conversationId));
-                    _logger.LogInformation($"Conversation history pulled for conversation ID{conversationId}");
+                    _logger.LogInformation($"Conversation history pulled for conversation ID {conversationId}");
                 }
                 
                 var userMessage = CreateUserMessage(content, conversationId);
@@ -106,16 +106,7 @@ namespace Dot.API.Hubs
             if (string.IsNullOrWhiteSpace(conversationId))
             {
                 var conversation = await _repo.Conversation.AddAsync(messagesToAdd);
-
-                var response = new ChatResponseStream
-                {
-                    Message = new Message
-                    {
-                        Role = ChatRole.System,
-                        Content = conversation.Id
-                    }
-                };
-                await Clients.Caller.SendAsync("ReceiveMessage", "Stream", response);
+                await Clients.Caller.SendAsync("UpdateConversationId", conversation.Id);
             }
             else
             {

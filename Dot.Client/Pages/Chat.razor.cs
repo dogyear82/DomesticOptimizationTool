@@ -20,9 +20,11 @@ namespace Dot.Client.Pages
         private IGateway gateway { get; set; }
         [Inject]
         private IJSRuntime js { get; set; }
+        [Inject]
+        private NavigationManager nav { get; set; }
 
         [Parameter]
-        public string conversationId { get; set; }
+        public string? conversationId { get; set; }
 
         private HubConnection? hubConnection;
         public List<ChatEntry> ChatEntries { get; set; } = new();
@@ -46,6 +48,12 @@ namespace Dot.Client.Pages
                     InvokeAsync(StateHasChanged);
                 });
 
+                hubConnection.On<string>("UpdateConversationId", async (newId) =>
+                {
+                    nav.NavigateTo($"/chat/{newId}");
+                    await InvokeAsync(StateHasChanged);
+                });
+
                 await hubConnection.StartAsync();
             }
             catch (Exception ex)
@@ -56,10 +64,10 @@ namespace Dot.Client.Pages
 
         protected override async Task OnParametersSetAsync()
         {
-            await LoadConversation();
+            await LoadConversationAsync();
         }
 
-        private async Task LoadConversation()
+        private async Task LoadConversationAsync()
         {
             ChatEntries.Clear();
             if (conversationId == "0")

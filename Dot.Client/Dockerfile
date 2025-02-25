@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /app
 COPY ["Dot.Client/Dot.Client.csproj", "Dot.Client/"]
 COPY ["Dot.Models/Dot.Models.csproj", "Dot.Models/"]
