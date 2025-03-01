@@ -5,6 +5,8 @@ read -p "Enter a password for Dot to access dependent resources: " DOT_PASS
 echo ""
 read -p "Enter an administrator password: " ADMIN_PASS
 echo ""
+read -p "Enter your huggingface secret token: " HUGGINGFACE_TOKEN
+echo ""
 
 # Define user variables
 export ADMIN_USER_NAME="root"
