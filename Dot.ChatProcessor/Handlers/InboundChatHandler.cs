@@ -1,10 +1,10 @@
 ﻿using Dot.Services.Repositories;
-using Dot.Models;
 using Dot.Models.Messaging;
 using Dot.Services.Messaging.Interfaces;
 using Newtonsoft.Json;
 using RabbitMQ.Client.Events;
 using System.Text;
+using Microsoft.Extensions.AI;
 
 namespace Dot.ChatProcessor.Handlers
 {
@@ -27,13 +27,13 @@ namespace Dot.ChatProcessor.Handlers
             }
 
             var chatMessage = JsonConvert.DeserializeObject<InboundChatMessage>(message);
-            if (chatMessage.Payload.ConversationId is null)
+            if ("REPLACE WITH CONVERSATION ID" is null)
             {
                 await _repository.Conversation.AddAsync(new List<ChatMessage> { chatMessage.Payload });
             } 
             else
             {
-                await _repository.Conversation.UpdateAsync(new List<ChatMessage> { chatMessage.Payload }, chatMessage.Payload.ConversationId);
+                await _repository.Conversation.UpdateAsync(new List<ChatMessage> { chatMessage.Payload }, "REPLACE WITH CONVERSATION ID");
             }
 
             var channel = ((AsyncEventingBasicConsumer)sender).Channel;

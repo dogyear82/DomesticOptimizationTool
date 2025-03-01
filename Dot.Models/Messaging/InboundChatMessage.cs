@@ -1,4 +1,6 @@
-﻿namespace Dot.Models.Messaging
+﻿using Microsoft.Extensions.AI;
+
+namespace Dot.Models.Messaging
 {
 
     public class InboundChatMessage : Message<ChatMessage>

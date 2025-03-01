@@ -5,14 +5,14 @@ using Dot.Services.Messaging.Interfaces;
 using Dot.Services.Ollama;
 using Dot.Services.Repositories;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.AI;
 using Newtonsoft.Json;
-using OllamaSharp.Models.Chat;
 
 namespace Dot.API.Hubs
 {
     public class ChatHub : Hub
     {
-        private readonly IOllamaAccessor _accessor;
+        private readonly ILlmClientAccessor _accessor;
         private readonly IRepository _repo;
         private readonly IAppSettings<ApiSettings> _appSettings;
         private readonly IMessageSender _messageSender;
@@ -21,7 +21,7 @@ namespace Dot.API.Hubs
         public ChatHub(ILogger<ChatHub> logger, IServiceProvider sp)
         {
             _logger = logger;
-            _accessor = sp.GetRequiredService<IOllamaAccessor>();
+            _accessor = sp.GetRequiredService<ILlmClientAccessor>();
             _repo = sp.GetRequiredService<IRepository>();
             _messageSender = sp.GetRequiredService<IMessageSender>();
             _appSettings = sp.GetRequiredService<IAppSettings<ApiSettings>>();
@@ -43,17 +43,18 @@ namespace Dot.API.Hubs
                 var userMessage = CreateUserMessage(content, conversationId);
                 messages.Add(userMessage);
                 
-                var responseStreams = new List<ChatResponseStream>();
+                var responseStreams = new List<ChatResponseUpdate>();
                 await foreach (var stream in _accessor.ChatAsync(messages, model))
                 {
                     responseStreams.Add(stream);
-                    await Clients.Caller.SendAsync("ReceiveMessage", JsonConvert.SerializeObject(stream));
+                    var serializedStream = JsonConvert.SerializeObject(new ChatStream(stream));
+                    await Clients.Caller.SendAsync("ReceiveMessage", serializedStream);
                 }
                 
                 var llmResponse = new ChatMessage
                 {
                     Role = ChatRole.Assistant,
-                    Content = string.Join("", responseStreams.Select(x => x.Message.Content))
+                    Text = string.Join("", responseStreams.Select(x => x.Text))
                 };
                 await SaveMessages(userMessage, llmResponse, conversationId);
             }
@@ -67,8 +68,8 @@ namespace Dot.API.Hubs
         {
             return new ChatMessage
             {
-                Role = "system",
-                Content = string.Join(" ", (await _appSettings.GetAsync()).SystemPrompts)
+                Role = ChatRole.System,
+                Text = string.Join(" ", (await _appSettings.GetAsync()).SystemPrompts)
             };
         }
 
@@ -77,12 +78,11 @@ namespace Dot.API.Hubs
             var conversation = await _repo.Conversation.GetConversationById(conversationId);
             return conversation.Messages
                     .OrderBy(x => x.CreatedAt)
-                    .Where(x => x.Role != ChatRole.System)
+                    .Where(x => x.Role != ChatRole.System.ToString())
                     .Select(x => new ChatMessage
                     {
-                        ConversationId = conversationId,
-                        Role = x.Role,
-                        Content = x.Content
+                        Role = new ChatRole(x.Role),
+                        Text = x.Content
                     }).ToList();
         }
 
@@ -90,9 +90,8 @@ namespace Dot.API.Hubs
         {
             return new ChatMessage
             {
-                ConversationId = conversationId,
                 Role = ChatRole.User,
-                Content = content
+                Text = content
             };
         }
 

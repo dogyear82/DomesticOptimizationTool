@@ -1,7 +1,7 @@
 ﻿using Dot.DataAccess;
 using Dot.DataAccess.Entities;
-using Dot.Models;
 using Dot.Services.Chat;
+using Microsoft.Extensions.AI;
 
 namespace Dot.Services.Repositories
 {
@@ -40,7 +40,7 @@ namespace Dot.Services.Repositories
             var messagesToAdd = messages.Select(m => new Message()
             {
                 Role = m.Role.ToString(),
-                Content = m.Content
+                Content = m.Text
             }).ToList();
 
             var conversation = new Conversation()
@@ -58,7 +58,7 @@ namespace Dot.Services.Repositories
             var messagesToAdd = messages.Select(m => new Message()
             {
                 Role = m.Role.ToString(),
-                Content = m.Content
+                Content = m.Text
             }).ToList();
 
             var conversation = await _db.ReadAsync<Conversation>(conversationId);

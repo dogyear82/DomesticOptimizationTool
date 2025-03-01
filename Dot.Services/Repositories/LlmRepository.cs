@@ -1,4 +1,5 @@
-﻿using OllamaSharp;
+﻿using Microsoft.Extensions.AI;
+using OllamaSharp;
 using OllamaSharp.Models;
 
 namespace Dot.Services.Repositories
@@ -11,22 +12,22 @@ namespace Dot.Services.Repositories
 
     public class LlmRepository : ILlmRepository
     {
-        private readonly IOllamaApiClient _client;
+        private readonly IChatClient _client;
 
-        public LlmRepository(IOllamaApiClient client)
+        public LlmRepository(IChatClient client)
         {
             _client = client;
         }
 
         public async Task<IEnumerable<string>> GetDownloadedModelNamesAsync()
         {
-            var models = await _client.ListLocalModelsAsync();
+            var models = await ((IOllamaApiClient)_client).ListLocalModelsAsync();
             return models.Select(x => x.Name.Split(":")[0]);
         }
 
         public async Task<IEnumerable<Model>> GetDownloadedModelsAsync()
         {
-            return await _client.ListLocalModelsAsync();
+            return await ((IOllamaApiClient)_client).ListLocalModelsAsync();
         }
     }
 }

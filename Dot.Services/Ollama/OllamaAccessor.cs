@@ -1,36 +1,29 @@
-﻿using Dot.Models;
-using OllamaSharp;
-using OllamaSharp.Models.Chat;
+﻿using Microsoft.Extensions.AI;
 
 namespace Dot.Services.Ollama
 {
-    public interface IOllamaAccessor
+    public interface ILlmClientAccessor
     {
-        IAsyncEnumerable<ChatResponseStream?> ChatAsync(List<ChatMessage> chatHistory, string model);
+        IAsyncEnumerable<ChatResponseUpdate?> ChatAsync(List<ChatMessage> conversation, string model);
     }
 
-    public class OllamaAccessor : IOllamaAccessor
+    public class OllamaAccessor : ILlmClientAccessor
     {
-        private readonly IOllamaApiClient _client;
+        private readonly IChatClient _client;
 
-        public OllamaAccessor(IOllamaApiClient client)
+        public OllamaAccessor(IChatClient client)
         {
             _client = client;
         }
 
-        public async IAsyncEnumerable<ChatResponseStream?> ChatAsync(List<ChatMessage> chatHistory, string model)
+        public async IAsyncEnumerable<ChatResponseUpdate?> ChatAsync(List<ChatMessage> conversation, string model)
         {
-            var request = new ChatRequest
-            {
-                Messages = chatHistory.Select(x => new Message { Role = x.Role, Content = x.Content }),
-                KeepAlive = "24h"
-            };
-            if (!string.IsNullOrWhiteSpace(model))
-            {
-                request.Model = model;
-            }
 
-            await foreach (var chunk in _client.ChatAsync(request))
+            var options = new ChatOptions
+            {
+                ModelId = "mistral",
+            };
+            await foreach (var chunk in _client.GetStreamingResponseAsync(conversation, options))
             {
                 yield return chunk;
             }

@@ -8,6 +8,7 @@ using Dot.API.Gateway;
 using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components.Web;
 using OllamaSharp.Models.Chat;
+using Dot.Models;
 using Newtonsoft.Json;
 
 namespace Dot.Client.Pages
@@ -42,10 +43,24 @@ namespace Dot.Client.Pages
             try
             {
                 hubConnection = hubAccessor.GetHubConnection();
-                hubConnection.On<string>("ReceiveMessage", (chunk) =>
+                hubConnection.On<string>("ReceiveMessage", async (stream) =>
                 {
-                    ProcessChunk(JsonConvert.DeserializeObject<ChatResponseStream>(chunk));
-                    InvokeAsync(StateHasChanged);
+                    try
+                    {
+                        Console.WriteLine(stream);
+                        var chatStream = JsonConvert.DeserializeObject<ChatStream>(stream);
+                        if (chatStream is null)
+                        {
+                            Console.WriteLine("Chat stream is null");
+                        }
+                        Console.WriteLine($"chat text is : {chatStream.Text}");
+                        ProcessStream(chatStream);
+                        await InvokeAsync(StateHasChanged);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"❌ Deserialization failed: {ex}");
+                    }
                 });
 
                 hubConnection.On<string>("UpdateConversationId", async (newId) =>
@@ -112,26 +127,24 @@ namespace Dot.Client.Pages
             await ScrollToBottom();
         }
 
-        private void ProcessChunk(ChatResponseStream chunk)
+        private void ProcessStream(ChatStream stream)
         {
-            if (chunk.Message.Role == ChatRole.System)
-            {
-                conversationId = chunk.Message.Content;
-            }
-            else if (chunk.IsBeginningOfThought())
+            Console.WriteLine("Processing stream");
+            if (stream.IsBeginningOfThought())
             {
                 isThinking = true;
             }
-            else if (chunk.IsEndOfThought())
+            else if (stream.IsEndOfThought())
             {
                 isThinking = false;
             }
             else if (isThinking)
             {
-                thought += chunk.Message.Content;
+                thought += stream.Text;
             }
-            else if (chunk.Done)
+            else if (stream.IsDone)
             {
+                Console.WriteLine("Stream is done");
                 isBusy = false;
                 var aiResponse = "";
                 foreach (var message in messageStream)
@@ -153,9 +166,11 @@ namespace Dot.Client.Pages
             }
             else
             {
-                messageStream.Add(chunk.Message.Content);
-                isResponseFinished = chunk.Done;
+                Console.WriteLine("Adding to message stream");
+                messageStream.Add(stream.Text);
+                isResponseFinished = stream.IsDone;
             }
+            StateHasChanged();
         }
 
         private async Task SendOnEnter(KeyboardEventArgs e)
@@ -171,7 +186,7 @@ namespace Dot.Client.Pages
             if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput))
             {
                 var convoId = conversationId == "0" ? null : conversationId;
-                await hubConnection.SendAsync("SendMessage", messageInput, "mistral", convoId);
+                await hubConnection.SendAsync("SendMessage", messageInput, "deepseek-r1", convoId);
                 var chatEntry = new ChatEntry
                 {
                     Index = GetChatEntryIndex(),

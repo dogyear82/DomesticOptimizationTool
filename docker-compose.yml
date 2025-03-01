@@ -38,7 +38,7 @@ services:
       RabbitMQSettings__UserName: ${DOT_USER_NAME}
       RabbitMQSettings__Password: ${DOT_PASS}
       OllamaOptions__Url: "http://ollama:11434"
-      OllamaOptions__DefaultModel: "mistral"
+      OllamaOptions__DefaultModel: "deepseek-r1"
     ports:
       - "8080:8080"
 

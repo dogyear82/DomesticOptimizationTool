@@ -1,22 +1,22 @@
-﻿using OllamaSharp.Models.Chat;
+﻿using Dot.Models;
 
 namespace Dot.Utilities.Extensions
 {
     public static class ChatResponseStreamExtensions
     {
-        public static bool IsBeginningOfThought(this ChatResponseStream chunk)
+        public static bool IsBeginningOfThought(this ChatStream chunk)
         {
-            return chunk.Message.Content.Contains("<think>");
+            return chunk.Text.Contains("<think>");
         }
 
-        public static bool IsEndOfThought(this ChatResponseStream chunk)
+        public static bool IsEndOfThought(this ChatStream chunk)
         {
-            return chunk.Message.Content.Contains("</think>");
+            return chunk.Text.Contains("</think>");
         }
 
-        public static bool IsStartOrEndCoding(this ChatResponseStream chunk)
+        public static bool IsStartOrEndCoding(this ChatStream chunk)
         {
-            return chunk.Message.Content.Contains("```");
+            return chunk.Text.Contains("```");
         }
     }
 }
