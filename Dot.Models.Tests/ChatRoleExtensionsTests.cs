@@ -16,7 +16,7 @@ namespace Dot.Models.Tests
 
         [Theory]
         [MemberData(nameof(GetChatRoleData))]
-        public void AreEqual_ReturnsTrueForMatcingPairs_ReturnsFalseForNonMatchingPairs(ChatRole role, string roleString, bool expectedResult)
+        public void AreEqual_ReturnsTrueForMatchingPairs_ReturnsFalseForNonMatchingPairs(ChatRole role, string roleString, bool expectedResult)
         {
             Assert.Equal(expectedResult, role.And(roleString).AreEqual());
         }
