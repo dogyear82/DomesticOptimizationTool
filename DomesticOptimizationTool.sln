@@ -48,6 +48,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dot.ChatProcessor", "Dot.Ch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot.Api.Tests", "Dot.Api.Tests\Dot.Api.Tests.csproj", "{A160F6A3-0476-450C-AA87-31AC11427686}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot.Models.Tests", "Dot.Models.Tests\Dot.Models.Tests.csproj", "{E5690A8A-515C-407C-8362-DF9571972064}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +108,10 @@ Global
 		{A160F6A3-0476-450C-AA87-31AC11427686}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A160F6A3-0476-450C-AA87-31AC11427686}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A160F6A3-0476-450C-AA87-31AC11427686}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5690A8A-515C-407C-8362-DF9571972064}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5690A8A-515C-407C-8362-DF9571972064}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5690A8A-515C-407C-8362-DF9571972064}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5690A8A-515C-407C-8362-DF9571972064}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +130,7 @@ Global
 		{C9ECDF1E-E993-4F94-9F1F-CC7E728CBB27} = {7D6A6C8D-53AD-4603-BF06-51BB48F6F8B6}
 		{7A689A82-3E5D-4BD6-A938-0A95835B8058} = {DEADA5EA-C443-4619-A817-D956666F9484}
 		{A160F6A3-0476-450C-AA87-31AC11427686} = {8D4DC78F-600B-4C3D-8E65-8B1B713FE26E}
+		{E5690A8A-515C-407C-8362-DF9571972064} = {8D4DC78F-600B-4C3D-8E65-8B1B713FE26E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE857866-09F3-488B-9C05-5A72997A0153}

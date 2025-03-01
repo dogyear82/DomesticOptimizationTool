@@ -9,7 +9,6 @@ using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components.Web;
 using OllamaSharp.Models.Chat;
 using Dot.Models;
-using Newtonsoft.Json;
 
 namespace Dot.Client.Pages
 {
@@ -43,23 +42,17 @@ namespace Dot.Client.Pages
             try
             {
                 hubConnection = hubAccessor.GetHubConnection();
-                hubConnection.On<string>("ReceiveMessage", async (stream) =>
+                hubConnection.On<ChatStream>("ReceiveMessage", async (chatStream) =>
                 {
                     try
                     {
-                        Console.WriteLine(stream);
-                        var chatStream = JsonConvert.DeserializeObject<ChatStream>(stream);
-                        if (chatStream is null)
-                        {
-                            Console.WriteLine("Chat stream is null");
-                        }
-                        Console.WriteLine($"chat text is : {chatStream.Text}");
+                        ArgumentNullException.ThrowIfNull(chatStream);
                         ProcessStream(chatStream);
                         await InvokeAsync(StateHasChanged);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"❌ Deserialization failed: {ex}");
+                        Console.WriteLine($"❌ Failed to process chat stream: {ex}");
                     }
                 });
 

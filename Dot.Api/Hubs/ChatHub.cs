@@ -6,7 +6,6 @@ using Dot.Services.Ollama;
 using Dot.Services.Repositories;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.AI;
-using Newtonsoft.Json;
 
 namespace Dot.API.Hubs
 {
@@ -47,8 +46,7 @@ namespace Dot.API.Hubs
                 await foreach (var stream in _accessor.ChatAsync(messages, model))
                 {
                     responseStreams.Add(stream);
-                    var serializedStream = JsonConvert.SerializeObject(new ChatStream(stream));
-                    await Clients.Caller.SendAsync("ReceiveMessage", serializedStream);
+                    await Clients.Caller.SendAsync("ReceiveMessage", new ChatStream(stream));
                 }
                 
                 var llmResponse = new ChatMessage
