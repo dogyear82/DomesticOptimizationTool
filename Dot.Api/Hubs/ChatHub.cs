@@ -32,7 +32,7 @@ namespace Dot.API.Hubs
 
             try
             {
-                var messages = new List<ChatMessage> { await GetSystemPrompt() };
+                var messages = new List<ChatMessage>();
                 if (conversationId is not null)
                 {
                     messages.AddRange(await GetConversationHistory(conversationId));
@@ -41,7 +41,9 @@ namespace Dot.API.Hubs
                 
                 var userMessage = CreateUserMessage(content, conversationId);
                 messages.Add(userMessage);
-                
+                messages.Add(await GetSystemPrompt());
+
+
                 var responseStreams = new List<ChatResponseUpdate>();
                 await foreach (var stream in _accessor.ChatAsync(messages, model))
                 {
