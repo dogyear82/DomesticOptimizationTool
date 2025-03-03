@@ -126,7 +126,6 @@ namespace Dot.Client.Pages
 
         private void ProcessStream(ChatStream stream)
         {
-            Console.WriteLine("Processing stream");
             if (stream.IsBeginningOfThought())
             {
                 isThinking = true;
@@ -141,7 +140,6 @@ namespace Dot.Client.Pages
             }
             else if (stream.IsDone)
             {
-                Console.WriteLine("Stream is done");
                 isBusy = false;
                 var aiResponse = "";
                 foreach (var message in messageStream)
@@ -163,7 +161,6 @@ namespace Dot.Client.Pages
             }
             else
             {
-                Console.WriteLine("Adding to message stream");
                 messageStream.Add(stream.Text);
                 isResponseFinished = stream.IsDone;
             }
