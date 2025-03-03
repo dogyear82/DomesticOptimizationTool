@@ -4,6 +4,7 @@ COPY ["Dot.Client/Dot.Client.csproj", "Dot.Client/"]
 COPY ["Dot.Models/Dot.Models.csproj", "Dot.Models/"]
 COPY ["Dot.API.Gateway/Dot.API.Gateway.csproj", "Dot.API.Gateway/"]
 COPY ["Dot.Services/Dot.Services.csproj", "Dot.Services/"]
+COPY ["Dot.Services.Events/Dot.Services.Events.csproj", "Dot.Services.Events/"]
 COPY ["Dot.UI.Models/Dot.UI.Models.csproj", "Dot.UI.Models/"]
 COPY ["Dot.Utilities/Dot.Utilities.csproj", "Dot.Utilities/"]
 RUN dotnet restore "./Dot.Client/./Dot.Client.csproj"

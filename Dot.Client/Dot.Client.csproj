@@ -25,6 +25,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Dot.API.Gateway\Dot.API.Gateway.csproj" />
     <ProjectReference Include="..\Dot.Models\Dot.Models.csproj" />
+    <ProjectReference Include="..\Dot.Services.Events\Dot.Services.Events.csproj" />
     <ProjectReference Include="..\Dot.UI.Models\Dot.UI.Models.csproj" />
     <ProjectReference Include="..\Dot.Utilities\Dot.Utilities.csproj" />
   </ItemGroup>

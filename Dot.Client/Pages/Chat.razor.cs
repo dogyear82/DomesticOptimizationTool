@@ -9,6 +9,7 @@ using Microsoft.JSInterop;
 using Microsoft.AspNetCore.Components.Web;
 using OllamaSharp.Models.Chat;
 using Dot.Models;
+using Dot.Services.Events;
 
 namespace Dot.Client.Pages
 {
@@ -20,6 +21,8 @@ namespace Dot.Client.Pages
         private IGateway gateway { get; set; }
         [Inject]
         private IJSRuntime js { get; set; }
+        [Inject]
+        private IEventService eventService { get; set; }
         [Inject]
         private NavigationManager nav { get; set; }
 
@@ -58,6 +61,7 @@ namespace Dot.Client.Pages
 
                 hubConnection.On<string>("UpdateConversationId", async (newId) =>
                 {
+                    eventService.Emit(Event.NewConversationCreated);
                     nav.NavigateTo($"/chat/{newId}");
                     await InvokeAsync(StateHasChanged);
                 });
