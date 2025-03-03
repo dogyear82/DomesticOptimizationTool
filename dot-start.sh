@@ -1,18 +1,19 @@
 #!/bin/bash
 
-# Prompt the user for MongoDB credentials
 read -p "Enter a password for Dot to access dependent resources: " DOT_PASS
 echo ""
-read -p "Enter an administrator password: " ADMIN_PASS
-echo ""
-read -p "Enter your huggingface secret token: " HUGGINGFACE_TOKEN
-echo ""
-
-# Define user variables
-export ADMIN_USER_NAME="root"
-export ADMIN_PASS
 export DOT_USER_NAME="dot-app"
 export DOT_PASS
+
+read -p "Enter an administrator password: " ADMIN_PASS
+echo ""
+export ADMIN_USER_NAME="root"
+export ADMIN_PASS
+
+#read -p "Enter your huggingface secret token: " HUGGINGFACE_TOKEN
+#echo ""
+#export HUGGINGFACE_TOKEN
+
 export MONGO_DB_NAME="dot"
 export MONGO_CONTAINER_NAME="dot-mongo-db"
 export RABBIT_CONTAINER_NAME="dot-rabbitmq"

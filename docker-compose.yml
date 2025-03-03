@@ -99,23 +99,23 @@ services:
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
 
-  vllm:
-    image: vllm/vllm-openai:latest
-    runtime: nvidia
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
-    environment:
-      HUGGING_FACE_HUB_TOKEN: ${HUGGINGFACE_TOKEN}
-    volumes:
-      - ~/.cache/huggingface:/root/.cache/huggingface
-    ports:
-      - "8000:8000"
-    ipc: host
+  #vllm:
+  #  image: vllm/vllm-openai:latest
+  #  runtime: nvidia
+  #  deploy:
+  #    resources:
+  #      reservations:
+  #        devices:
+  #          - driver: nvidia
+  #            count: all
+  #            capabilities: [gpu]
+  #  environment:
+  #    HUGGING_FACE_HUB_TOKEN: ${HUGGINGFACE_TOKEN}
+  #  volumes:
+  #    - ~/.cache/huggingface:/root/.cache/huggingface
+  #  ports:
+  #    - "8000:8000"
+  #  ipc: host
       
 volumes:
   dot-client-nginx:
