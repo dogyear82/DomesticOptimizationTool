@@ -1,4 +1,5 @@
-﻿@using Dot.Client.Layout
+﻿@using Dot.Client.Components
+@using Dot.Client.Layout
 @page "/chat/{conversationId}"
 
 <div class="chat-window">
@@ -41,5 +42,8 @@
             <textarea @bind="messageInput" @onkeydown="SendOnEnter" label=" user-input" />
             <button @onclick="Send" disabled="@(!IsConnected || isThinking)"><MatIcon Icon="send"></MatIcon></button>
         </div><!-- .chat-input-box -->
+        <div class="chat-model-select">
+            <ModelSelect />
+        </div>
     </div><!-- .chat-input -->
 </div><!-- .chat-window -->
