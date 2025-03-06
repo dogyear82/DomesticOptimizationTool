@@ -22,7 +22,8 @@ namespace Dot.Services.Repositories
         public async Task<IEnumerable<string>> GetDownloadedModelNamesAsync()
         {
             var models = await ((IOllamaApiClient)_client).ListLocalModelsAsync();
-            return models.Select(x => x.Name.Split(":")[0]);
+            var modelNames = models.Select(x => x.Name.Split(":")[0]);
+            return modelNames.Order();
         }
 
         public async Task<IEnumerable<Model>> GetDownloadedModelsAsync()
