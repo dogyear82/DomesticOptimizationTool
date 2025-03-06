@@ -5,8 +5,8 @@ namespace Dot.API.Gateway.Endpoints
 {
     public interface ILlms
     {
-        Task<IEnumerable<Model>> GetAsync(string id);
-        Task<IEnumerable<string>> GetNamesAsync(string id);
+        Task<IEnumerable<Model>> GetAsync();
+        Task<IEnumerable<string>> GetNamesAsync();
     }
 
     internal class Llms : ILlms
@@ -18,12 +18,12 @@ namespace Dot.API.Gateway.Endpoints
             _httpClientAccessor = httpClientAccessor;
         }
 
-        public async Task<IEnumerable<Model>> GetAsync(string id)
+        public async Task<IEnumerable<Model>> GetAsync()
         {
             return await _httpClientAccessor.GetAsync<IEnumerable<Model>>($"{ApiEndpoints.Llms}");
         }
 
-        public async Task<IEnumerable<string>> GetNamesAsync(string id)
+        public async Task<IEnumerable<string>> GetNamesAsync()
         {
             return await _httpClientAccessor.GetAsync<IEnumerable<string>>($"{ApiEndpoints.LlmNames}");
         }

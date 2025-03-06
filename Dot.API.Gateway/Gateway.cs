@@ -7,7 +7,7 @@ namespace Dot.API.Gateway
     {
         INavMenu NavMenu { get; }
         IConversations Conversations { get; }
-        public ILlms Llms { get; }
+        ILlms Llms { get; }
     }
 
     public class Gateway : IGateway

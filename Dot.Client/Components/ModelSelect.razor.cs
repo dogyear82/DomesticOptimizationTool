@@ -10,12 +10,13 @@ namespace Dot.Client.Components
 
         protected string selectedModelName = string.Empty;
         protected List<string> modelNames = new();
+        protected string selectedModel = "mistral";
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
-                modelNames = new List<string> { "test1", "test2", "test3" };//await gateway.Llms.GetNamesAsync();
+                modelNames = (await gateway.Llms.GetNamesAsync()).ToList();
             }
             catch (Exception ex)
             {
