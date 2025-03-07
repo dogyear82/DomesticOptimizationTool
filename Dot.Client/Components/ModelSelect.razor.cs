@@ -1,4 +1,5 @@
 ﻿using Dot.API.Gateway;
+using Dot.Services.Events;
 using Microsoft.AspNetCore.Components;
 
 namespace Dot.Client.Components
@@ -7,6 +8,8 @@ namespace Dot.Client.Components
     {
         [Inject]
         private IGateway gateway { get; set; }
+        [Inject]
+        private IEventService eventService { get; set; }
 
         protected string selectedModelName = string.Empty;
         protected List<string> modelNames = new();
@@ -22,6 +25,12 @@ namespace Dot.Client.Components
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        protected void OnSelectionChanged(string newModel)
+        {
+            selectedModel = newModel;
+            eventService.Emit(Event.ModelSelected, selectedModel);
         }
     }
 }

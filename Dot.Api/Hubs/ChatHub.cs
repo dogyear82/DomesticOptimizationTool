@@ -28,7 +28,7 @@ namespace Dot.API.Hubs
 
         public async Task SendMessage(string content, string model, string conversationId = null)
         {
-            _logger.LogInformation("Received message: {content}", content);
+            _logger.LogInformation("Received message for {model}: {content}", model, content);
 
             try
             {
@@ -56,7 +56,7 @@ namespace Dot.API.Hubs
                     Role = ChatRole.Assistant,
                     Text = string.Join("", responseStreams.Select(x => x.Text))
                 };
-                await SaveMessages(userMessage, llmResponse, conversationId);
+                await SaveMessages(userMessage, llmResponse, conversationId, model);
             }
             catch (Exception ex)
             {
@@ -95,7 +95,7 @@ namespace Dot.API.Hubs
             };
         }
 
-        private async Task SaveMessages(ChatMessage userMessage, ChatMessage llmResponse, string conversationId)
+        private async Task SaveMessages(ChatMessage userMessage, ChatMessage llmResponse, string conversationId, string model)
         {
 
             var messagesToAdd = new List<ChatMessage>
@@ -104,12 +104,12 @@ namespace Dot.API.Hubs
             };
             if (string.IsNullOrWhiteSpace(conversationId))
             {
-                var conversation = await _repo.Conversation.AddAsync(messagesToAdd);
+                var conversation = await _repo.Conversation.AddAsync(messagesToAdd, model);
                 await Clients.Caller.SendAsync("UpdateConversationId", conversation.Id);
             }
             else
             {
-                await _repo.Conversation.UpdateAsync(messagesToAdd, conversationId);
+                await _repo.Conversation.UpdateAsync(messagesToAdd, conversationId, model);
             }
         }
     }

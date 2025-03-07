@@ -1,3 +1,11 @@
 ﻿
-<MatSelectItem Label="Select a model to use" @bind-Value="@selectedModel" Items="@modelNames">
-</MatSelectItem>
+<MatSelect 
+    Outlined="true" 
+    Label="Select a model to use"
+    Value="@selectedModel"
+    ValueChanged="(string i) => OnSelectionChanged(i)"> 
+    @foreach (var name in modelNames)
+    {
+        <MatOptionString Value="@name">@name</MatOptionString>
+    }
+</MatSelect>

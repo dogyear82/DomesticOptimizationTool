@@ -38,12 +38,14 @@ namespace Dot.Client.Pages
         public bool isThinking = false;
         public string thought = string.Empty;
         public bool isResponseFinished = true;
+        public string selectedModel = "mistral";
 
 
         protected override async Task OnInitializedAsync()
         {
             try
             {
+                eventService.Subscribe(Event.ModelSelected, SetSelectedModel);
                 hubConnection = hubAccessor.GetHubConnection();
                 hubConnection.On<ChatStream>("ReceiveMessage", async (chatStream) =>
                 {
@@ -72,6 +74,12 @@ namespace Dot.Client.Pages
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        private void SetSelectedModel(object data)
+        {
+            selectedModel = data.ToString();
+            StateHasChanged();
         }
 
         protected override async Task OnParametersSetAsync()
@@ -180,7 +188,7 @@ namespace Dot.Client.Pages
             if (hubConnection is not null && !string.IsNullOrWhiteSpace(messageInput))
             {
                 var convoId = conversationId == "0" ? null : conversationId;
-                await hubConnection.SendAsync("SendMessage", messageInput, "deepseek-r1", convoId);
+                await hubConnection.SendAsync("SendMessage", messageInput, selectedModel, convoId);
                 var chatEntry = new ChatEntry
                 {
                     Index = GetChatEntryIndex(),

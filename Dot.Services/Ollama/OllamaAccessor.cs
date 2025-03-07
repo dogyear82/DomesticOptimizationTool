@@ -21,7 +21,7 @@ namespace Dot.Services.Ollama
 
             var options = new ChatOptions
             {
-                ModelId = "mistral",
+                ModelId = model,
             };
             await foreach (var chunk in _client.GetStreamingResponseAsync(conversation, options))
             {

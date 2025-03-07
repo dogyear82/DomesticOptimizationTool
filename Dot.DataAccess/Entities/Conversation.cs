@@ -22,6 +22,7 @@ namespace Dot.DataAccess.Entities
         public string Role { get; set; }
         public string Content { get; set; }
         public bool IsUsedInSummary { get; set; }
+        public string Model { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

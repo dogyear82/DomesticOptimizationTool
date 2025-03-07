@@ -9,8 +9,8 @@ namespace Dot.Services.Repositories
     {
         Task<List<Conversation>> GetAllConversationsAsync();
         Task<Conversation> GetConversationById(string conversationId);
-        Task<Conversation> AddAsync(List<ChatMessage> messages);
-        Task<bool> UpdateAsync(List<ChatMessage> messages, string conversationId);
+        Task<Conversation> AddAsync(List<ChatMessage> messages, string model);
+        Task<bool> UpdateAsync(List<ChatMessage> messages, string conversationId, string model);
     }
 
     public class ConversationRepository : IConversationRepository
@@ -35,13 +35,9 @@ namespace Dot.Services.Repositories
             return await _db.ReadAsync<Conversation>(conversationId);
         }
 
-        public async Task<Conversation> AddAsync(List<ChatMessage> messages)
+        public async Task<Conversation> AddAsync(List<ChatMessage> messages, string model)
         {
-            var messagesToAdd = messages.Select(m => new Message()
-            {
-                Role = m.Role.ToString(),
-                Content = m.Text
-            }).ToList();
+            var messagesToAdd = messages.Select(x => CreateMessage(x, model)).ToList();
 
             var conversation = new Conversation()
             {
@@ -53,13 +49,19 @@ namespace Dot.Services.Repositories
             return await _db.CreateAsync(conversation);
         }
 
-        public async Task<bool> UpdateAsync(List<ChatMessage> messages, string conversationId)
+        private Message CreateMessage(ChatMessage message, string model)
         {
-            var messagesToAdd = messages.Select(m => new Message()
+            return new Message()
             {
-                Role = m.Role.ToString(),
-                Content = m.Text
-            }).ToList();
+                Role = message.Role.ToString(),
+                Content = message.Text,
+                Model = model
+            };
+        }
+
+        public async Task<bool> UpdateAsync(List<ChatMessage> messages, string conversationId, string model)
+        {
+            var messagesToAdd = messages.Select(x => CreateMessage(x, model)).ToList();
 
             var conversation = await _db.ReadAsync<Conversation>(conversationId);
             conversation.Messages.AddRange(messagesToAdd);
