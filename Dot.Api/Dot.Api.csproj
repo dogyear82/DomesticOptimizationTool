@@ -19,6 +19,7 @@
     <ProjectReference Include="..\AI.Gateway\AI.Gateway.csproj" />
     <ProjectReference Include="..\Dot.DataAccess\Dot.DataAccess.csproj" />
     <ProjectReference Include="..\Dot.Services\Dot.Services.csproj" />
+    <ProjectReference Include="..\Dot.Services.Ollama\Dot.Services.Ollama.csproj" />
     <ProjectReference Include="..\Dot.UI.Models\Dot.UI.Models.csproj" />
   </ItemGroup>
 

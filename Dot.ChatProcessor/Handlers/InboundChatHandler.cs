@@ -29,11 +29,11 @@ namespace Dot.ChatProcessor.Handlers
             var chatMessage = JsonConvert.DeserializeObject<InboundChatMessage>(message);
             if ("REPLACE WITH CONVERSATION ID" is null)
             {
-                await _repository.Conversation.AddAsync(new List<ChatMessage> { chatMessage.Payload });
+                await _repository.Conversation.AddAsync(new List<ChatMessage> { chatMessage.Payload }, "MODEL NAME");
             } 
             else
             {
-                await _repository.Conversation.UpdateAsync(new List<ChatMessage> { chatMessage.Payload }, "REPLACE WITH CONVERSATION ID");
+                await _repository.Conversation.UpdateAsync(new List<ChatMessage> { chatMessage.Payload }, "REPLACE WITH CONVERSATION ID", "MODEL NAME");
             }
 
             var channel = ((AsyncEventingBasicConsumer)sender).Channel;

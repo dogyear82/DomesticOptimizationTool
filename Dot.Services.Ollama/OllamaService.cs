@@ -1,17 +1,14 @@
-﻿using Microsoft.Extensions.AI;
+﻿using Dot.Services.Interfaces;
+using Microsoft.Extensions.AI;
 
 namespace Dot.Services.Ollama
 {
-    public interface ILlmClientAccessor
-    {
-        IAsyncEnumerable<ChatResponseUpdate?> ChatAsync(List<ChatMessage> conversation, string model);
-    }
 
-    public class OllamaAccessor : ILlmClientAccessor
+    public class OllamaService : ILlmService
     {
         private readonly IChatClient _client;
 
-        public OllamaAccessor(IChatClient client)
+        public OllamaService(IChatClient client)
         {
             _client = client;
         }

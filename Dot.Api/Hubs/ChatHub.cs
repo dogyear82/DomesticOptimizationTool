@@ -1,8 +1,8 @@
 using Dot.API.Models;
 using Dot.Models;
 using Dot.Services;
+using Dot.Services.Interfaces;
 using Dot.Services.Messaging.Interfaces;
-using Dot.Services.Ollama;
 using Dot.Services.Repositories;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.AI;
@@ -11,7 +11,7 @@ namespace Dot.API.Hubs
 {
     public class ChatHub : Hub
     {
-        private readonly ILlmClientAccessor _accessor;
+        private readonly ILlmService _accessor;
         private readonly IRepository _repo;
         private readonly IAppSettings<ApiSettings> _appSettings;
         private readonly IMessageSender _messageSender;
@@ -20,7 +20,7 @@ namespace Dot.API.Hubs
         public ChatHub(ILogger<ChatHub> logger, IServiceProvider sp)
         {
             _logger = logger;
-            _accessor = sp.GetRequiredService<ILlmClientAccessor>();
+            _accessor = sp.GetRequiredService<ILlmService>();
             _repo = sp.GetRequiredService<IRepository>();
             _messageSender = sp.GetRequiredService<IMessageSender>();
             _appSettings = sp.GetRequiredService<IAppSettings<ApiSettings>>();

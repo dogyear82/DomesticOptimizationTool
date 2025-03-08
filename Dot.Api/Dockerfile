@@ -13,6 +13,7 @@ COPY ["HttpUtilities/HttpUtilities.csproj", "HttpUtilities/"]
 COPY ["Dot.Models/Dot.Models.csproj", "Dot.Models/"]
 COPY ["Dot.DataAccess/Dot.DataAccess.csproj", "Dot.DataAccess/"]
 COPY ["Dot.Services/Dot.Services.csproj", "Dot.Services/"]
+COPY ["Dot.Services.Ollama/Dot.Services.Ollama.csproj", "Dot.Services.Ollama/"]
 COPY ["Dot.UI.Models/Dot.UI.Models.csproj", "Dot.UI.Models/"]
 RUN dotnet restore "./Dot.Api/./Dot.API.csproj"
 COPY . .

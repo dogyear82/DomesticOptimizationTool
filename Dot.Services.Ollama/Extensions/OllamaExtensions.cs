@@ -1,4 +1,5 @@
-﻿using Dot.Services.Ollama.Options;
+﻿using Dot.Services.Interfaces;
+using Dot.Services.Ollama.Options;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +16,7 @@ namespace Dot.Services.Ollama.Extensions
             {
                 return new OllamaApiClient(options.Url, options.DefaultModel);
             });
-            services.AddSingleton<ILlmClientAccessor, OllamaAccessor>();
+            services.AddSingleton<ILlmService, OllamaService>();
         }
     }
 }

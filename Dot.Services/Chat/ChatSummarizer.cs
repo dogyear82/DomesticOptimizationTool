@@ -1,6 +1,6 @@
-﻿using Dot.Services.Ollama;
-using System.Text.RegularExpressions;
+﻿using Dot.Services.Interfaces;
 using Microsoft.Extensions.AI;
+using System.Text.RegularExpressions;
 
 namespace Dot.Services.Chat
 {
@@ -12,9 +12,9 @@ namespace Dot.Services.Chat
 
     public class ChatSummarizer : IChatSummarizer
     {
-        private readonly ILlmClientAccessor _ollamaAccessor;
+        private readonly ILlmService _ollamaAccessor;
 
-        public ChatSummarizer(ILlmClientAccessor ollamaAccessor)
+        public ChatSummarizer(ILlmService ollamaAccessor)
         {
             _ollamaAccessor = ollamaAccessor;
         }

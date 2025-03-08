@@ -52,6 +52,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot.Models.Tests", "Dot.Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot.Services.Events", "Dot.Services.Events\Dot.Services.Events.csproj", "{869E8507-334B-42E4-A776-FC0FC0375470}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dot.Services.Ollama", "Dot.Services.Ollama\Dot.Services.Ollama.csproj", "{43210D4A-8B4F-46DB-8692-D57C74987FCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -118,6 +120,10 @@ Global
 		{869E8507-334B-42E4-A776-FC0FC0375470}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{869E8507-334B-42E4-A776-FC0FC0375470}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{869E8507-334B-42E4-A776-FC0FC0375470}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43210D4A-8B4F-46DB-8692-D57C74987FCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43210D4A-8B4F-46DB-8692-D57C74987FCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43210D4A-8B4F-46DB-8692-D57C74987FCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43210D4A-8B4F-46DB-8692-D57C74987FCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +144,7 @@ Global
 		{A160F6A3-0476-450C-AA87-31AC11427686} = {8D4DC78F-600B-4C3D-8E65-8B1B713FE26E}
 		{E5690A8A-515C-407C-8362-DF9571972064} = {8D4DC78F-600B-4C3D-8E65-8B1B713FE26E}
 		{869E8507-334B-42E4-A776-FC0FC0375470} = {7D6A6C8D-53AD-4603-BF06-51BB48F6F8B6}
+		{43210D4A-8B4F-46DB-8692-D57C74987FCF} = {7D6A6C8D-53AD-4603-BF06-51BB48F6F8B6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CE857866-09F3-488B-9C05-5A72997A0153}
