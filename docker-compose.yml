@@ -28,7 +28,7 @@ services:
     depends_on:
       - ollama
       - mongo
-      - rabbitmq
+      #- rabbitmq
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       MongoDbSettings__ConnectionString: "mongodb://${DOT_USER_NAME}:${DOT_PASS}@mongo:27017/dot?authSource=dot"
@@ -38,7 +38,7 @@ services:
       RabbitMQSettings__UserName: ${DOT_USER_NAME}
       RabbitMQSettings__Password: ${DOT_PASS}
       OllamaOptions__Url: "http://ollama:11434"
-      OllamaOptions__DefaultModel: "deepseek-r1"
+      OllamaOptions__DefaultModel: "mistral"
     ports:
       - "8080:8080"
 
@@ -72,32 +72,41 @@ services:
       - mongo_data:/data/db 
       - mongo_config:/data/configdb
 
-  mongo-express:
-    image: mongo-express
-    container_name: dot-mongo-ui
-    restart: always
+  chromadb:
+    image: chromadb/chroma
+    container_name: chroma
+    restart: unless-stopped
     ports:
-      - 8081:8081
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${ADMIN_USER_NAME}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${ADMIN_PASS}
-      ME_CONFIG_MONGODB_URL: mongodb://${ADMIN_USER_NAME}:${ADMIN_PASS}@mongo:27017/
-      ME_CONFIG_BASICAUTH: false
+      - "8000:8000"
     volumes:
-      - mongo_express_data:/data/db 
+      - chroma_data:/chroma_db
 
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: ${RABBIT_CONTAINER_NAME}
-    restart: always
-    environment:
-      RABBITMQ_DEFAULT_USER: ${ADMIN_USER_NAME}
-      RABBITMQ_DEFAULT_PASS: ${ADMIN_PASS}
-    ports:
-      - 5672:5672
-      - 15672:15672
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
+  #mongo-express:
+  #  image: mongo-express
+  #  container_name: dot-mongo-ui
+  #  restart: always
+  #  ports:
+  #    - 8081:8081
+  #  environment:
+  #    ME_CONFIG_MONGODB_ADMINUSERNAME: ${ADMIN_USER_NAME}
+  #    ME_CONFIG_MONGODB_ADMINPASSWORD: ${ADMIN_PASS}
+  #    ME_CONFIG_MONGODB_URL: mongodb://${ADMIN_USER_NAME}:${ADMIN_PASS}@mongo:27017/
+  #    ME_CONFIG_BASICAUTH: false
+  #  volumes:
+  #    - mongo_express_data:/data/db 
+
+  #rabbitmq:
+  #  image: rabbitmq:3-management
+  #  container_name: ${RABBIT_CONTAINER_NAME}
+  #  restart: always
+  #  environment:
+  #    RABBITMQ_DEFAULT_USER: ${ADMIN_USER_NAME}
+  #    RABBITMQ_DEFAULT_PASS: ${ADMIN_PASS}
+  #  ports:
+  #    - 5672:5672
+  #    - 15672:15672
+  #  volumes:
+  #    - rabbitmq_data:/var/lib/rabbitmq
 
   #vllm:
   #  image: vllm/vllm-openai:latest
@@ -122,5 +131,6 @@ volumes:
   ollama_models:
   mongo_data:
   mongo_config:
-  mongo_express_data:
-  rabbitmq_data:
+  chroma_data:
+  #mongo_express_data:
+  #rabbitmq_data:
