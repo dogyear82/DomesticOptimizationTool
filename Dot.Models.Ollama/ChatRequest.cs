@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Dot.Models.Ollama
 {
-    public class OllamaChatRequest
+    public class ChatRequest
     {
         [JsonProperty("model")]
         public string Model { get; set; }
@@ -12,12 +12,12 @@ namespace Dot.Models.Ollama
         public bool Stream { get; set; }
 
         [JsonProperty("messages")]
-        public List<OllamaMessage> Messages { get; set; }
+        public List<Message> Messages { get; set; }
     }
 
-    public class OllamaMessage
+    public class Message
     {
-        public OllamaMessage(ChatMessage message)
+        public Message(ChatMessage message)
         {
             Role = message.Role.ToString().ToLower();
             Content = message.Text;

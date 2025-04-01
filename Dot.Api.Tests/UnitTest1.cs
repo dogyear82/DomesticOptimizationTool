@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.AI;
-using OllamaSharp;
 
 namespace Dot.Api.Tests
 {

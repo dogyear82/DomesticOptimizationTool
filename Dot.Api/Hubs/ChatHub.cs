@@ -3,7 +3,7 @@ using Dot.Models;
 using Dot.Services;
 using Dot.Services.Interfaces;
 using Dot.Services.Messaging.Interfaces;
-using Dot.Services.Repositories;
+using Dot.Repositories;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.AI;
 

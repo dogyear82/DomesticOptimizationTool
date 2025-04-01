@@ -1,12 +1,8 @@
-﻿using Microsoft.Extensions.AI;
+﻿using Dot.Models.Ollama;
+using Dot.Services.Ollama;
 
-namespace Dot.Services.Repositories
+namespace Dot.Repositories
 {
-    public class Model
-    {
-        public string Name { get; set; }
-        public string Path { get; set; }
-    }
     public interface ILlmRepository
     {
         Task<IEnumerable<string>> GetDownloadedModelNamesAsync();
@@ -15,19 +11,18 @@ namespace Dot.Services.Repositories
 
     public class LlmRepository : ILlmRepository
     {
-        private readonly IChatClient _client;
+        private readonly IOllamaClient _client;
 
-        public LlmRepository(IChatClient client)
+        public LlmRepository(IOllamaClient client)
         {
             _client = client;
         }
 
         public async Task<IEnumerable<string>> GetDownloadedModelNamesAsync()
         {
-            return new List<string>();
-            //var models = await ((IOllamaApiClient)_client).ListLocalModelsAsync();
-            //var modelNames = models.Select(x => x.Name.Split(":")[0]);
-            //return modelNames.Order();
+            var tags = await _client.GetTagsAsync();
+            var modelNames = tags.Models.Select(x => x.Name.Split(":")[0]);
+            return modelNames.Order();
         }
 
         public async Task<IEnumerable<Model>> GetDownloadedModelsAsync()

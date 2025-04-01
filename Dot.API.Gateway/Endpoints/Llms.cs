@@ -1,5 +1,5 @@
 ﻿using Dot.API.Gateway.Services;
-using OllamaSharp.Models;
+using Dot.Models.Ollama;
 
 namespace Dot.API.Gateway.Endpoints
 {

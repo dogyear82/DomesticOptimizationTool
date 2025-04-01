@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Dot.DataAccess.Extensions;
 
-namespace Dot.Services.Repositories
+namespace Dot.Repositories
 {
     public static class Extensions
     {

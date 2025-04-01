@@ -1,4 +1,5 @@
-﻿using Dot.Services.Repositories;
+﻿using Dot.Models.Ollama;
+using Dot.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dot.API.Controllers

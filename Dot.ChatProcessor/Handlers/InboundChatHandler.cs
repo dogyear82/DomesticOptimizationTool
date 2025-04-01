@@ -1,4 +1,4 @@
-﻿using Dot.Services.Repositories;
+﻿using Dot.Repositories;
 using Dot.Models.Messaging;
 using Dot.Services.Messaging.Interfaces;
 using Newtonsoft.Json;

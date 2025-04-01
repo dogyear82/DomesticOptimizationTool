@@ -3,7 +3,7 @@ using Dot.DataAccess.Entities;
 using Dot.Services.Chat;
 using Microsoft.Extensions.AI;
 
-namespace Dot.Services.Repositories
+namespace Dot.Repositories
 {
     public interface IConversationRepository
     {

@@ -15,7 +15,9 @@ namespace Dot.Services.Ollama.Extensions
             {
                 client.BaseAddress = new Uri(options.Url);
             });
-            services.AddSingleton<IChatClient, OllamaClient>();
+            services.AddSingleton<OllamaClient>();
+            services.AddSingleton<IChatClient>(sp => sp.GetRequiredService<OllamaClient>());
+            services.AddSingleton<IOllamaClient>(sp => sp.GetRequiredService<OllamaClient>());
             services.AddSingleton<ILlmService, OllamaService>();
         }
     }

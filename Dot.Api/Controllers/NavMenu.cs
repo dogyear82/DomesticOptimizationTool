@@ -1,4 +1,4 @@
-﻿using Dot.Services.Repositories;
+﻿using Dot.Repositories;
 using Dot.UI.Models;
 using Microsoft.AspNetCore.Mvc;
 

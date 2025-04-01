@@ -5,7 +5,12 @@ using Newtonsoft.Json;
 
 namespace Dot.Services.Ollama
 {
-    public class OllamaClient : IChatClient
+    public interface IOllamaClient
+    {
+        Task<TagResponse> GetTagsAsync();
+    }
+
+    public class OllamaClient : IOllamaClient, IChatClient
     {
         private readonly HttpClient _httpClient;
 
@@ -17,6 +22,14 @@ namespace Dot.Services.Ollama
         public void Dispose()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<TagResponse> GetTagsAsync()
+        {
+            var response = await _httpClient.GetAsync(Endpoints.Tags);
+            response.EnsureSuccessStatusCode();
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<TagResponse>(content);
         }
 
         public Task<ChatResponse> GetResponseAsync(IEnumerable<ChatMessage> messages, ChatOptions? options = null, CancellationToken cancellationToken = default)
@@ -31,11 +44,11 @@ namespace Dot.Services.Ollama
 
         public async IAsyncEnumerable<ChatResponseUpdate> GetStreamingResponseAsync(IEnumerable<ChatMessage> messages, ChatOptions? options = null, CancellationToken cancellationToken = default)
         {
-            var request = new OllamaChatRequest
+            var request = new ChatRequest
             {
                 Model = options?.ModelId ?? "mistral",
                 Stream = true,
-                Messages = messages.Select(x => new OllamaMessage(x)).ToList()
+                Messages = messages.Select(x => new Message(x)).ToList()
             };
 
             var requestContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");

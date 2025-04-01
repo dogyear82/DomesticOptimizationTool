@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Dot.Models.Ollama\Dot.Models.Ollama.csproj" />
     <ProjectReference Include="..\Dot.Models\Dot.Models.csproj" />
     <ProjectReference Include="..\Dot.UI.Models\Dot.UI.Models.csproj" />
   </ItemGroup>

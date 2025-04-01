@@ -6,6 +6,7 @@ namespace Dot.Services.Ollama.Tests
     public class OllamaClientTests
     {
         private readonly IChatClient _client;
+        private readonly IOllamaClient _ollamaClient;
 
         public OllamaClientTests()
         {
@@ -16,11 +17,13 @@ namespace Dot.Services.Ollama.Tests
             var factory = new Mock<IHttpClientFactory>();
             factory.Setup(x => x.CreateClient(It.IsAny<string>())).Returns(httpClient);
 
-            _client = new OllamaClient(factory.Object);
+            var baseClient = new OllamaClient(factory.Object);
+            _client = baseClient;
+            _ollamaClient = baseClient;
         }
 
         [Fact]
-        public async Task Test1()
+        public async Task ToolResponseTest()
         {
             var messages = new List<ChatMessage>
             {
@@ -33,6 +36,14 @@ namespace Dot.Services.Ollama.Tests
             {
                 message += chunk.Text;
             }
+        }
+
+        [Fact]
+        public async Task ModelsFetchTest()
+        {
+            var tags = await _ollamaClient.GetTagsAsync();
+            Assert.NotNull(tags);
+            Assert.NotEmpty(tags.Models);
         }
     }
 }

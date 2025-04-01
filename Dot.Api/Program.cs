@@ -3,7 +3,7 @@ using Dot.Services.Extensions;
 using Microsoft.AspNetCore.ResponseCompression;
 using Dot.Services.Messaging.Extensions;
 using Dot.Services.Ollama.Extensions;
-using Dot.Services.Repositories;
+using Dot.Repositories;
 using Dot.Services.Chat;
 using Dot.API.Models;
 using Dot.Services;
