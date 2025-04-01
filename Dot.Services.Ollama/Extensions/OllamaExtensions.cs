@@ -3,7 +3,6 @@ using Dot.Services.Ollama.Options;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OllamaSharp;
 
 namespace Dot.Services.Ollama.Extensions
 {
@@ -12,10 +11,11 @@ namespace Dot.Services.Ollama.Extensions
         public static void AddOllamaClient(this IServiceCollection services, IConfiguration config)
         {
             var options = config.GetSection("OllamaOptions").Get<OllamaOptions>();
-            services.AddSingleton<IChatClient>(sp =>
+            services.AddHttpClient("Ollama", client =>
             {
-                return new OllamaApiClient(options.Url, options.DefaultModel);
+                client.BaseAddress = new Uri(options.Url);
             });
+            services.AddSingleton<IChatClient, OllamaClient>();
             services.AddSingleton<ILlmService, OllamaService>();
         }
     }

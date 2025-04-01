@@ -1,0 +1,62 @@
+﻿using Microsoft.Extensions.AI;
+using System.Text;
+using Dot.Models.Ollama;
+using Newtonsoft.Json;
+
+namespace Dot.Services.Ollama
+{
+    public class OllamaClient : IChatClient
+    {
+        private readonly HttpClient _httpClient;
+
+        public OllamaClient(IHttpClientFactory factory)
+        {
+            _httpClient = factory.CreateClient("Ollama");
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ChatResponse> GetResponseAsync(IEnumerable<ChatMessage> messages, ChatOptions? options = null, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object? GetService(Type serviceType, object? serviceKey = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async IAsyncEnumerable<ChatResponseUpdate> GetStreamingResponseAsync(IEnumerable<ChatMessage> messages, ChatOptions? options = null, CancellationToken cancellationToken = default)
+        {
+            var request = new OllamaChatRequest
+            {
+                Model = options?.ModelId ?? "mistral",
+                Stream = true,
+                Messages = messages.Select(x => new OllamaMessage(x)).ToList()
+            };
+
+            var requestContent = new StringContent(JsonConvert.SerializeObject(request), Encoding.UTF8, "application/json");
+
+            using var response = await _httpClient.PostAsync(
+                Endpoints.Chat,
+                requestContent
+            );
+
+            response.EnsureSuccessStatusCode();
+
+            using var stream = await response.Content.ReadAsStreamAsync();
+            using var reader = new StreamReader(stream);
+
+            while (!reader.EndOfStream)
+            {
+                var line = await reader.ReadLineAsync();
+                var ollamaResponse = JsonConvert.DeserializeObject<OllamaResponse>(line);
+                yield return new ChatResponseUpdate(new ChatRole(ollamaResponse.Message.Role), ollamaResponse.Message.Content);
+            }
+
+        }
+    }
+}

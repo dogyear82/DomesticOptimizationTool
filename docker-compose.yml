@@ -1,6 +1,6 @@
 version: '3.1'
 
-services:  
+services:
 
   dot-client:
     image: dot-client

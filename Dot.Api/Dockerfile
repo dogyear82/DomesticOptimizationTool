@@ -8,23 +8,24 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Dot.Api/Dot.API.csproj", "Dot.Api/"]
+COPY ["Dot.Api/Dot.Api.csproj", "Dot.Api/"]
 COPY ["HttpUtilities/HttpUtilities.csproj", "HttpUtilities/"]
 COPY ["Dot.Models/Dot.Models.csproj", "Dot.Models/"]
+COPY ["Dot.Models.Ollama/Dot.Models.Ollama.csproj", "Dot.Models.Ollama/"]
 COPY ["Dot.DataAccess/Dot.DataAccess.csproj", "Dot.DataAccess/"]
 COPY ["Dot.Services/Dot.Services.csproj", "Dot.Services/"]
 COPY ["Dot.Services.Ollama/Dot.Services.Ollama.csproj", "Dot.Services.Ollama/"]
 COPY ["Dot.UI.Models/Dot.UI.Models.csproj", "Dot.UI.Models/"]
-RUN dotnet restore "./Dot.Api/./Dot.API.csproj"
+RUN dotnet restore "./Dot.Api/./Dot.Api.csproj"
 COPY . .
 WORKDIR "/src/Dot.Api"
-RUN dotnet build "./Dot.API.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build "./Dot.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Dot.API.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./Dot.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Dot.API.dll"]
+ENTRYPOINT ["dotnet", "Dot.Api.dll"]

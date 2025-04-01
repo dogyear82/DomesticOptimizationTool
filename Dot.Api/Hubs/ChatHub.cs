@@ -51,11 +51,7 @@ namespace Dot.API.Hubs
                     await Clients.Caller.SendAsync("ReceiveMessage", new ChatStream(stream));
                 }
                 
-                var llmResponse = new ChatMessage
-                {
-                    Role = ChatRole.Assistant,
-                    Text = string.Join("", responseStreams.Select(x => x.Text))
-                };
+                var llmResponse = new ChatMessage(ChatRole.Assistant, string.Join("", responseStreams.Select(x => x.Text)));
                 await SaveMessages(userMessage, llmResponse, conversationId, model);
             }
             catch (Exception ex)
@@ -66,11 +62,7 @@ namespace Dot.API.Hubs
 
         private async Task<ChatMessage> GetSystemPrompt()
         {
-            return new ChatMessage
-            {
-                Role = ChatRole.System,
-                Text = string.Join(" ", (await _appSettings.GetAsync()).SystemPrompts)
-            };
+            return new ChatMessage(ChatRole.System, string.Join(" ", (await _appSettings.GetAsync()).SystemPrompts));
         }
 
         private async Task<List<ChatMessage>> GetConversationHistory(string conversationId)
@@ -79,20 +71,12 @@ namespace Dot.API.Hubs
             return conversation.Messages
                     .OrderBy(x => x.CreatedAt)
                     .Where(x => x.Role != ChatRole.System.ToString())
-                    .Select(x => new ChatMessage
-                    {
-                        Role = new ChatRole(x.Role),
-                        Text = x.Content
-                    }).ToList();
+                    .Select(x => new ChatMessage(new ChatRole(x.Role), x.Content)).ToList();
         }
 
         private ChatMessage CreateUserMessage(string content, string conversationId)
         {
-            return new ChatMessage
-            {
-                Role = ChatRole.User,
-                Text = content
-            };
+            return new ChatMessage(ChatRole.User, content);
         }
 
         private async Task SaveMessages(ChatMessage userMessage, ChatMessage llmResponse, string conversationId, string model)

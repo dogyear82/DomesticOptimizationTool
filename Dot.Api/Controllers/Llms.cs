@@ -1,6 +1,5 @@
 ﻿using Dot.Services.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using OllamaSharp.Models;
 
 namespace Dot.API.Controllers
 {

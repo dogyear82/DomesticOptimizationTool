@@ -1,9 +1,12 @@
 ﻿using Microsoft.Extensions.AI;
-using OllamaSharp;
-using OllamaSharp.Models;
 
 namespace Dot.Services.Repositories
 {
+    public class Model
+    {
+        public string Name { get; set; }
+        public string Path { get; set; }
+    }
     public interface ILlmRepository
     {
         Task<IEnumerable<string>> GetDownloadedModelNamesAsync();
@@ -21,14 +24,16 @@ namespace Dot.Services.Repositories
 
         public async Task<IEnumerable<string>> GetDownloadedModelNamesAsync()
         {
-            var models = await ((IOllamaApiClient)_client).ListLocalModelsAsync();
-            var modelNames = models.Select(x => x.Name.Split(":")[0]);
-            return modelNames.Order();
+            return new List<string>();
+            //var models = await ((IOllamaApiClient)_client).ListLocalModelsAsync();
+            //var modelNames = models.Select(x => x.Name.Split(":")[0]);
+            //return modelNames.Order();
         }
 
         public async Task<IEnumerable<Model>> GetDownloadedModelsAsync()
         {
-            return await ((IOllamaApiClient)_client).ListLocalModelsAsync();
+            return new List<Model>();
+            //return await ((IOllamaApiClient)_client).ListLocalModelsAsync();
         }
     }
 }
