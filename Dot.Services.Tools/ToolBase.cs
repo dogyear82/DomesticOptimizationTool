@@ -20,8 +20,10 @@ namespace Dot.Services.Tools
 
             // Get method parameters
             var methodParams = method.GetParameters();
-            if (methodParams.Length != parameters.Length)
-                throw new ArgumentException($"Expected {methodParams.Length} parameters, but received {parameters.Length}.");
+            if (methodParams.Length == 0)
+            {
+                return (string)method.Invoke(this, null);
+            }
 
             // Convert values to correct types
             var orderedParams = methodParams.Select(paramInfo =>

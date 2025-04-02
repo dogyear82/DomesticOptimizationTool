@@ -7,6 +7,7 @@ using Dot.Repositories;
 using Dot.Services.Chat;
 using Dot.API.Models;
 using Dot.Services;
+using Dot.Services.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
@@ -32,6 +33,7 @@ builder.Services.AddSignalR();
 builder.Services.AddMessageSender(builder.Configuration);
 builder.Services.AddRepositories(builder.Configuration);
 builder.Services.AddOllamaClient(builder.Configuration);
+builder.Services.AddTools();
 builder.Services.AddSingleton<IAppSettings<ApiSettings>, AppSettings<ApiSettings>>();
 builder.Services.AddSingleton<IChatSummarizer, ChatSummarizer>();
 

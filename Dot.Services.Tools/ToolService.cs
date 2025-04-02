@@ -1,46 +1,50 @@
-﻿
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace Dot.Services.Tools
 {
     public interface IToolService
     {
-        string ConstructToolPrompt();
+        string GetToolPrompt();
+        Task<string> Process(string toolResponse);
     }
 
     public class ToolService : IToolService
     {
+        private readonly ILogger<ToolService> _logger;
         private readonly IToolExecuter _toolExecuter;
-        private readonly IToolFactory _toolFactory;
         private readonly IEnumerable<ITool> _tools;
         private readonly string _toolPrompt;
 
-        public ToolService(IEnumerable<ITool> tools)
+        public ToolService(ILogger<ToolService> logger, IServiceProvider sp, IEnumerable<ITool> tools)
         {
+            _logger = logger;
             _tools = tools;
-            //_toolFactory = sp.GetRequiredService<IToolFactory>();
-            //_toolExecuter = sp.GetRequiredService<IToolExecuter>();
+            _toolExecuter = sp.GetRequiredService<IToolExecuter>();
             _toolPrompt = ConstructToolPrompt();
         }
 
-        public string ConstructToolPrompt()
+        private string ConstructToolPrompt()
         {
-            var toolMeta = new List<ToolMeta>();
-            foreach (var tool in _tools)
+            try
             {
-                var meta = tool.GenerateToolMeta();
-                if (meta != null)
+                var toolMeta = new List<ToolMeta>();
+                foreach (var tool in _tools)
                 {
-                    toolMeta.Add(meta);
+                    _logger.LogInformation("Generating tool meta for {tool}", tool.GetType().Name);
+                    var meta = tool.GenerateToolMeta();
+                    if (meta != null)
+                    {
+                        toolMeta.Add(meta);
+                    }
                 }
-            }
-            var toolDefinitions = JsonConvert.SerializeObject(toolMeta);
+                var toolDefinitions = JsonConvert.SerializeObject(toolMeta);
 
-            var sampleResponse = new ToolResponse
-            {
-                ToolName = "Name of the Tool",
-                ToolParams = new List<ToolParameter>
+                var sampleResponse = new ToolResponse
+                {
+                    ToolName = "Name of the Tool",
+                    ToolParams = new List<ToolParameter>
                 {
                     new ToolParameter
                     {
@@ -48,10 +52,32 @@ namespace Dot.Services.Tools
                         Value = "Value of the Tool parameter"
                     }
                 }
-            };
-            var sampleSchema = JsonConvert.SerializeObject(sampleResponse);
+                };
+                var sampleSchema = JsonConvert.SerializeObject(sampleResponse);
 
-            return $"You are a tool-using assistant. Based on the following conversation, choose the most appropriate tool to execute along with the required parameters. Respond ONLY as JSON using this format: {sampleSchema}. Here are the available tools: {toolDefinitions}";
+                return $"You are a tool-using assistant. Based on the following conversation, choose the most appropriate tool to execute along with the required parameters. Respond ONLY as JSON using this format: {sampleSchema}. Here are the available tools: {toolDefinitions}";
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error constructing tool prompt");
+                return "Error constructing tool prompt";
+            }
+        }
+
+        public string GetToolPrompt()
+        {
+            if (string.IsNullOrWhiteSpace(_toolPrompt))
+            {
+                ConstructToolPrompt();
+            }
+
+            return _toolPrompt;
+        }
+
+        public async Task<string> Process(string toolResponse)
+        {
+            _logger.LogInformation("Prcessing tool response");
+            return await _toolExecuter.Execute(toolResponse);
         }
     }
 }

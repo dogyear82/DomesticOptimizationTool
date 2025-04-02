@@ -13,8 +13,16 @@ namespace Dot.Services.Tools
 
             foreach (var type in toolTypes)
             {
-                services.AddSingleton(typeof(ITool), type);
+                if (type != typeof(ToolBase))
+                {
+                    services.AddSingleton(typeof(ITool), type);
+                }
             }
+
+            services.AddSingleton<IToolService, ToolService>();
+            services.AddSingleton<IToolExecuter, ToolExecuter>();
+            services.AddSingleton<IToolFactory, ToolFactory>();
+            services.AddScoped<IAgent, Agent>();
 
             return services;
         }

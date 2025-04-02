@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Moq;
 
 namespace Dot.Services.Tools.Tests
 {
@@ -17,13 +13,13 @@ namespace Dot.Services.Tools.Tests
                 new Silly(),
                 new GeneralChat()
             };
-            _toolService = new ToolService(tools);
+            _toolService = new ToolService(new Mock<IServiceProvider>().Object, tools);
         }
 
         [Fact]
         public void ConstructToolPrompt_ReturnsPrompt()
         {
-            var prompt = _toolService.ConstructToolPrompt();
+            var prompt = _toolService.GetToolPrompt();
             Assert.NotNull(prompt);
         }
     }

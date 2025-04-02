@@ -1,17 +1,17 @@
 using Dot.API.Models;
 using Dot.Models;
 using Dot.Services;
-using Dot.Services.Interfaces;
 using Dot.Services.Messaging.Interfaces;
 using Dot.Repositories;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.AI;
+using Dot.Services.Tools;
 
 namespace Dot.API.Hubs
 {
     public class ChatHub : Hub
     {
-        private readonly ILlmService _accessor;
+        private readonly IAgent _agent;
         private readonly IRepository _repo;
         private readonly IAppSettings<ApiSettings> _appSettings;
         private readonly IMessageSender _messageSender;
@@ -20,7 +20,7 @@ namespace Dot.API.Hubs
         public ChatHub(ILogger<ChatHub> logger, IServiceProvider sp)
         {
             _logger = logger;
-            _accessor = sp.GetRequiredService<ILlmService>();
+            _agent = sp.GetRequiredService<IAgent>();
             _repo = sp.GetRequiredService<IRepository>();
             _messageSender = sp.GetRequiredService<IMessageSender>();
             _appSettings = sp.GetRequiredService<IAppSettings<ApiSettings>>();
@@ -31,21 +31,10 @@ namespace Dot.API.Hubs
             _logger.LogInformation("Received message for {model}: {content}", model, content);
 
             try
-            {
-                var messages = new List<ChatMessage>();
-                if (conversationId is not null)
-                {
-                    messages.AddRange(await GetConversationHistory(conversationId));
-                    _logger.LogInformation($"Conversation history pulled for conversation ID {conversationId}");
-                }
-                
-                var userMessage = CreateUserMessage(content, conversationId);
-                messages.Add(userMessage);
-                messages.Add(await GetSystemPrompt());
-
-
+            {                
+                var userMessage = new ChatMessage(ChatRole.User, content);
                 var responseStreams = new List<ChatResponseUpdate>();
-                await foreach (var stream in _accessor.ChatAsync(messages, model))
+                await foreach (var stream in _agent.ChatAsync(userMessage, model, conversationId))
                 {
                     responseStreams.Add(stream);
                     await Clients.Caller.SendAsync("ReceiveMessage", new ChatStream(stream));
@@ -60,28 +49,8 @@ namespace Dot.API.Hubs
             }
         }
 
-        private async Task<ChatMessage> GetSystemPrompt()
-        {
-            return new ChatMessage(ChatRole.System, string.Join(" ", (await _appSettings.GetAsync()).SystemPrompts));
-        }
-
-        private async Task<List<ChatMessage>> GetConversationHistory(string conversationId)
-        {
-            var conversation = await _repo.Conversation.GetConversationById(conversationId);
-            return conversation.Messages
-                    .OrderBy(x => x.CreatedAt)
-                    .Where(x => x.Role != ChatRole.System.ToString())
-                    .Select(x => new ChatMessage(new ChatRole(x.Role), x.Content)).ToList();
-        }
-
-        private ChatMessage CreateUserMessage(string content, string conversationId)
-        {
-            return new ChatMessage(ChatRole.User, content);
-        }
-
         private async Task SaveMessages(ChatMessage userMessage, ChatMessage llmResponse, string conversationId, string model)
         {
-
             var messagesToAdd = new List<ChatMessage>
             {
                 userMessage, llmResponse
