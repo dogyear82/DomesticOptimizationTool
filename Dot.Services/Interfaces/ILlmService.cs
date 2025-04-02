@@ -4,6 +4,7 @@ namespace Dot.Services.Interfaces
 {
     public interface ILlmService
     {
-        IAsyncEnumerable<ChatResponseUpdate?> ChatAsync(List<ChatMessage> conversation, string model);
+        Task<ChatResponse> ChatAsync(List<ChatMessage> conversation, string model);
+        IAsyncEnumerable<ChatResponseUpdate?> StreamChatAsync(List<ChatMessage> conversation, string model);
     }
 }

@@ -9,6 +9,7 @@ namespace Dot.Repositories
     {
         Task<List<Conversation>> GetAllConversationsAsync();
         Task<Conversation> GetConversationById(string conversationId);
+        Task<List<ChatMessage>> GetConversationHistoryAsync(string conversationId);
         Task<Conversation> AddAsync(List<ChatMessage> messages, string model);
         Task<bool> UpdateAsync(List<ChatMessage> messages, string conversationId, string model);
     }
@@ -28,6 +29,15 @@ namespace Dot.Repositories
         {
             var conversations = await _db.ReadAsync<Conversation>();
             return conversations;
+        }
+
+        public async Task<List<ChatMessage>> GetConversationHistoryAsync(string conversationId)
+        {
+            var conversation = await GetConversationById(conversationId);
+            return conversation.Messages
+                    .OrderBy(x => x.CreatedAt)
+                    .Where(x => x.Role != ChatRole.System.ToString())
+                    .Select(x => new ChatMessage(new ChatRole(x.Role), x.Content)).ToList();
         }
 
         public async Task<Conversation> GetConversationById(string conversationId)

@@ -13,9 +13,18 @@ namespace Dot.Services.Ollama
             _client = client;
         }
 
-        public async IAsyncEnumerable<ChatResponseUpdate?> ChatAsync(List<ChatMessage> conversation, string model)
+        public async Task<ChatResponse> ChatAsync(List<ChatMessage> conversation, string model)
         {
+            var options = new ChatOptions
+            {
+                ModelId = model,
+            };
 
+            return await _client.GetResponseAsync(conversation, options);
+        }
+
+        public async IAsyncEnumerable<ChatResponseUpdate?> StreamChatAsync(List<ChatMessage> conversation, string model)
+        {
             var options = new ChatOptions
             {
                 ModelId = model,
