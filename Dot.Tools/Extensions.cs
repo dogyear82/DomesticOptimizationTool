@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace Dot.Services.Tools
+namespace Dot.Tools
 {
     public static class Extensions
     {

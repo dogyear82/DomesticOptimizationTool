@@ -1,5 +1,5 @@
 ﻿
-namespace Dot.Services.Tools.Attributes
+namespace Dot.Tools.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     public class ToolAttribute : Attribute

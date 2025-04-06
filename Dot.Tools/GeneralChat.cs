@@ -1,6 +1,6 @@
-﻿using Dot.Services.Tools.Attributes;
+﻿using Dot.Tools.Attributes;
 
-namespace Dot.Services.Tools
+namespace Dot.Tools
 {
     [Tool("Used for general conversation when no other tool is appropriate.")]
     public class GeneralChat : ToolBase

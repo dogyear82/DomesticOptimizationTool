@@ -5,7 +5,7 @@ using Dot.Services.Messaging.Interfaces;
 using Dot.Repositories;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.AI;
-using Dot.Services.Tools;
+using Dot.Tools;
 
 namespace Dot.API.Hubs
 {

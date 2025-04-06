@@ -1,7 +1,7 @@
-﻿using Dot.Services.Tools.Attributes;
+﻿using Dot.Tools.Attributes;
 using System.Reflection;
 
-namespace Dot.Services.Tools
+namespace Dot.Tools
 {
     public class ToolBase : ITool
     {

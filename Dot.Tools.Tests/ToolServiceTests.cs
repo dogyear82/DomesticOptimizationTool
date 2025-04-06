@@ -1,6 +1,6 @@
 ﻿using Moq;
 
-namespace Dot.Services.Tools.Tests
+namespace Dot.Tools.Tests
 {
     public class ToolServiceTests
     {

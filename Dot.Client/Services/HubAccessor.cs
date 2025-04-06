@@ -21,7 +21,7 @@ namespace Dot.Client.Services
         public HubConnection GetHubConnection()
         {
             return new HubConnectionBuilder()
-                .WithUrl("http://localhost:7070/chathub")
+                .WithUrl("http://localhost:8080/chathub")
                 .ConfigureLogging(logging =>
                 {
                     logging.SetMinimumLevel(LogLevel.Debug);

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace Dot.Services.Tools
+namespace Dot.Tools
 {
     public interface IToolService
     {

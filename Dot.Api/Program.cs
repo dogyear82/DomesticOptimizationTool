@@ -7,7 +7,7 @@ using Dot.Repositories;
 using Dot.Services.Chat;
 using Dot.API.Models;
 using Dot.Services;
-using Dot.Services.Tools;
+using Dot.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>

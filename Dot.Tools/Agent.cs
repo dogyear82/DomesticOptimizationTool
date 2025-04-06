@@ -4,7 +4,7 @@ using Microsoft.Extensions.AI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Dot.Services.Tools
+namespace Dot.Tools
 {
     public interface IAgent
     {

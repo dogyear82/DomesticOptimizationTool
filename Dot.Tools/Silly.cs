@@ -1,7 +1,7 @@
 ﻿
-using Dot.Services.Tools.Attributes;
+using Dot.Tools.Attributes;
 
-namespace Dot.Services.Tools
+namespace Dot.Tools
 {
     [Tool("Generates a silly string based on 2 input parameters.")]
     public class Silly : ToolBase

@@ -1,4 +1,4 @@
-﻿namespace Dot.Services.Tools
+﻿namespace Dot.Tools
 {
     public interface IToolFactory
     {
