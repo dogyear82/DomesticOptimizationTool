@@ -1,0 +1,86 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="coqui_tts.py" />
+    <None Remove="ggml-base.en.bin" />
+    <None Remove="models\xtts\config.json" />
+    <None Remove="models\xtts\dvae.pth" />
+    <None Remove="models\xtts\mel_stats.pth" />
+    <None Remove="models\xtts\model.pth" />
+    <None Remove="models\xtts\speakers_xtts.pth" />
+    <None Remove="models\xtts\vocab.json" />
+    <None Remove="resources\silero_vad.onnx" />
+    <None Remove="voices\aerith.safetensors" />
+    <None Remove="voices\aloy.safetensors" />
+    <None Remove="voices\tifa.safetensors" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ggml-base.en.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="models\xtts\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="models\xtts\dvae.pth">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="models\xtts\mel_stats.pth">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="models\xtts\model.pth">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="models\xtts\speakers_xtts.pth">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="models\xtts\vocab.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="resources\silero_vad.onnx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="voices\aerith.safetensors">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="voices\aloy.safetensors">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="voices\tifa.safetensors">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+	<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.2" />
+	<PackageReference Include="NAudio" Version="2.2.1" />
+	<PackageReference Include="System.Speech" Version="9.0.4" />
+	<PackageReference Include="System.Windows.Extensions" Version="9.0.5" />
+	<PackageReference Include="Whisper.net" Version="1.8.1" />
+	<PackageReference Include="Whisper.net.Runtime" Version="1.8.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dot.Models\Dot.Models.csproj" />
+    <ProjectReference Include="..\VadSharp\VadSharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="coqui_tts2.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Content Include="coqui_tts.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

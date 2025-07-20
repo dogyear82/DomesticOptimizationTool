@@ -17,7 +17,9 @@ COPY ["Dot.Repositories/Dot.Repositories.csproj", "Dot.Repositories/"]
 COPY ["Dot.Services/Dot.Services.csproj", "Dot.Services/"]
 COPY ["Dot.Services.Ollama/Dot.Services.Ollama.csproj", "Dot.Services.Ollama/"]
 COPY ["Dot.Tools/Dot.Tools.csproj", "Dot.Tools/"]
+COPY ["Dot.Tools.Search/Dot.Tools.Search.csproj", "Dot.Tools.Search/"]
 COPY ["Dot.UI.Models/Dot.UI.Models.csproj", "Dot.UI.Models/"]
+COPY ["HttpUtilities/HttpUtilities.csproj", "HttpUtilities/"]
 RUN dotnet restore "./Dot.Api/./Dot.Api.csproj"
 COPY . .
 WORKDIR "/src/Dot.Api"

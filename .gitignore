@@ -361,3 +361,11 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+*.wav
+tts
+/Dot.Speech.Receiver/ggml-base.en.bin
+/dot_speech_tts/models/xtts/dvae.pth
+/dot_speech_tts/models/xtts/model.pth
+/Dot.Speech.Receiver/models/xtts/dvae.pth
+/Dot.Speech.Receiver/models/xtts/model.pth

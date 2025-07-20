@@ -11,9 +11,9 @@ namespace Dot.Repositories
         {
             services.SetupDataAccess(configuration);
             services.AddSingleton<IDatabase, MongoDatabase>();
-            services.AddScoped<ILlmRepository, LlmRepository>();
-            services.AddScoped<IConversationRepository, ConversationRepository>();
-            services.AddScoped<IRepository, Repository>();
+            services.AddSingleton<ILlmRepository, LlmRepository>();
+            services.AddSingleton<IConversationRepository, ConversationRepository>();
+            services.AddSingleton<IRepository, Repository>();
         }
     }
 }

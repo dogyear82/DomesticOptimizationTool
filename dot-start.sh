@@ -23,4 +23,4 @@ docker compose up -d
 bash mongo-setup.sh "$ADMIN_USER_NAME" "$ADMIN_PASS" "$DOT_USER_NAME" "$DOT_PASS" "$MONGO_DB_NAME" "$MONGO_CONTAINER_NAME"
 
 # Setup RabbitMQ
-bash rabbitmq-setup.sh "$ADMIN_USER_NAME" "$ADMIN_PASS" "$DOT_USER_NAME" "$DOT_PASS" "$RABBIT_CONTAINER_NAME"
+#bash rabbitmq-setup.sh "$ADMIN_USER_NAME" "$ADMIN_PASS" "$DOT_USER_NAME" "$DOT_PASS" "$RABBIT_CONTAINER_NAME"

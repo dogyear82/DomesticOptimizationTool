@@ -8,16 +8,16 @@ using Dot.Services.Chat;
 using Dot.API.Models;
 using Dot.Services;
 using Dot.Tools;
+using Dot.Tools.Search;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("http://dot-client:7070", "http://localhost:7070", "https://localhost:7064")
+        policy.AllowAnyOrigin()
               .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+              .AllowAnyMethod();
     });
 });
 
@@ -33,7 +33,16 @@ builder.Services.AddSignalR();
 builder.Services.AddMessageSender(builder.Configuration);
 builder.Services.AddRepositories(builder.Configuration);
 builder.Services.AddOllamaClient(builder.Configuration);
-builder.Services.AddTools();
+var _ = typeof(WebSearch);
+builder.Services.AddTools(client =>
+{
+    var httpClientOptions = builder.Configuration.GetSection("HttpClientOptions").Get<HttpClientOptions>();
+	client.BaseAddress = new Uri(httpClientOptions.BaseAddress);
+    foreach (var header in httpClientOptions.DefaultHeaders)
+	{
+		client.DefaultRequestHeaders.Add(header.Key, header.Value);
+	}
+});
 builder.Services.AddSingleton<IAppSettings<ApiSettings>, AppSettings<ApiSettings>>();
 builder.Services.AddSingleton<IChatSummarizer, ChatSummarizer>();
 
@@ -49,6 +58,7 @@ app.UseCors();
 
 app.UseResponseCompression();
 app.MapHub<ChatHub>("/chathub");
+app.MapHub<CoHostHub>("/cohosthub");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

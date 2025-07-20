@@ -20,7 +20,7 @@ namespace AI.Gateway.API
 
         public async Task<TtsResponse> GetAsync(TtsRequest request)
         {
-            return await _httpClientAccessor.PostAsync<TtsResponse>(Environment.GetEnvironmentVariable("ApiUrl"), request);
+            return new TtsResponse();//return await _httpClientAccessor.PostAsync<TtsResponse>(Environment.GetEnvironmentVariable("ApiUrl"), request);
         }
     }
 }

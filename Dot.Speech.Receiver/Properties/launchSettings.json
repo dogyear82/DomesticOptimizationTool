@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Dot.Speech": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

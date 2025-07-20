@@ -1,10 +1,12 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using HttpUtilities;
+using Microsoft.Extensions.DependencyInjection;
+using System.Net;
 
 namespace Dot.Tools
 {
     public static class Extensions
     {
-        public static IServiceCollection AddTools(this IServiceCollection services)
+        public static IServiceCollection AddTools(this IServiceCollection services, Action<HttpClient> client)
         {
             var toolInterface = typeof(ITool);
             var toolTypes = AppDomain.CurrentDomain.GetAssemblies()
@@ -19,10 +21,20 @@ namespace Dot.Tools
                 }
             }
 
+            services.AddSingleton<IHttpClientAccessor, HttpClientAccessor>();
             services.AddSingleton<IToolService, ToolService>();
             services.AddSingleton<IToolExecuter, ToolExecuter>();
             services.AddSingleton<IToolFactory, ToolFactory>();
-            services.AddScoped<IAgent, Agent>();
+            services.AddSingleton<IAgent, Agent>();
+            services.AddSingleton<IAgent, CoHost>();
+            services.AddSingleton<IAgentProvider, AgentProvider>();
+
+            services.AddHttpClient("ToolWebClient", client)
+            .ConfigurePrimaryHttpMessageHandler(() =>
+                new HttpClientHandler
+                {
+                    AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate | DecompressionMethods.Brotli
+                });
 
             return services;
         }

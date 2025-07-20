@@ -92,7 +92,12 @@ namespace Dot.Services.Ollama
             {
                 var line = await reader.ReadLineAsync();
                 var ollamaResponse = JsonConvert.DeserializeObject<OllamaResponse>(line);
-                yield return new ChatResponseUpdate(new ChatRole(ollamaResponse.Message.Role), ollamaResponse.Message.Content);
+                var responseChunk = new ChatResponseUpdate(new ChatRole(ollamaResponse.Message.Role), ollamaResponse.Message.Content);
+                if (ollamaResponse.Done)
+                {
+                    responseChunk.FinishReason = ChatFinishReason.Stop;
+                }
+                yield return responseChunk;
             }
         }
     }

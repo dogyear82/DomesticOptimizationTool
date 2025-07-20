@@ -1,7 +1,4 @@
-using Dot.API.Models;
 using Dot.Models;
-using Dot.Services;
-using Dot.Services.Messaging.Interfaces;
 using Dot.Repositories;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.AI;
@@ -13,17 +10,13 @@ namespace Dot.API.Hubs
     {
         private readonly IAgent _agent;
         private readonly IRepository _repo;
-        private readonly IAppSettings<ApiSettings> _appSettings;
-        private readonly IMessageSender _messageSender;
         private readonly ILogger<ChatHub> _logger;
 
         public ChatHub(ILogger<ChatHub> logger, IServiceProvider sp)
         {
             _logger = logger;
-            _agent = sp.GetRequiredService<IAgent>();
+            _agent = sp.GetRequiredService<IAgentProvider>().GetAgent<Agent>();
             _repo = sp.GetRequiredService<IRepository>();
-            _messageSender = sp.GetRequiredService<IMessageSender>();
-            _appSettings = sp.GetRequiredService<IAppSettings<ApiSettings>>();
         }
 
         public async Task SendMessage(string content, string model, string conversationId = null)
