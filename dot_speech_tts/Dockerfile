@@ -8,6 +8,17 @@ ENV PYTHONUNBUFFERED=1
 # Set working directory
 WORKDIR /app
 
+# Install system dependencies required by TTS (ffmpeg, espeak-ng, libsndfile)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      ffmpeg \
+      libsndfile1 \
+      espeak-ng \
+      libgl1 \
+      libglib2.0-0 \
+      git && \
+    rm -rf /var/lib/apt/lists/*
+
 # Copy Python requirements first for layer caching (if you have requirements.txt)
 COPY requirements.txt .
 
@@ -18,9 +29,8 @@ RUN pip install --upgrade pip && \
 # Copy application code
 COPY . .
 
-# Copy specific folders
+# Copy model and voices (avoid copying local virtualenvs)
 COPY models/xtts/ models/xtts/
-COPY tts/ tts/
 COPY voices/ voices/
 
 # Set entrypoint or command (edit as needed)

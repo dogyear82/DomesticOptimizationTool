@@ -369,3 +369,15 @@ tts
 /dot_speech_tts/models/xtts/model.pth
 /Dot.Speech.Receiver/models/xtts/dvae.pth
 /Dot.Speech.Receiver/models/xtts/model.pth
+
+.host-env
+
+# Python virtual environments
+.venv/
+venv/
+env/
+ENV/
+.host-venv/
+dot_speech_tts/tts/
+dot_speech_player/.venv/
+dot_speech_player_host/.venv/
